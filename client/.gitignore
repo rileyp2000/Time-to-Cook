@@ -39,3 +39,13 @@ jspm_packages
 
 #Excluding build directory
 public/
+
+
+#React
+node_modules/
+.cache/
+dist/
+.env
+.DS_Store
+coverage/
+.vscode/
