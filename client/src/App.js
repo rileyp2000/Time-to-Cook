@@ -1,9 +1,20 @@
-import './App.css';
+import React from "react";
+import "./App.css";
+import RecipeCard from "./components/RecipeCard";
 
 function App() {
   return (
     <div>
-      <h1>Test Hello!</h1>
+      <div id="menu-outer">
+        <div>
+          <ul>
+            <RecipeCard></RecipeCard>
+            <RecipeCard></RecipeCard>
+            <RecipeCard></RecipeCard>
+            <RecipeCard></RecipeCard>
+          </ul>
+        </div>
+      </div>
     </div>
   );
 }
