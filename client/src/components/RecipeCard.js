@@ -1,46 +1,73 @@
 import * as React from "react";
+import AspectRatio from "@mui/joy/AspectRatio";
 import Card from "@mui/joy/Card";
-import CardCover from "@mui/joy/CardCover";
-import CardContent from "@mui/joy/CardContent";
+import CardOverflow from "@mui/joy/CardOverflow";
+import Divider from "@mui/joy/Divider";
 import Typography from "@mui/joy/Typography";
-import TimerIcon from "@mui/icons-material/Timer";
 import IconButton from "@mui/joy/IconButton";
-import FavoriteIcon from "@mui/icons-material/Favorite";
+import Link from "@mui/joy/Link";
+import Favorite from "@mui/icons-material/Favorite";
 
-export default function GradientCover() {
+export default function MultipleInteractionCard() {
   return (
-    <Card sx={{ minHeight: "210px", width: 280 }}>
-      <CardCover>
-        <img
-          src="https://lilluna.com/wp-content/uploads/2022/07/snickerdoodles-final3-resize-14.jpg"
-          srcSet="https://lilluna.com/wp-content/uploads/2022/07/snickerdoodles-final3-resize-14.jpg 2x"
-          loading="lazy"
-          alt=""
-        />
-      </CardCover>
-      <CardCover
-        sx={{
-          background:
-            "linear-gradient(to top, rgba(0,0,0,0.4), rgba(0,0,0,0) 200px), linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0) 300px)",
-        }}
-      />
-      <CardContent sx={{ justifyContent: "flex-end" }}>
+    <Card variant="outlined" sx={{ width: 320 }}>
+      <CardOverflow>
+        <AspectRatio ratio="2">
+          <img
+            src="https://images.unsplash.com/photo-1532614338840-ab30cf10ed36?auto=format&fit=crop&w=318"
+            srcSet="https://images.unsplash.com/photo-1532614338840-ab30cf10ed36?auto=format&fit=crop&w=318&dpr=2 2x"
+            loading="lazy"
+            alt=""
+          />
+        </AspectRatio>
         <IconButton
-          aria-label="bookmark Bahamas Islands"
-          variant="solid"
+          aria-label="Like minimal photography"
           size="md"
+          variant="solid"
           color="info"
-          sx={{ position: "absolute", top: "0.5rem", right: "0.5rem" }}
+          sx={{
+            position: "absolute",
+            zIndex: 2,
+            borderRadius: "50%",
+            right: "1rem",
+            bottom: 0,
+            transform: "translateY(50%)",
+          }}
         >
-          <FavoriteIcon />
+          <Favorite />
         </IconButton>
-        <Typography level="h2" fontSize="lg" textColor="#fff" mb={1}>
-          Snickerdoodles
+      </CardOverflow>
+      <Typography level="h2" sx={{ fontSize: "md", mt: 2 }}>
+        Snickerdoodles
+      </Typography>
+      <Typography level="body2" sx={{ mt: 0.5, mb: 2 }}>
+        20 mins
+      </Typography>
+      <Divider inset="context" />
+      <CardOverflow
+        variant="soft"
+        sx={{
+          display: "flex",
+          gap: 1.5,
+          py: 1.5,
+          px: "var(--Card-padding)",
+          bgcolor: "background.level1",
+        }}
+      >
+        <Typography
+          level="body3"
+          sx={{ fontWeight: "md", color: "text.secondary" }}
+        >
+          Energy
         </Typography>
-        <Typography startDecorator={<TimerIcon />} textColor="neutral.300">
-          20 mins
+        <Divider orientation="vertical" />
+        <Typography
+          level="body3"
+          sx={{ fontWeight: "md", color: "text.secondary" }}
+        >
+          Moderate
         </Typography>
-      </CardContent>
+      </CardOverflow>
     </Card>
   );
 }

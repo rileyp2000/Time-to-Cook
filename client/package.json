@@ -13,6 +13,7 @@
     "@testing-library/user-event": "^13.5.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^6.8.2",
     "react-scripts": "^5.0.1",
     "web-vitals": "^2.1.4"
   },
@@ -42,6 +43,7 @@
   },
   "devDependencies": {
     "eslint": "^8.35.0",
+    "eslint-plugin-key-spacing-indent": "^1.0.2",
     "eslint-plugin-react": "^7.32.2"
   }
 }

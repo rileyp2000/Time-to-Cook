@@ -29,8 +29,7 @@ module.exports = {
 		//"sourceType": "module" //added this for import statements
 	},
 	"plugins": [
-		"react",
-		"indent"
+		"react"
 	],
 	"rules": {
 
@@ -69,18 +68,22 @@ module.exports = {
 			"error"
 		],
 		//rules for indenting a tab after each level of line of code
+		/*
+		removed because no eslint-plugin-indent
+		simply use prettier to account for it
 		"indent": [
 			"error",
-			"2",
+			2,
 			{ "SwitchCase": 1 }
 		],
+		*/
 		//json objects rules
 		"comma-dangle": [
-			"error",
+			"warn",
 			"never"
 		],
 		"quote-props": [
-			"error",
+			"warn",
 			"consistent"
 		],
 		"no-multi-spaces": [
@@ -91,6 +94,9 @@ module.exports = {
 			{
 				"consistent": true
 			}
+		],
+		"no-unused-vars": [
+			"warn"
 		],
 		"object-property-newline": [
 			"error",
