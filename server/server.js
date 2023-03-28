@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const { MongoClient } = require('mongodb');
-const { getRecipes } = require("./recipes.js");
+const { getRecipes, toggleFavorite, deleteRecipe, loadSamples } = require("./recipes.js");
 //const cors = require("cors");
 //require("dotenv").config({ path: "./config.env" });
 const port = 5000;
@@ -44,45 +44,74 @@ app.get('/filters', (req, res) => {
   });
 });
 
-app.get('/dbtest', (req, res) => {
+app.get('/getRecipes', (req, res) => {
+  console.log("/getRecipes");
   getRecipes()
     .then(recipes => res.json(recipes));
   //res.status(200).send("please work");
 });
 
-app.get('/getrecipes', (req, res) => {
-  res.status(200).json([{
-    title: 'Snickerdoodles',
-    time: '20mins',
-    energy: 'Moderate',
-    mealType: 'Sweets',
-    utensils: ['Measuring spoons', '2 bowls', 'stove', 'baking sheet'],
-    ingredients: {
-      Snickerdoodles: [
-        '2 ¾ cups all purpose flour',
-        '2tsp cream of tartar',
-        '½ tsp salt',
-        '1tsp baking powder',
-        '1 cup unsalted butter, softened',
-        '2 eggs',
-        '1 tsp vanilla extract'
-      ],
-      'Cinnamon Sugar Coating:': ['⅓ cup sugar', '2 tbsp cinnamon']
-    },
-    steps: [
-      'Preheat Oven to 350℉',
-      'In a large bowl, cream together butter and sugar',
-      'Mix flour, cream of tartar, baking soda, and salt together in another bowl and then slowly combine wet and dry ingredients',
-      'Combine sugar and cinnamon for the cinnamon sugar coating',
-      'Scoop out dough and roll into a ball',
-      'Bake for 8-10 minutes'
-    ],
-    image: { mime: 'image/jpeg', path: '/some/path/to/file' },
-    filters: ['No Protein']
-  }]);
+app.post('/toggleFavorite', (req, res) => {
+  console.log("/toggleFavorite");
+  console.log(req.body);
+  toggleFavorite(req.body._id, req.body.value)
+    .then(result => res.send(result));
+  //res.status(200).send("please work");
 });
 
+app.post('/deleteRecipe', (req, res) => {
+  console.log("/deleteRecipe");
+  console.log(req.body);
+  deleteRecipe(req.body._id)
+    .then(result => res.json(result));
+  //res.status(200).send("please work");
+});
+
+app.get('/devpreload', (req, res) => {
+  console.log("Loading sample data...");
+  loadSamples()
+    .then(result => res.json(result));
+  //res.status(200).send("please work");
+});
+
+
+// app.get('/getrecipes', (req, res) => {
+//   res.status(200).json([{
+//     title: 'Snickerdoodles',
+//     _id: '123123131123123',
+//     time: '20mins',
+//     energy: 'Moderate',
+//     mealType: 'Sweets',
+//     utensils: ['Measuring spoons', '2 bowls', 'stove', 'baking sheet'],
+//     ingredients: {
+//       Snickerdoodles: [
+//         '2 ¾ cups all purpose flour',
+//         '2tsp cream of tartar',
+//         '½ tsp salt',
+//         '1tsp baking powder',
+//         '1 cup unsalted butter, softened',
+//         '2 eggs',
+//         '1 tsp vanilla extract'
+//       ],
+//       'Cinnamon Sugar Coating:': ['⅓ cup sugar', '2 tbsp cinnamon']
+//     },
+//     steps: [
+//       'Preheat Oven to 350℉',
+//       'In a large bowl, cream together butter and sugar',
+//       'Mix flour, cream of tartar, baking soda, and salt together in another bowl and then slowly combine wet and dry ingredients',
+//       'Combine sugar and cinnamon for the cinnamon sugar coating',
+//       'Scoop out dough and roll into a ball',
+//       'Bake for 8-10 minutes'
+//     ],
+//     image: { mime: 'image/jpeg', path: '/some/path/to/file' },
+//     filters: ['No Protein'],
+//     favorite: false
+//   }]);
+// });
+
+
+
 app.get('/', (req, res) => {
-  console.log("hello there");
+  //console.log("hello there");
   res.status(200).send("Welcome to the backend!");
 })
