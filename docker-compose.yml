@@ -1,0 +1,35 @@
+
+version: "3.9" 
+services:
+  frontend:
+    build: ./client
+    container_name: frontend
+    ports:
+      - "3000:3000"
+  backend:
+    build: ./server
+    container_name: backend
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongo
+    environment:
+      - CONN_STR=mongodb://mongo:27017
+  mongo:
+    image: mongo
+    # container_name: mongo
+    # environment:
+    #   - MONGODB_INITDB_ROOT_USERNAME=user
+    #   - MONGODB_INITDB_ROOT_PASSWORD=pass
+    #   - MONGODB_INITDB_DATABASE=recipes
+    volumes:
+      - type: bind
+        source: ./data
+        target: /data/db
+  mongo-express:
+    image: mongo-express
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mongo
+      
