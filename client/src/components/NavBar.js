@@ -15,9 +15,10 @@ import AdbIcon from "@mui/icons-material/Adb";
 import SearchIcon from "@mui/icons-material/Search";
 import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
-import {Link, NavLink} from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
+import AddIcon from "@mui/icons-material/Add";
 
-const pages = ["Home", "MyRecipe", "favorites"];
+const pages = ["Home", "MyRecipe", "Favorites", "Add Recipe"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function ResponsiveAppBar() {
@@ -82,7 +83,16 @@ function ResponsiveAppBar() {
   }));
 
   return (
-    <AppBar position="static" color="secondary">
+    <AppBar
+      position="static"
+      color="primary"
+      // style={{ backgroundColor: "hsl(294deg 45% 52%)" }}
+      sx={{
+        backgroundColor: "#FFFFFF",
+        color: "#6B48FF",
+        boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
+      }}
+    >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           {/* <Typography
@@ -134,11 +144,11 @@ function ResponsiveAppBar() {
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
                   <Link
-                  to={page === "Home" ? "/" : `/${page.toLowerCase()}`}
-                  style={{ textDecoration: "none", color: "inherit" }}
-                  activeStyle={{ fontWeight: "bold" }}
+                    to={page === "Home" ? "/" : `/${page.toLowerCase()}`}
+                    style={{ textDecoration: "none", color: "#6B48FF" }}
+                    activeStyle={{ fontWeight: "bold" }}
                   >
-                  <Typography textAlign="center">{page}</Typography>
+                    <Typography textAlign="center">{page}</Typography>
                   </Link>
                 </MenuItem>
               ))}
@@ -160,20 +170,35 @@ function ResponsiveAppBar() {
           >
             Time!toCook
           </Typography> */}
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+          {/* Section for nav bar regular buttons */}
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: { xs: "none", md: "flex" },
+              justifyContent: "flex-start", // added this line
+            }}
+          >
             {pages.map((page) => (
               <Button
                 key={page}
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-                component={Link} to={page === "Home" ? "/" : `/${page.toLowerCase()}`}
+                sx={{
+                  my: 0.5, //space top and bottom of nav bar
+                  mx: 1, //space between buttons
+                  color: "#6B48FF",
+                  display: "block",
+                  fontWeight: "bold",
+                  fontSize: "1.1em",
+                }}
+                component={Link}
+                to={page === "Home" ? "/" : `/${page.toLowerCase()}`}
               >
                 {page}
               </Button>
             ))}
           </Box>
 
-          <Search>
+          <Search style={{backgroundColor: "#F3F3F3"}}>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>

@@ -1,9 +1,10 @@
 import * as React from "react";
+import RecipeCard from "../components/RecipeCard";
 
 
 function Favorite(){
     return (
-        <h1>Favorite</h1>
+        <RecipeCard></RecipeCard>
     );
 }
 

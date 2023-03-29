@@ -5,16 +5,20 @@ import Logo from "./components/Logo";
 import Favorite from "./pages/Favorites";
 import Home from "./pages/Home";
 import MyRecipe from "./pages/Myrecipe";
-import {Route, Routes} from "react-router-dom";
+import Addrecipe from "./pages/Addrecipe";
+import { Route, Routes } from "react-router-dom";
+import SearchResults from "./components/SearchResults";
 
 function App() {
   return (
     <>
       <NavBar></NavBar>
       <Routes>
-        <Route path ="/" element={<Home/>} />
-        <Route path ="/favorites" element={<Favorite/>} />
-        <Route path ="/myrecipe" element={<MyRecipe/>} />
+        <Route path="/" element={<Home />} />
+        <Route path="/favorites" element={<Favorite />} />
+        <Route path="/myrecipe" element={<MyRecipe />} />
+        <Route path="/add recipe" element={<Addrecipe />} />
+        <Route path="/searchresults/:query" element={<SearchResults />} />
       </Routes>
     </>
   );
