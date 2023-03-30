@@ -12,7 +12,7 @@ function SearchResults() {
       mealType: "Sweets",
       utensils: ["Measuring spoons", "2 bowls", "stove", "baking sheet"],
       ingredients: {
-        Snickerdoodles: [
+        "Snickerdoodles": [
           "2 ¾ cups all purpose flour",
           "2tsp cream of tartar",
           "½ tsp salt",
