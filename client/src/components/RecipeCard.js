@@ -13,6 +13,11 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import { CardActionArea, CardActions } from "@mui/material";
+import Sheet from "@mui/joy/Sheet";
+//import RecipeContent from "./RecipeContent";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import { purple } from "@mui/material/colors";
+import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 
 function RecipeCard(props) {
   const [isFavorite, setIsFavorite] = React.useState(false);
@@ -26,18 +31,6 @@ function RecipeCard(props) {
   };
   //console.log(props);
 
-  const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 400,
-    bgcolor: "background.paper",
-    border: "2px solid #000",
-    boxShadow: 24,
-    p: 4,
-  };
-
   // Add a check to make sure that the `rec` prop is not undefined
   if (!props.rec) {
     return null;
@@ -46,9 +39,27 @@ function RecipeCard(props) {
   return (
     <Card
       variant="outlined"
-      sx={{ width: 200, borderColor: "hsl(294deg 9% 91%)" }}
+      sx={{ width: 200, borderColor: "hsl(294deg 9% 91%)" ,padding: "16px" }}
     >
-      <CardActionArea onClick={handleOpen} sx={{ width: 200 }}>
+      <IconButton
+        aria-label="Like minimal photography"
+        size="md"
+        variant="solid"
+        color="primary"
+        sx={{
+          position: "absolute",
+          zIndex: 2,
+          borderRadius: "50%",
+          right: 8,
+          top: 8,
+          transform: "translateY(50%)",
+          backgroundColor: "hsl(294deg 45% 52%)",
+        }}
+        onClick={handleClick}
+      >
+        <Favorite sx={{ color: isFavorite ? "yellow" : "white" }} />
+      </IconButton>
+      <CardActionArea onClick={handleOpen} sx={{ width: "100%"}}>
         <CardOverflow>
           <AspectRatio ratio="2">
             <img
@@ -58,24 +69,6 @@ function RecipeCard(props) {
               alt=""
             />
           </AspectRatio>
-          <IconButton
-            aria-label="Like minimal photography"
-            size="md"
-            variant="solid"
-            color="primary"
-            sx={{
-              position: "absolute",
-              zIndex: 2,
-              borderRadius: "50%",
-              right: "1rem",
-              bottom: 0,
-              transform: "translateY(50%)",
-              backgroundColor: "hsl(294deg 45% 52%)",
-            }}
-            onClick={handleClick}
-          >
-            <Favorite sx={{ color: isFavorite ? "yellow" : "white" }} />
-          </IconButton>
         </CardOverflow>
         <Typography level="h2" sx={{ fontSize: "md", mt: 2 }}>
           {props.rec.title}
@@ -85,47 +78,155 @@ function RecipeCard(props) {
             {props.rec.time}
           </Typography>
         </Typography>
-        <Divider inset="context" />
-        <CardOverflow
-          variant="soft"
-          sx={{
-            display: "flex",
-            gap: 1.5,
-            py: 1.5,
-            px: "var(--Card-padding)",
-            backgroundColor: "lightgrey",
-          }}
-        >
-          <Typography
-            level="body3"
-            sx={{ fontWeight: "md", color: "text.secondary" }}
-          >
-            Energy
-          </Typography>
-          <Divider orientation="vertical" sx={{ backgroundColor: "white" }} />
-          <Typography
-            level="body3"
-            sx={{ fontWeight: "md", color: "text.secondary" }}
-          >
-            {props.rec.energy}
-          </Typography>
-        </CardOverflow>
       </CardActionArea>
+      <Divider inset="context" />
+      <CardOverflow
+        variant="soft"
+        sx={{
+          display: "flex",
+          gap: 1.5,
+          py: 1.5,
+          px: "var(--Card-padding)",
+          backgroundColor: "lightgrey",
+        }}
+      >
+        <Typography
+          level="body3"
+          sx={{ fontWeight: "md", color: "text.secondary" }}
+        >
+          Energy
+        </Typography>
+        <Divider orientation="vertical" sx={{ backgroundColor: "white" }} />
+        <Typography
+          level="body3"
+          sx={{ fontWeight: "md", color: "text.secondary" }}
+        >
+          {props.rec.energy}
+        </Typography>
+      </CardOverflow>
       <CardActions>
         <Modal
+          aria-labelledby="modal-title"
+          aria-describedby="modal-desc"
           open={open}
-          onClose={handleClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
+          onClose={() => setOpen(false)}
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh", // Set the height of the parent Modal component to 100vh, to make it scrollable
+          }}
         >
-          <Box sx={style}>
-            <Typography id="modal-modal-title" variant="h6" component="h2">
-              Text in a modal
+          <Sheet
+            variant="outlined"
+            sx={{
+              maxWidth: 500,
+              borderRadius: "md",
+              p: 3,
+              boxShadow: "none",
+              overflow: "auto",
+              height: "80%", //tells us what the height of the modal content
+            }}
+          >
+            <IconButton
+              sx={{
+                position: "absolute",
+                top: 8,
+                right: 8,
+                zIndex: 1,
+              }}
+            >
+              <EditOutlinedIcon />
+            </IconButton>
+            <Typography
+              component="h2"
+              id="modal-title"
+              level="h1"
+              textColor="inherit"
+              fontWeight="fontWeightBold"
+              mb={1}
+              style={{ borderBottom: "1px solid grey" }}
+            >
+              {props.rec.title}
             </Typography>
-            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+            <Typography id="modal-desc" textColor="text.primary">
+              MealType: {props.rec.mealType}
             </Typography>
-          </Box>
+            {/* my stands for margin y this makes space between each seciton
+            by wrapping a box around it */}
+            <Box my={4}>
+              <Typography
+                component="h2"
+                id="modal-title"
+                level="h3"
+                textColor="inherit"
+                fontWeight="fontWeightRegular"
+                mb={1}
+                style={{ borderBottom: "1px solid grey" }}
+              >
+                Utensils
+              </Typography>
+              <Typography id="modal-desc" textColor="text.primary">
+                <ul>
+                  {props.rec.utensils.map((utensil, index) => (
+                    <li key={index}>{utensil}</li>
+                  ))}
+                </ul>
+              </Typography>
+            </Box>
+            <Box my={4}>
+              <Typography
+                component="h2"
+                id="modal-title"
+                level="h3"
+                textColor="inherit"
+                fontWeight="fontWeightRegular"
+                mb={1}
+                style={{ borderBottom: "1px solid grey" }}
+              >
+                Ingredients
+              </Typography>
+              <Typography id="modal-desc" textColor="text.primary">
+                {Object.entries(props.rec.ingredients).map(
+                  ([title, ingredients]) => (
+                    <div key={title}>
+                      <Typography variant="h6" gutterBottom>
+                        {title}
+                      </Typography>
+                      <ul>
+                        {ingredients.map((ingredient, index) => (
+                          <li key={index}>{ingredient}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )
+                )}
+              </Typography>
+            </Box>
+            <Box my={4}>
+              <Typography
+                component="h2"
+                id="modal-title"
+                level="h3"
+                textColor="inherit"
+                fontWeight="fontWeightRegular"
+                mb={1}
+                style={{ borderBottom: "1px solid grey" }}
+              >
+                Steps
+              </Typography>
+              <Typography id="modal-desc" textColor="text.primary">
+                {props.rec.steps.map((step, index) => (
+                  <div key={index} style={{ marginBottom: "8px" }}>
+                    <span style={{ marginRight: "8px", fontWeight: "bold" }}>
+                      {index + 1}.
+                    </span>
+                    {step}
+                  </div>
+                ))}
+              </Typography>
+            </Box>
+          </Sheet>
         </Modal>
       </CardActions>
     </Card>
