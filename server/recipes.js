@@ -100,9 +100,7 @@ async function loadSamples(){
     const collection = await getRecipesCollection();
     let recipes = await collection.insertMany([
         {
-          "_id": {
-            "$oid": "6422011aabee3b0007ba19bd"
-          },
+          "_id": new mongo.ObjectId("6422011aabee3b0007ba19bd"),
           "title": "Snickerdoodles",
           "time": "20mins",
           "energy": "Moderate",
@@ -146,7 +144,7 @@ async function loadSamples(){
           "favorite": false
         },
         {
-          "_id": "64220139abee3b0007ba19be",
+          "_id": new mongo.ObjectId("64220139abee3b0007ba19be"),
           "title": "Brownies",
           "time": "45mins",
           "energy": "Moderate",
