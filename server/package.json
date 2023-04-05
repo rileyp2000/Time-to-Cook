@@ -2,11 +2,12 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "pretest": "eslint --ignore-path .gitignore .  --fix",
-    "dev": "npm install && nodemon -L server.js"
+    "dev": "npm install && nodemon -L server.js",
+    "docker": "npm install && node server.js"
   },
   "keywords": [],
   "author": "",
