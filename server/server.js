@@ -67,6 +67,22 @@ app.post('/deleteRecipe', (req, res) => {
   //res.status(200).send("please work");
 });
 
+// the purpose of this method is to have the functionality of adding new recipes to the interface
+// takes in an endpot that says /addrecipe uisng a post request
+app.post('/addRecipe', (req, res) => {
+  // pass the body into the reqest
+  console.log("/addRecipe");
+  console.log(req.body);
+  // delete req.body._id;
+  // take whole body to pass to function that has the add function (in recipes.js)
+  addRecipe(req.body)
+    .then(result => res.json(result))
+    .catch(error => {
+      console.error("Error adding recipe:", error);
+      res.status(500).json({ error: "Failed to add recipe" });
+    });
+});
+
 app.get('/devpreload', (req, res) => {
   console.log("Loading sample data...");
   loadSamples()
