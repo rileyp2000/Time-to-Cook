@@ -55,6 +55,22 @@ async function deleteRecipe(id){
     return {deleted: result.deletedCount};
 }
 
+// the purpose of this function is to add recipes to the database
+async function addRecipe(recipeData) {
+    const recipes = await getRecipesCollection();
+    //delete recipeData._id;
+    //const query =  {_id: new mongo.ObjectId(id)};
+    const result = await recipes.insertOne(recipeData);
+    if (result.insertedCount === 1) {
+        console.log("Successfully added one recipe.");
+    } 
+    else {
+        console.log("Failed to add recipe to collection.");
+    }
+    await client.close();
+    client = null;
+    return {added: result.insertedCount};
+}
 
 async function getRecipes() {
     //console.log("hello")
