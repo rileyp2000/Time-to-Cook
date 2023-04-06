@@ -42,7 +42,8 @@ app.get('/getFilters', (req, res) => {
 
 app.get('/getRecipes', (req, res) => {
   console.log("/getRecipes");
-  getRecipes()
+  console.log(req.query);
+  getRecipes(req.query)
     .then(recipes => res.json(recipes));
   //res.status(200).send("please work");
 });

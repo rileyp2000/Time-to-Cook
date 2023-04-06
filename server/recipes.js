@@ -10,9 +10,9 @@ async function getRecipesCollection() {
   //if (mongoCollection) return mongoCollection;
 
   // TODO - Eventually update this to allow the hostname to be configurable
-  if (client == null) {
-    client = new MongoClient(hostname);
-  }
+  // if (client == null) {
+     client = new MongoClient(hostname);
+  // }
   await client.connect();
   console.log("Connected to mongo");
 
@@ -56,10 +56,10 @@ async function deleteRecipe(id) {
 }
 
 
-async function getRecipes() {
+async function getRecipes(query) {
   //console.log("hello")
   const collection = await getRecipesCollection();
-  let recipes = await collection.find().toArray();
+  let recipes = await collection.find(query).toArray();
   console.log(recipes.length);
   if (recipes.length === 0)
     return {
@@ -93,6 +93,7 @@ async function getRecipes() {
       favorite: false,
       fake: 'true'
     };
+  
   return recipes;
 }
 
