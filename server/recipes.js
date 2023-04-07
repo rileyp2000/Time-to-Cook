@@ -61,7 +61,7 @@ async function addRecipe(recipeData) {
     //delete recipeData._id;
     //const query =  {_id: new mongo.ObjectId(id)};
     const result = await recipes.insertOne(recipeData);
-    if (result.insertedCount === 1) {
+    if (result.acknowledged === true) {
         console.log("Successfully added one recipe.");
     } 
     else {
@@ -69,7 +69,7 @@ async function addRecipe(recipeData) {
     }
     await client.close();
     client = null;
-    return {added: result.insertedCount};
+    return {added: result.insertedId};
 }
 
 async function getRecipes() {
@@ -217,5 +217,6 @@ module.exports = {
     getRecipes,
     toggleFavorite,
     deleteRecipe,
-    loadSamples
+    loadSamples,
+    addRecipe
 };
