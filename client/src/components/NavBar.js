@@ -146,7 +146,7 @@ function ResponsiveAppBar() {
                   <Link
                     to={page === "Home" ? "/" : `/${page.toLowerCase()}`}
                     style={{ textDecoration: "none", color: "#6B48FF" }}
-                    activeStyle={{ fontWeight: "bold" }}
+                    activestyle={{ fontWeight: "bold" }}
                   >
                     <Typography textAlign="center">{page}</Typography>
                   </Link>

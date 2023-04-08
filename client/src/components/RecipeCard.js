@@ -14,7 +14,6 @@ import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import { CardActionArea, CardActions } from "@mui/material";
 import Sheet from "@mui/joy/Sheet";
-//import RecipeContent from "./RecipeContent";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { purple } from "@mui/material/colors";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
@@ -26,230 +25,236 @@ function RecipeCard(props) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  console.log("we are in the recipeCard");
+
   const handleClick = () => {
     setIsFavorite(!isFavorite);
   };
-  //console.log(props);
+  console.log("DOES THIS EVEN WORK?");
+  console.log(props.rec);
 
   // Add a check to make sure that the `rec` prop is not undefined
   if (!props.rec) {
+    console.log("we returned null");
     return null;
   }
 
   return (
-    <Card
-      variant="outlined"
-      sx={{ width: 200, borderColor: "hsl(294deg 9% 91%)" ,padding: "16px" }}
-    >
-      <IconButton
-        aria-label="Like minimal photography"
-        size="md"
-        variant="solid"
-        color="primary"
-        sx={{
-          position: "absolute",
-          zIndex: 2,
-          borderRadius: "50%",
-          right: 8,
-          top: 8,
-          transform: "translateY(50%)",
-          backgroundColor: "hsl(294deg 45% 52%)",
-        }}
-        onClick={handleClick}
+    <div>
+      <Card
+        variant="outlined"
+        sx={{ width: 200, borderColor: "hsl(294deg 9% 91%)", padding: "16px" }}
       >
-        <Favorite sx={{ color: isFavorite ? "yellow" : "white" }} />
-      </IconButton>
-      <CardActionArea onClick={handleOpen} sx={{ width: "100%"}}>
-        <CardOverflow>
-          <AspectRatio ratio="2">
-            <img
-              src={props.rec.image.path}
-              srcSet={`${props.rec.image.path} 2x`}
-              loading="lazy"
-              alt=""
-            />
-          </AspectRatio>
-        </CardOverflow>
-        <Typography level="h2" sx={{ fontSize: "md", mt: 2 }}>
-          {props.rec.title}
-        </Typography>
-        <Typography level="body2" sx={{ mt: 0.5, mb: 2 }}>
-          <Typography startDecorator={<TimerIcon />} textColor="neutral.700">
-            {props.rec.time}
+        <IconButton
+          aria-label="Like minimal photography"
+          size="md"
+          variant="solid"
+          color="primary"
+          sx={{
+            position: "absolute",
+            zIndex: 2,
+            borderRadius: "50%",
+            right: 8,
+            top: 8,
+            transform: "translateY(50%)",
+            backgroundColor: "hsl(294deg 45% 52%)",
+          }}
+          onClick={handleClick}
+        >
+          <Favorite sx={{ color: isFavorite ? "yellow" : "white" }} />
+        </IconButton>
+        <CardActionArea onClick={handleOpen} sx={{ width: "100%" }}>
+          <CardOverflow>
+            <AspectRatio ratio="2">
+              <img
+                src={props.rec.image.path}
+                srcSet={`${props.rec.image.path} 2x`}
+                loading="lazy"
+                alt=""
+              />
+            </AspectRatio>
+          </CardOverflow>
+          <Typography level="h2" sx={{ fontSize: "md", mt: 2 }}>
+            {props.rec.title}
           </Typography>
-        </Typography>
-      </CardActionArea>
-      <Divider inset="context" />
-      <CardOverflow
-        variant="soft"
-        sx={{
-          display: "flex",
-          gap: 1.5,
-          py: 1.5,
-          px: "var(--Card-padding)",
-          backgroundColor: "lightgrey",
-        }}
-      >
-        <Typography
-          level="body3"
-          sx={{ fontWeight: "md", color: "text.secondary" }}
-        >
-          Energy
-        </Typography>
-        <Divider orientation="vertical" sx={{ backgroundColor: "white" }} />
-        <Typography
-          level="body3"
-          sx={{ fontWeight: "md", color: "text.secondary" }}
-        >
-          {props.rec.energy}
-        </Typography>
-      </CardOverflow>
-      <CardActions>
-        <Modal
-          aria-labelledby="modal-title"
-          aria-describedby="modal-desc"
-          open={open}
-          onClose={() => setOpen(false)}
+          <Typography level="body2" sx={{ mt: 0.5, mb: 2 }}>
+            <Typography startDecorator={<TimerIcon />} textColor="neutral.700">
+              {props.rec.time}
+            </Typography>
+          </Typography>
+        </CardActionArea>
+        <Divider inset="context" />
+        <CardOverflow
+          variant="soft"
           sx={{
             display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100vh", // Set the height of the parent Modal component to 100vh, to make it scrollable
+            gap: 1.5,
+            py: 1.5,
+            px: "var(--Card-padding)",
+            backgroundColor: "lightgrey",
           }}
         >
-          <Sheet
-            variant="outlined"
+          <Typography
+            level="body3"
+            sx={{ fontWeight: "md", color: "text.secondary" }}
+          >
+            Energy
+          </Typography>
+          <Divider orientation="vertical" sx={{ backgroundColor: "white" }} />
+          <Typography
+            level="body3"
+            sx={{ fontWeight: "md", color: "text.secondary" }}
+          >
+            {props.rec.energy}
+          </Typography>
+        </CardOverflow>
+        <CardActions>
+          <Modal
+            aria-labelledby="modal-title"
+            aria-describedby="modal-desc"
+            open={open}
+            onClose={() => setOpen(false)}
             sx={{
-              maxWidth: 500,
-              borderRadius: "md",
-              p: 3,
-              boxShadow: "none",
-              overflow: "auto",
-              height: "80%", //tells us what the height of the modal content
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100vh", // Set the height of the parent Modal component to 100vh, to make it scrollable
             }}
           >
-            <IconButton
+            <Sheet
+              variant="outlined"
               sx={{
-                position: "absolute",
-                top: 8,
-                right: 8,
-                zIndex: 1,
+                maxWidth: 500,
+                borderRadius: "md",
+                p: 3,
+                boxShadow: "none",
+                overflow: "auto",
+                height: "80%", //tells us what the height of the modal content
               }}
             >
-              <EditOutlinedIcon />
-            </IconButton>
-            <Typography
-              component="h2"
-              id="modal-title"
-              level="h1"
-              textColor="inherit"
-              fontWeight="fontWeightBold"
-              mb={1}
-              style={{ borderBottom: "1px solid grey" }}
-            >
-              {props.rec.title}
-            </Typography>
-            <Typography id="modal-desc" textColor="text.primary">
-              MealType: {props.rec.mealType}
-            </Typography>
-            {/* my stands for margin y this makes space between each seciton
+              <IconButton
+                sx={{
+                  position: "absolute",
+                  top: 8,
+                  right: 8,
+                  zIndex: 1,
+                }}
+              >
+                <EditOutlinedIcon />
+              </IconButton>
+              <Typography
+                component="h2"
+                id="modal-title"
+                level="h1"
+                textColor="inherit"
+                fontWeight="fontWeightBold"
+                mb={1}
+                style={{ borderBottom: "1px solid grey" }}
+              >
+                {props.rec.title}
+              </Typography>
+              <Typography id="modal-desc" textColor="text.primary">
+                MealType: {props.rec.mealType}
+              </Typography>
+              {/* my stands for margin y this makes space between each seciton
             by wrapping a box around it */}
-            <Box my={4}>
-              <Typography
-                component="h2"
-                id="modal-title"
-                level="h3"
-                textColor="inherit"
-                fontWeight="fontWeightRegular"
-                mb={1}
-                style={{ borderBottom: "1px solid grey" }}
-              >
-                Utensils
-              </Typography>
-              <Typography id="modal-desc" textColor="text.primary">
-                <ul>
-                  {props.rec.utensils.map((utensil, index) => (
-                    <li key={index}>{utensil}</li>
-                  ))}
-                </ul>
-              </Typography>
-            </Box>
-            <Box my={4}>
-              <Typography
-                component="h2"
-                id="modal-title"
-                level="h3"
-                textColor="inherit"
-                fontWeight="fontWeightRegular"
-                mb={1}
-                style={{ borderBottom: "1px solid grey" }}
-              >
-                Ingredients
-              </Typography>
-              <Typography id="modal-desc" textColor="text.primary">
-                {Object.entries(props.rec.ingredients).map(
-                  ([title, ingredients]) => (
-                    <div key={title}>
-                      <Typography variant="h6" gutterBottom>
-                        {title}
-                      </Typography>
-                      <ul>
-                        {ingredients.map((ingredient, index) => (
-                          <li key={index}>{ingredient}</li>
-                        ))}
-                      </ul>
+              <Box my={4}>
+                <Typography
+                  component="h2"
+                  id="modal-title"
+                  level="h3"
+                  textColor="inherit"
+                  fontWeight="fontWeightRegular"
+                  mb={1}
+                  style={{ borderBottom: "1px solid grey" }}
+                >
+                  Utensils
+                </Typography>
+                <Typography id="modal-desc" textColor="text.primary">
+                  <ul>
+                    {props.rec.utensils.map((utensil, index) => (
+                      <li key={index}>{utensil}</li>
+                    ))}
+                  </ul>
+                </Typography>
+              </Box>
+              <Box my={4}>
+                <Typography
+                  component="h2"
+                  id="modal-title"
+                  level="h3"
+                  textColor="inherit"
+                  fontWeight="fontWeightRegular"
+                  mb={1}
+                  style={{ borderBottom: "1px solid grey" }}
+                >
+                  Ingredients
+                </Typography>
+                <Typography id="modal-desc" textColor="text.primary">
+                  {Object.entries(props.rec.ingredients).map(
+                    ([title, ingredients]) => (
+                      <div key={title}>
+                        <Typography variant="h6" gutterBottom>
+                          {title}
+                        </Typography>
+                        <ul>
+                          {ingredients.map((ingredient, index) => (
+                            <li key={index}>{ingredient}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )
+                  )}
+                </Typography>
+              </Box>
+              <Box my={4}>
+                <Typography
+                  component="h2"
+                  id="modal-title"
+                  level="h3"
+                  textColor="inherit"
+                  fontWeight="fontWeightRegular"
+                  mb={1}
+                  style={{ borderBottom: "1px solid grey" }}
+                >
+                  Steps
+                </Typography>
+                <Typography id="modal-desc" textColor="text.primary">
+                  {props.rec.steps.map((step, index) => (
+                    <div key={index} style={{ marginBottom: "8px" }}>
+                      <span style={{ marginRight: "8px", fontWeight: "bold" }}>
+                        {index + 1}.
+                      </span>
+                      {step}
                     </div>
-                  )
-                )}
-              </Typography>
-            </Box>
-            <Box my={4}>
-              <Typography
-                component="h2"
-                id="modal-title"
-                level="h3"
-                textColor="inherit"
-                fontWeight="fontWeightRegular"
-                mb={1}
-                style={{ borderBottom: "1px solid grey" }}
-              >
-                Steps
-              </Typography>
-              <Typography id="modal-desc" textColor="text.primary">
-                {props.rec.steps.map((step, index) => (
-                  <div key={index} style={{ marginBottom: "8px" }}>
-                    <span style={{ marginRight: "8px", fontWeight: "bold" }}>
-                      {index + 1}.
-                    </span>
-                    {step}
-                  </div>
-                ))}
-              </Typography>
-            </Box>
-          </Sheet>
-        </Modal>
-      </CardActions>
-    </Card>
+                  ))}
+                </Typography>
+              </Box>
+            </Sheet>
+          </Modal>
+        </CardActions>
+      </Card>
+    </div>
   );
 }
 
 RecipeCard.propTypes = {
   rec: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     time: PropTypes.string.isRequired,
     energy: PropTypes.string.isRequired,
     mealType: PropTypes.string.isRequired,
     utensils: PropTypes.arrayOf(PropTypes.string).isRequired,
-    ingredients: PropTypes.shape({
-      Snickerdoodles: PropTypes.arrayOf(PropTypes.string).isRequired,
-      "Cinnamon Sugar Coating:": PropTypes.arrayOf(PropTypes.string).isRequired,
-    }).isRequired,
+    ingredients: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.string))
+      .isRequired,
     steps: PropTypes.arrayOf(PropTypes.string).isRequired,
     image: PropTypes.shape({
       mime: PropTypes.string.isRequired,
       path: PropTypes.string.isRequired,
     }).isRequired,
     filters: PropTypes.arrayOf(PropTypes.string).isRequired,
+    favorite: PropTypes.bool.isRequired,
   }).isRequired,
 };
 
