@@ -72,6 +72,24 @@ async function addRecipe(recipeData) {
     return {added: result.insertedId};
 }
 
+async function editRecipe(recipeId, updatedRecipeData) {
+    const recipes = await getRecipesCollection();
+
+    // Update the recipe by ID with the updated recipe data
+    const result = await recipes.updateOne({ _id: new mongo.ObjectId(recipeId) }, { $set: updatedRecipeData });
+
+    // if result is acknowledged by the server
+    if (result.acknowledged === true) {
+        console.log("Recipe ${recipeId} updated");
+    } 
+    else {
+        console.log("Recipe ${recipeId} not updated");
+    }
+    await client.close();
+    client = null;
+    return {updated: result.modifiedCount};
+}
+
 async function getRecipes() {
     //console.log("hello")
     const collection = await getRecipesCollection();
@@ -218,5 +236,6 @@ module.exports = {
     toggleFavorite,
     deleteRecipe,
     loadSamples,
-    addRecipe
+    addRecipe,
+    editRecipe
 };
