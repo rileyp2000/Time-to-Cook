@@ -44,57 +44,6 @@ app.get("/api", (req, res) => {
   res.json({ users: ["userOne", "userTwo", "userThree"] });
 });
 
-app.get("/getAll", (req, res) => {
-  res.json({
-    rec: [
-      {
-        title: "Brownies",
-        time: "45mins",
-        energy: "Moderate",
-        mealType: "Sweets",
-        utensils: [
-          "Measuring spoons",
-          "1 bowl",
-          "stove",
-          "8x8 pan",
-          "spatula",
-          "parchment paper",
-          "whisk",
-          "some patience",
-        ],
-        ingredients: {
-          Brownies: [
-            "8oz semi sweet chocolate, chopped",
-            "12tbsp melted butter",
-            "1 ¼ cup sugar",
-            "2 eggs",
-            "2tsp vanilla extract",
-            "¾ cup all purpose flour",
-            "¼ cup cocoa powder",
-            "1tsp salt",
-          ],
-        },
-        steps: [
-          "Preheat Oven to 350℉",
-          "Line an 8x8 pan with parchment paper and grease",
-          "Melt 4oz of the chopped chocolate in the microwave",
-          "In a large bowl, cream the butter and sugar together with a mixer, then beat in the eggs and vanilla fro 2 minutes until the mixture becomes light and fluffy",
-          "Whisk in the melted chocolate",
-          "Fold in the remaining 4oz of chopped chocolate and transfer batter to the prepared 8x8 pan",
-          "Bake for 20-25 minutes- check using the toothpick method",
-          "Eat and burn your mouth because you forgot to let them cool",
-        ],
-        image: {
-          mime: "image/jpeg",
-          path: "/some/path/to/file",
-        },
-        filters: ["No Protein"],
-        favorite: false,
-      },
-    ],
-  });
-});
-
 app.get("/filters", (req, res) => {
   res.status(200).json({
     filters: [
