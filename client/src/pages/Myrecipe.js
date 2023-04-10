@@ -6,7 +6,7 @@ function MyRecipe() {
   const [recipes, setRecipes] = useState([]);
 
   useEffect(() => {
-    fetch("/getAll")
+    fetch("/getRecipes")
       .then((response) => response.json())
       .then((data) => {
         setRecipes(data);
@@ -27,8 +27,8 @@ function MyRecipe() {
     // </div>
     <div>
       <h1>MyRecipe</h1>
-      {typeof recipes.rec !== "undefined" ? (
-        recipes.rec.map((recipe) => <RecipeCard key={2} rec={recipe} />)
+      {recipes.length > 0 ? (
+        recipes.map((recipe) => <RecipeCard key={recipe._id} rec={recipe} />)
       ) : (
         <p>Loading...</p>
       )}
