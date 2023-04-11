@@ -17,19 +17,45 @@ import Sheet from "@mui/joy/Sheet";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { purple } from "@mui/material/colors";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 function RecipeCard(props) {
-  const [isFavorite, setIsFavorite] = React.useState(false);
   //used to handle modal being opened
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   console.log("we are in the recipeCard");
+  //setting based on status of recipecard:
+  const [isFavorite, setIsFavorite] = React.useState(props.rec.favorite);
 
   const handleClick = () => {
     setIsFavorite(!isFavorite);
+    fetch("/toggleFavorite", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        _id: props.rec._id,
+        value: !props.rec.favorite,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
+
+
+  // const handleClick = () => {
+  //   setIsFavorite(!isFavorite);
+  // };
+
   console.log("DOES THIS EVEN WORK?");
   console.log(props.rec);
 
@@ -57,11 +83,19 @@ function RecipeCard(props) {
             right: 8,
             top: 8,
             transform: "translateY(50%)",
-            backgroundColor: "hsl(294deg 45% 52%)",
+            backgroundColor: "transparent",
+            "&:hover": {
+              backgroundColor: "transparent",
+            },
           }}
           onClick={handleClick}
         >
-          <Favorite sx={{ color: isFavorite ? "yellow" : "white" }} />
+          <FavoriteIcon
+            sx={{
+              color: isFavorite ? "purple" : "white",
+              fontSize: "40px",
+            }}
+          />
         </IconButton>
         <CardActionArea onClick={handleOpen} sx={{ width: "100%" }}>
           <CardOverflow>

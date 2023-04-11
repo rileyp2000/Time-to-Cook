@@ -112,6 +112,23 @@ async function getRecipes() {
     return recipes;
 }
 
+//function to return only the recipes that are favorited
+async function getFavorites() {
+  //console.log("hello")
+  const collection = await getRecipesCollection();
+  let recipes = await collection.find().toArray();
+  let result = []
+  console.log(recipes.length);
+  for (let i = 0; i < recipes.length; i++)
+  {
+    if (recipes[i].favorite == true)
+    {
+      result.push(recipes[i]);
+    }
+  }
+  return result;
+}
+
 async function loadSamples(){
     const collection = await getRecipesCollection();
     let recipes = await collection.insertMany([
@@ -218,5 +235,6 @@ module.exports = {
     toggleFavorite,
     deleteRecipe,
     loadSamples,
-    addRecipe
+    addRecipe,
+    getFavorites
 };

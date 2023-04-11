@@ -7,6 +7,7 @@ const {
   deleteRecipe,
   loadSamples,
   addRecipe,
+  getFavorites,
 } = require("./recipes.js");
 //const cors = require("cors");
 //require("dotenv").config({ path: "./config.env" });
@@ -58,6 +59,11 @@ app.get("/getRecipes", (req, res) => {
   console.log("/getRecipes");
   getRecipes().then((recipes) => res.json(recipes));
   //res.status(200).send("please work");
+});
+
+app.get("/getFavorites", (req, res) => {
+  console.log("/getFavorites");
+  getFavorites().then((recipes) => res.json(recipes));
 });
 
 app.post("/toggleFavorite", (req, res) => {
