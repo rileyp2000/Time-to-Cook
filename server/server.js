@@ -61,11 +61,6 @@ app.get("/getRecipes", (req, res) => {
   //res.status(200).send("please work");
 });
 
-app.get("/getFavorites", (req, res) => {
-  console.log("/getFavorites");
-  getFavorites().then((recipes) => res.json(recipes));
-});
-
 app.post("/toggleFavorite", (req, res) => {
   console.log("/toggleFavorite");
   console.log(req.body);

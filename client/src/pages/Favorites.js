@@ -6,7 +6,7 @@ function Favorite() {
   const [recipes, setRecipes] = useState([]);
 
   useEffect(() => {
-    fetch("/getFavorites")
+    fetch("/getRecipes?favorite=true")
       .then((response) => response.json())
       .then((data) => {
         setRecipes(data);

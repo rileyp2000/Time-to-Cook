@@ -18,12 +18,48 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { purple } from "@mui/material/colors";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 function RecipeCard(props) {
   //used to handle modal being opened
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [openCard, setOpenCard] = React.useState(false);
+  const handleOpenCard = () => setOpenCard(true);
+  const handleClose = () => setOpenCard(false);
+
+  const [deleteModalOpen, setDeleteModalOpen] = React.useState(false);
+
+  const handleDelete = () => {
+    // Open the delete confirmation modal
+    setDeleteModalOpen(true);
+  };
+
+  const handleDeleteConfirm = () => {
+    fetch("/deleteRecipe", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        _id: props.rec._id,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    // Close the delete confirmation modal
+    setDeleteModalOpen(false);
+  };
+
+  const handleDeleteCancel = () => {
+    // Close the delete confirmation modal
+    setDeleteModalOpen(false);
+  };
 
   console.log("we are in the recipeCard");
   //setting based on status of recipecard:
@@ -50,7 +86,6 @@ function RecipeCard(props) {
         console.log(error);
       });
   };
-
 
   // const handleClick = () => {
   //   setIsFavorite(!isFavorite);
@@ -97,7 +132,7 @@ function RecipeCard(props) {
             }}
           />
         </IconButton>
-        <CardActionArea onClick={handleOpen} sx={{ width: "100%" }}>
+        <CardActionArea onClick={handleOpenCard} sx={{ width: "100%" }}>
           <CardOverflow>
             <AspectRatio ratio="2">
               <img
@@ -146,8 +181,8 @@ function RecipeCard(props) {
           <Modal
             aria-labelledby="modal-title"
             aria-describedby="modal-desc"
-            open={open}
-            onClose={() => setOpen(false)}
+            open={openCard}
+            onClose={() => setOpenCard(false)}
             sx={{
               display: "flex",
               justifyContent: "center",
@@ -166,16 +201,32 @@ function RecipeCard(props) {
                 height: "80%", //tells us what the height of the modal content
               }}
             >
-              <IconButton
+              <Button
+                variant="outlined"
                 sx={{
                   position: "absolute",
                   top: 8,
-                  right: 8,
+                  right: 15,
                   zIndex: 1,
                 }}
+                endIcon={<EditOutlinedIcon />}
               >
-                <EditOutlinedIcon />
-              </IconButton>
+                Edit
+              </Button>
+              <Button
+                variant="outlined"
+                color="error"
+                sx={{
+                  position: "absolute",
+                  top: 8,
+                  right: 115,
+                  zIndex: 1,
+                }}
+                onClick={handleDelete}
+                startIcon={<DeleteIcon />}
+              >
+                Delete
+              </Button>
               <Typography
                 component="h2"
                 id="modal-title"
@@ -265,6 +316,54 @@ function RecipeCard(props) {
                 </Typography>
               </Box>
             </Sheet>
+          </Modal>
+          <Modal
+            open={deleteModalOpen}
+            onClose={handleDeleteCancel}
+            aria-labelledby="delete-modal-title"
+            aria-describedby="delete-modal-description"
+          >
+            <Box
+              sx={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                width: 400,
+                backgroundColor: "white",
+                p: 2,
+                borderRadius: 4,
+                alignItems: "center",
+              }}
+            >
+              <h2 id="delete-modal-title" style={{ textAlign: "center" }}>
+                Are you sure you want to delete?
+              </h2>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center", // Add justifyContent to center the buttons
+                  mt: 2,
+                }}
+              >
+                <Button
+                  variant="outlined"
+                  color="error"
+                  onClick={handleDeleteConfirm}
+                  sx={{ mr: 2 }}
+                  size="large"
+                >
+                  Yes
+                </Button>
+                <Button
+                  variant="outlined"
+                  onClick={handleDeleteCancel}
+                  size="large"
+                >
+                  No
+                </Button>
+              </Box>
+            </Box>
           </Modal>
         </CardActions>
       </Card>
