@@ -6,17 +6,26 @@ function MyRecipe() {
   const [recipes, setRecipes] = useState([]);
 
   useEffect(() => {
-    fetch("/getrecipes")
+    fetch("/getRecipes")
       .then((response) => response.json())
       .then((data) => {
         setRecipes(data);
-      });
+      })
+      .catch((error) => console.error(error));
   }, []);
 
   console.log(recipes);
 
   return (
+    // <div>
+    //   {typeof recipes.users === "undefined" ? (
+    //     <p>Loading...</p>
+    //   ) : (
+    //     recipes.users.map((user, i) => <p key={i}>{user}</p>)
+    //   )}
+    // </div>
     <div>
+      <h1>MyRecipe</h1>
       {recipes.length > 0 ? (
         recipes.map((recipe) => <RecipeCard key={recipe._id} rec={recipe} />)
       ) : (

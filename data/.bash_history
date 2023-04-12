@@ -1,3 +1,0 @@
-mongosh
-mongosh 
-exit

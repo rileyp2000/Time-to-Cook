@@ -12,7 +12,7 @@ function SearchResults() {
       mealType: "Sweets",
       utensils: ["Measuring spoons", "2 bowls", "stove", "baking sheet"],
       ingredients: {
-        "Snickerdoodles": [
+        Snickerdoodles: [
           "2 ¾ cups all purpose flour",
           "2tsp cream of tartar",
           "½ tsp salt",
@@ -33,9 +33,10 @@ function SearchResults() {
       ],
       image: {
         mime: "image/jpeg",
-        path: "https://lilluna.com/wp-content/uploads/2022/07/snickerdoodles-final3-resize-14.jpg",
+        path: "/some/path/to/file",
       },
       filters: ["No Protein"],
+      favorite: false,
     },
     {
       title: "Brownies",
@@ -107,8 +108,8 @@ function SearchResults() {
   );
 }
 
-SearchResults.propTypes = {
-  query: PropTypes.string.isRequired,
-};
+// SearchResults.propTypes = {
+//   query: PropTypes.string.isRequired,
+// };
 
 export default SearchResults;

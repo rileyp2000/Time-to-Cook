@@ -1,7 +1,8 @@
 const express = require("express");
 const app = express();
-const { MongoClient } = require("mongodb");
-const { getRecipes } = require("./recipes.js");
+const { MongoClient } = require('mongodb');
+const { getRecipes, toggleFavorite, deleteRecipe, loadSamples, getFilters, addRecipe } = require("./recipes.js");
+
 //const cors = require("cors");
 //require("dotenv").config({ path: "./config.env" });
 const port = 5000;
@@ -35,33 +36,62 @@ app.get("/test", (req, res) => {
   res.json({"users": ["userOne", "userTwo", "userThree"]})
 })
 
-app.get("/filters", (req, res) => {
-  res.status(200).json({
-    filters: [
-      "time",
-      { energy: ["Easy", "Moderate", "Difficult"] },
-      { mealType: ["Breakfast", "Lunch", "Dinner", "Sweets"] },
-    ],
-  });
+app.get('/getFilters', (req, res) => {
+  console.log("/getFilters");
+  getFilters()
+    .then(filters => res.json(filters));
 });
 
-app.get("/dbtest", (req, res) => {
-  getRecipes().then((recipes) => res.json(recipes));
+app.get("/getRecipes", (req, res) => {
+  console.log("/getRecipes");
+  console.log(req.query);
+  getRecipes(req.query)
+    .then(recipes => res.json(recipes));
   //res.status(200).send("please work");
 });
 
-app.get("/getrecipes", (req, res) => {
-  getRecipes()
-    .then((recipes) => res.json(recipes))
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send("Internal server error");
+app.post("/toggleFavorite", (req, res) => {
+  console.log("/toggleFavorite");
+  console.log(req.body);
+  toggleFavorite(req.body._id, req.body.value).then((result) =>
+    res.send(result)
+  );
+  //res.status(200).send("please work");
+});
+
+app.post("/deleteRecipe", (req, res) => {
+  console.log("/deleteRecipe");
+  console.log(req.body);
+  deleteRecipe(req.body._id).then((result) => res.json(result));
+  //res.status(200).send("please work");
+});
+
+// the purpose of this method is to have the functionality of adding new recipes to the interface
+// takes in an endpot that says /addrecipe uisng a post request
+app.post("/addRecipe", (req, res) => {
+  // pass the body into the reqest
+  console.log("/addRecipe");
+  console.log(req.body);
+  // delete req.body._id;
+  // take whole body to pass to function that has the add function (in recipes.js)
+  addRecipe(req.body)
+    .then((result) => res.json(result))
+    .catch((error) => {
+      console.error("Error adding recipe:", error);
+      res.status(500).json({ error: "Failed to add recipe" });
     });
+});
+
+app.get("/devpreload", (req, res) => {
+  console.log("Loading sample data...");
+  loadSamples().then((result) => res.json(result));
+  //res.status(200).send("please work");
 });
 
 // app.get('/getrecipes', (req, res) => {
 //   res.status(200).json([{
 //     title: 'Snickerdoodles',
+//     _id: '123123131123123',
 //     time: '20mins',
 //     energy: 'Moderate',
 //     mealType: 'Sweets',
@@ -87,15 +117,12 @@ app.get("/getrecipes", (req, res) => {
 //       'Bake for 8-10 minutes'
 //     ],
 //     image: { mime: 'image/jpeg', path: '/some/path/to/file' },
-//     filters: ['No Protein']
+//     filters: ['No Protein'],
+//     favorite: false
 //   }]);
 // });
 
 app.get("/", (req, res) => {
-  console.log("hello there");
-  res.status(200).json({ message: "Welcome to the backend!" });
-});
-
-app.listen(port, () => {
-  console.log(`Server is running on port: ${port}`);
+  //console.log("hello there");
+  res.status(200).send("Welcome to the backend!");
 });
