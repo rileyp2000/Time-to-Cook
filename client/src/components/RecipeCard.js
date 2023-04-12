@@ -61,7 +61,6 @@ function RecipeCard(props) {
     setDeleteModalOpen(false);
   };
 
-  console.log("we are in the recipeCard");
   //setting based on status of recipecard:
   const [isFavorite, setIsFavorite] = React.useState(props.rec.favorite);
 
@@ -86,13 +85,6 @@ function RecipeCard(props) {
         console.log(error);
       });
   };
-
-  // const handleClick = () => {
-  //   setIsFavorite(!isFavorite);
-  // };
-
-  console.log("DOES THIS EVEN WORK?");
-  console.log(props.rec);
 
   // Add a check to make sure that the `rec` prop is not undefined
   if (!props.rec) {

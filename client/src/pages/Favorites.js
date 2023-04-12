@@ -14,12 +14,10 @@ function Favorite() {
       .catch((error) => console.error(error));
   }, []);
 
-  console.log(typeof recipes);
-  console.log(recipes);
 
   return (
     <div>
-      <h1>MyRecipe</h1>
+      <h1>Favorites</h1>
       {recipes.length > 0 ? (
         recipes.map((recipe) => <RecipeCard key={recipe._id} rec={recipe} />)
       ) : (
