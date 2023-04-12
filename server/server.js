@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const { MongoClient } = require('mongodb');
-const { getRecipes, toggleFavorite, deleteRecipe, loadSamples, addRecipe, editRecipe } = require("./recipes.js");
+const { getRecipes, toggleFavorite, deleteRecipe, loadSamples, getFilters, addRecipe, editRecipe } = require("./recipes.js");
 //const cors = require("cors");
 //require("dotenv").config({ path: "./config.env" });
 const port = 5000;
@@ -34,19 +34,16 @@ app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
 });
 
-app.get('/filters', (req, res) => {
-  res.status(200).json({
-    filters: [
-      "time",
-      { "energy": ["Easy", "Moderate", "Difficult"] },
-      { "mealType": ["Breakfast", "Lunch", "Dinner", "Sweets"] }
-    ]
-  });
+app.get('/getFilters', (req, res) => {
+  console.log("/getFilters");
+  getFilters()
+    .then(filters => res.json(filters));
 });
 
 app.get('/getRecipes', (req, res) => {
   console.log("/getRecipes");
-  getRecipes()
+  console.log(req.query);
+  getRecipes(req.query)
     .then(recipes => res.json(recipes));
   //res.status(200).send("please work");
 });
