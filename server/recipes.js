@@ -1,5 +1,5 @@
 const { MongoClient } = require("mongodb");
-var mongo = require('mongodb');
+var mongo = require("mongodb");
 let mongoCollection = null;
 
 const hostname = "mongodb://mongo:27017";
@@ -57,19 +57,18 @@ async function deleteRecipe(id) {
 
 // the purpose of this function is to add recipes to the database
 async function addRecipe(recipeData) {
-    const recipes = await getRecipesCollection();
-    //delete recipeData._id;
-    //const query =  {_id: new mongo.ObjectId(id)};
-    const result = await recipes.insertOne(recipeData);
-    if (result.acknowledged === true) {
-        console.log("Successfully added one recipe.");
-    } 
-    else {
-        console.log("Failed to add recipe to collection.");
-    }
-    await client.close();
-    client = null;
-    return {added: result.insertedId};
+  const recipes = await getRecipesCollection();
+  //delete recipeData._id;
+  //const query =  {_id: new mongo.ObjectId(id)};
+  const result = await recipes.insertOne(recipeData);
+  if (result.acknowledged === true) {
+    console.log("Successfully added one recipe.");
+  } else {
+    console.log("Failed to add recipe to collection.");
+  }
+  await client.close();
+  client = null;
+  return { added: result.insertedId };
 }
 
 
@@ -94,6 +93,9 @@ async function editRecipe(recipeId, updatedRecipeData) {
 async function getRecipes(query) {
   //console.log("hello")
   const collection = await getRecipesCollection();
+  if('favorite' in query === true){
+    query['favorite'] = query['favorite'] === 'true' ? true : false;
+  }
   let recipes = await collection.find(query).toArray();
   console.log(recipes.length);
   if (recipes.length === 0)
@@ -262,7 +264,6 @@ async function getFilters() {
     protein: prot
   };
 }
-
 
 module.exports = {
     getRecipes,

@@ -5,7 +5,7 @@ const { getRecipes, toggleFavorite, deleteRecipe, loadSamples, getFilters, addRe
 //const cors = require("cors");
 //require("dotenv").config({ path: "./config.env" });
 const port = 5000;
-const url = process.env.CONN_STR
+const url = process.env.CONN_STR;
 //app.use(cors());
 app.use(express.json());
 //app.use(require("./routes/record"));
@@ -18,7 +18,7 @@ app.use(express.json());
 //   await client.connect();
 //   const db = client.db("recipe-info");
 //   const coll = db.collection("reicpes");
-  
+
 //   const result = await coll.insertOne(ex);
 //     // display the results of your operation
 //     console.log(result.insertedIds);
@@ -40,7 +40,7 @@ app.get('/getFilters', (req, res) => {
     .then(filters => res.json(filters));
 });
 
-app.get('/getRecipes', (req, res) => {
+app.get("/getRecipes", (req, res) => {
   console.log("/getRecipes");
   console.log(req.query);
   getRecipes(req.query)
@@ -48,33 +48,35 @@ app.get('/getRecipes', (req, res) => {
   //res.status(200).send("please work");
 });
 
-app.post('/toggleFavorite', (req, res) => {
+app.post("/toggleFavorite", (req, res) => {
   console.log("/toggleFavorite");
   console.log(req.body);
-  toggleFavorite(req.body._id, req.body.value)
-    .then(result => res.send(result));
+  toggleFavorite(req.body._id, req.body.value).then((result) =>
+    res.send(result)
+  );
   //res.status(200).send("please work");
 });
 
-app.post('/deleteRecipe', (req, res) => {
+app.post("/deleteRecipe", (req, res) => {
   console.log("/deleteRecipe");
   console.log(req.body);
-  deleteRecipe(req.body._id)
-    .then(result => res.json(result));
+  deleteRecipe(req.body._id).then((result) => res.json(result));
   //res.status(200).send("please work");
 });
 
 // the purpose of this method is to have the functionality of adding new recipes to the interface
 // takes in an endpot that says /addRecipe uisng a post request
 app.post('/addRecipe', (req, res) => {
+// takes in an endpot that says /addrecipe uisng a post request
+app.post("/addRecipe", (req, res) => {
   // pass the body into the reqest
   console.log("/addRecipe");
   console.log(req.body);
   // delete req.body._id;
   // take whole body to pass to function that has the add function (in recipes.js)
   addRecipe(req.body)
-    .then(result => res.json(result))
-    .catch(error => {
+    .then((result) => res.json(result))
+    .catch((error) => {
       console.error("Error adding recipe:", error);
       res.status(500).json({ error: "Failed to add recipe" });
     });
@@ -103,12 +105,11 @@ app.post('/editRecipe', (req, res) => {
 });
 
 app.get('/devpreload', (req, res) => {
+app.get("/devpreload", (req, res) => {
   console.log("Loading sample data...");
-  loadSamples()
-    .then(result => res.json(result));
+  loadSamples().then((result) => res.json(result));
   //res.status(200).send("please work");
 });
-
 
 // app.get('/getrecipes', (req, res) => {
 //   res.status(200).json([{
@@ -144,9 +145,7 @@ app.get('/devpreload', (req, res) => {
 //   }]);
 // });
 
-
-
-app.get('/', (req, res) => {
+app.get("/", (req, res) => {
   //console.log("hello there");
   res.status(200).send("Welcome to the backend!");
-})
+});
