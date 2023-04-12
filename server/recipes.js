@@ -74,6 +74,9 @@ async function addRecipe(recipeData) {
 async function getRecipes(query) {
   //console.log("hello")
   const collection = await getRecipesCollection();
+  if('favorite' in query === true){
+    query['favorite'] = query['favorite'] === 'true' ? true : false;
+  }
   let recipes = await collection.find(query).toArray();
   console.log(recipes.length);
   if (recipes.length === 0)
