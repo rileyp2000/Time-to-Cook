@@ -66,8 +66,6 @@ app.post("/deleteRecipe", (req, res) => {
 
 // the purpose of this method is to have the functionality of adding new recipes to the interface
 // takes in an endpot that says /addRecipe uisng a post request
-app.post('/addRecipe', (req, res) => {
-// takes in an endpot that says /addrecipe uisng a post request
 app.post("/addRecipe", (req, res) => {
   // pass the body into the reqest
   console.log("/addRecipe");
@@ -104,7 +102,6 @@ app.post('/editRecipe', (req, res) => {
     });
 });
 
-app.get('/devpreload', (req, res) => {
 app.get("/devpreload", (req, res) => {
   console.log("Loading sample data...");
   loadSamples().then((result) => res.json(result));
