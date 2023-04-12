@@ -143,7 +143,7 @@ function RecipeCard(props) {
               />
             </AspectRatio>
           </CardOverflow>
-          <Typography level="h2" sx={{ fontSize: "md", mt: 2 }}>
+          <Typography level="h2" sx={{ fontSize: "md", mt: 2, }}>
             {props.rec.title}
           </Typography>
           <Typography level="body2" sx={{ mt: 0.5, mb: 2 }}>
@@ -234,7 +234,8 @@ function RecipeCard(props) {
                 textColor="inherit"
                 fontWeight="fontWeightBold"
                 mb={1}
-                style={{ borderBottom: "1px solid grey" }}
+                mt={3}
+                style={{ borderBottom: "1px solid grey", mt: 2}}
               >
                 {props.rec.title}
               </Typography>
@@ -299,7 +300,7 @@ function RecipeCard(props) {
                   level="h3"
                   textColor="inherit"
                   fontWeight="fontWeightRegular"
-                  mb={1}
+                  mb={2}
                   style={{ borderBottom: "1px solid grey" }}
                 >
                   Steps

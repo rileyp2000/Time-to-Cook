@@ -204,5 +204,4 @@ module.exports = {
   deleteRecipe,
   loadSamples,
   addRecipe,
-  getFavorites,
 };
