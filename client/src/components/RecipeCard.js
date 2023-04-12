@@ -74,7 +74,7 @@ function RecipeCard(props) {
       },
       body: JSON.stringify({
         _id: props.rec._id,
-        value: !props.rec.favorite,
+        value: !isFavorite,
       }),
     })
       .then((response) => response.json())
