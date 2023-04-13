@@ -4,6 +4,9 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
+
 import {
   FormControl,
   FormGroup,
@@ -24,6 +27,7 @@ function AddForm() {
 
   const handleTitle = (event) => {
     setTitle(event.target.value);
+    setFormErrors({ ...formErrors, title: false });
   };
 
   //time has to be a number?
@@ -37,6 +41,12 @@ function AddForm() {
 
   const handleEnergy = (event) => {
     setEnergy(event.target.value);
+  };
+
+  const [protein, setProtein] = React.useState("");
+
+  const handleProtein = (event) => {
+    setProtein(event.target.value);
   };
 
   const [meal, setMeal] = React.useState("");
@@ -127,6 +137,24 @@ function AddForm() {
     setSteps(newSteps);
   };
 
+  const [openNotif, setOpenNotif] = React.useState(false);
+
+  const handleCloseSnackbar = () => {
+    setOpenNotif(false); // Close Snackbar
+  };
+
+  const [formErrors, setFormErrors] = React.useState({
+    unit: false,
+    title: false,
+    time: false,
+    energy: false,
+    protein: false,
+    meal: false,
+    utensils: [],
+    ingredients: [],
+    steps: [],
+  });
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -136,17 +164,16 @@ function AddForm() {
       energy: energy,
       mealType: meal,
       utensils: utensils,
-      ingredients: ingredients.map((ingredient) => ({
-        [ingredient.title]: ingredient.items,
+      ingredients: ingredients.map((ingredient, index) => ({
+        [index !== 0 ? ingredient.title : title]: ingredient.items,
       })),
       steps: steps,
       image: { mime: "image/jpeg", path: "/some/path/to/file" },
-      filters: ["No Protein"],
-      fake: "true",
+      filters: protein,
+      favorite: false,
     };
     console.log(recipe);
-    // Send recipe object to the backend using fetch or Axios
-    console.log(ingredients);
+    setOpenNotif(true);
   };
 
   return (
@@ -172,6 +199,7 @@ function AddForm() {
           <FormControl style={{ marginBottom: "1rem", marginRight: "2rem" }}>
             <InputLabel>Title</InputLabel>
             <Input onChange={handleTitle} required />
+            <span>Hello</span>
           </FormControl>
           <FormControl style={{ flex: "1", marginRight: "2rem" }}>
             <InputLabel>Time</InputLabel>
@@ -195,6 +223,20 @@ function AddForm() {
           <FormControl style={{ flex: "1", marginRight: "1rem" }}>
             <InputLabel>Meal Type</InputLabel>
             <Input onChange={handleMeal} required />
+          </FormControl>
+          <FormControl style={{ flex: "0 0 20%", marginRight: 20 }}>
+            <InputLabel>Protein</InputLabel>
+            <Select
+              value={protein}
+              label="Protein"
+              onChange={handleProtein}
+              required
+            >
+              <MenuItem value={"Chicken"}>Chicken</MenuItem>
+              <MenuItem value={"Beef"}>Beef</MenuItem>
+              <MenuItem value={"Pork"}>Pork</MenuItem>
+              <MenuItem value={"No Protein"}>No Protein</MenuItem>
+            </Select>
           </FormControl>
           <FormControl style={{ flex: "0 0 20%" }}>
             <InputLabel>Energy</InputLabel>
@@ -298,17 +340,18 @@ function AddForm() {
         <FormGroup sx={{ marginTop: "1rem" }}>
           {ingredients.map((group, groupIndex) => (
             <Box key={groupIndex} sx={{ mb: 2 }}>
-              <FormControl fullWidth>
-                <InputLabel>Ingredient Title</InputLabel>
-                <Input
-                  value={group.title}
-                  onChange={(event) =>
-                    handleIngredientTitleChange(event, groupIndex)
-                  }
-                  Ï
-                  sx={{ marginBottom: "1rem", width: "80%" }}
-                />
-              </FormControl>
+              {groupIndex !== 0 && (
+                <FormControl fullWidth>
+                  <InputLabel>Ingredient Title</InputLabel>
+                  <Input
+                    value={group.title}
+                    onChange={(event) =>
+                      handleIngredientTitleChange(event, groupIndex)
+                    }
+                    sx={{ marginBottom: "1rem", width: "80%" }}
+                  />
+                </FormControl>
+              )}
               {group.items.map((item, itemIndex) => (
                 <FormControl
                   key={itemIndex}
@@ -373,7 +416,7 @@ function AddForm() {
             <Button
               variant="outlined"
               onClick={handleAddIngredientGroup}
-              style={{ marginBottom: 24}}
+              style={{ marginBottom: 24 }}
             >
               Add Group
             </Button>
@@ -394,6 +437,20 @@ function AddForm() {
           >
             Submit
           </Button>
+          <Snackbar
+            open={openNotif}
+            autoHideDuration={3000}
+            onClose={handleCloseSnackbar}
+          >
+            <MuiAlert
+              elevation={6}
+              variant="filled"
+              onClose={handleCloseSnackbar}
+              severity="success"
+            >
+              Recipe Added
+            </MuiAlert>
+          </Snackbar>
         </Box>
       </FormGroup>
     </div>
