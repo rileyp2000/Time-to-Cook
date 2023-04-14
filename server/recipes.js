@@ -79,10 +79,9 @@ async function editRecipe(recipeId, updatedRecipeData) {
     
     // Update the recipe by ID with the updated recipe data
     const result = await recipes.updateOne({ _id: new mongo.ObjectId(recipeId) }, { $set: updatedRecipeData });
-    
 
     // if result is acknowledged by the server
-    if (result.ok === 1) {
+    if (result.acknowledged === true) {
         console.log("Recipe ${recipeId} updated");
     } 
     else {
