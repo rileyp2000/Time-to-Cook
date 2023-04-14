@@ -6,11 +6,13 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
+import UploadImage from "./UploadImage";
 
 import {
   FormControl,
   FormGroup,
   InputLabel,
+  FormHelperText,
   Input,
   makeStyles,
   autocompleteClasses,
@@ -137,10 +139,16 @@ function AddForm() {
     setSteps(newSteps);
   };
 
-  const [openNotif, setOpenNotif] = React.useState(false);
+  const [openNotifSucess, setopenNotifSucess] = React.useState(false);
 
-  const handleCloseSnackbar = () => {
-    setOpenNotif(false); // Close Snackbar
+  const handleCloseSucess = () => {
+    setopenNotifSucess(false); // Close Snackbar
+  };
+
+  const [openNotifFail, setopenNotifFail] = React.useState(false);
+
+  const handleCloseFail = () => {
+    setopenNotifFail(false); // Close Snackbar
   };
 
   const [formErrors, setFormErrors] = React.useState({
@@ -155,8 +163,190 @@ function AddForm() {
     steps: [],
   });
 
+  const [image, setImage] = React.useState({});
+  const handleImageUpload = (image) => {
+    console.log("Image path", image);
+    setImage(image);
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    let isFormValid = true;
+
+    // Check for title
+    if (!title) {
+      setFormErrors((prevFormErrors) => ({
+        ...prevFormErrors,
+        title: true,
+      }));
+      isFormValid = false;
+    } else {
+      setFormErrors((prevFormErrors) => ({
+        ...prevFormErrors,
+        title: false,
+      }));
+      isFormValid = true;
+    }
+
+    // Check for time
+    if (!time) {
+      setFormErrors((prevFormErrors) => ({
+        ...prevFormErrors,
+        time: true,
+      }));
+      isFormValid = false;
+    } else {
+      setFormErrors((prevFormErrors) => ({
+        ...prevFormErrors,
+        time: false,
+      }));
+      isFormValid = true;
+    }
+
+    // Check for unit
+    if (!unit) {
+      setFormErrors((prevFormErrors) => ({
+        ...prevFormErrors,
+        unit: true,
+      }));
+      isFormValid = false;
+    } else {
+      setFormErrors((prevFormErrors) => ({
+        ...prevFormErrors,
+        unit: false,
+      }));
+      isFormValid = true;
+    }
+
+    // Check for energy
+    if (!energy) {
+      setFormErrors((prevFormErrors) => ({
+        ...prevFormErrors,
+        energy: true,
+      }));
+      isFormValid = false;
+    } else {
+      setFormErrors((prevFormErrors) => ({
+        ...prevFormErrors,
+        energy: false,
+      }));
+      isFormValid = true;
+    }
+
+    // Check for meal
+    if (!meal) {
+      setFormErrors((prevFormErrors) => ({
+        ...prevFormErrors,
+        meal: true,
+      }));
+      isFormValid = false;
+    } else {
+      setFormErrors((prevFormErrors) => ({
+        ...prevFormErrors,
+        meal: false,
+      }));
+      isFormValid = true;
+    }
+
+    // Check for protein
+    if (!protein) {
+      setFormErrors((prevFormErrors) => ({
+        ...prevFormErrors,
+        protein: true,
+      }));
+      isFormValid = false;
+    } else {
+      setFormErrors((prevFormErrors) => ({
+        ...prevFormErrors,
+        protein: false,
+      }));
+      isFormValid = true;
+    }
+
+    // Check for utensils
+    if (utensils.some((utensil) => !utensil)) {
+      setFormErrors((prevFormErrors) => ({
+        ...prevFormErrors,
+        utensils: utensils.map((utensil) => !utensil),
+      }));
+      isFormValid = false;
+    } else {
+      setFormErrors((prevFormErrors) => ({
+        ...prevFormErrors,
+        utensils: utensils.map(() => false),
+      }));
+      isFormValid = true;
+    }
+
+    // Check for ingredients
+    if (
+      ingredients.some(
+        (ingredient, groupIndex) =>
+          groupIndex !== 0 &&
+          (!ingredient.title || ingredient.items.some((item) => !item))
+      )
+    ) {
+      setFormErrors((prevFormErrors) => ({
+        ...prevFormErrors,
+        ingredients: ingredients.map((ingredient, groupIndex) => ({
+          ...ingredient,
+          title: !ingredient.title && groupIndex !== 0,
+          items: ingredient.items.map((item) => !item),
+        })),
+      }));
+      isFormValid = false;
+    } else {
+      const isIngredientsValid = ingredients.every(
+        (ingredient, groupIndex) =>
+          groupIndex === 0 ||
+          (ingredient.title && ingredient.items.every((item) => item !== ""))
+      );
+
+      if (isIngredientsValid) {
+        setFormErrors((prevFormErrors) => ({
+          ...prevFormErrors,
+          ingredients: ingredients.map((ingredient) => ({
+            ...ingredient,
+            title: false,
+            items: ingredient.items.map(() => false),
+          })),
+        }));
+        isFormValid = true;
+      } else {
+        setFormErrors((prevFormErrors) => ({
+          ...prevFormErrors,
+          ingredients: ingredients.map((ingredient, groupIndex) => ({
+            ...ingredient,
+            title: !ingredient.title && groupIndex === 0,
+            items: ingredient.items.map((item) => !item),
+          })),
+        }));
+        isFormValid = false;
+      }
+    }
+
+    // Check for steps
+    if (steps.some((step) => !step)) {
+      setFormErrors((prevFormErrors) => ({
+        ...prevFormErrors,
+        steps: steps.map((step) => !step),
+      }));
+      isFormValid = false;
+    } else {
+      setFormErrors((prevFormErrors) => ({
+        ...prevFormErrors,
+        steps: steps.map(() => false),
+      }));
+      isFormValid = true;
+    }
+
+    // Show Snackbar error message if form is not valid
+    if (!isFormValid) {
+      console.log("error");
+      setopenNotifFail(true);
+      return;
+    }
 
     const recipe = {
       title: title,
@@ -173,7 +363,7 @@ function AddForm() {
       favorite: false,
     };
     console.log(recipe);
-    setOpenNotif(true);
+    setopenNotifSucess(true);
   };
 
   return (
@@ -196,21 +386,35 @@ function AddForm() {
             justifyContent: "space-between",
           }}
         >
-          <FormControl style={{ marginBottom: "1rem", marginRight: "2rem" }}>
+          <FormControl
+            style={{ marginBottom: "1rem", marginRight: "2rem", width: "50%" }}
+            error={formErrors.title}
+          >
             <InputLabel>Title</InputLabel>
             <Input onChange={handleTitle} required />
-            <span>Hello</span>
+            {formErrors.title && (
+              <FormHelperText id="component-error-text">Error</FormHelperText>
+            )}
           </FormControl>
-          <FormControl style={{ flex: "1", marginRight: "2rem" }}>
+          <FormControl
+            style={{ flex: "1", marginRight: "2rem" }}
+            error={formErrors.time}
+          >
             <InputLabel>Time</InputLabel>
             <Input onChange={handleTime} required />
+            {formErrors.time && (
+              <FormHelperText id="component-error-text">Error</FormHelperText>
+            )}
           </FormControl>
-          <FormControl style={{ flex: "0 0 20%" }}>
+          <FormControl style={{ flex: "0 0 20%" }} error={formErrors.unit}>
             <InputLabel>Unit</InputLabel>
             <Select value={unit} label="Unit" onChange={handleUnit} required>
               <MenuItem value={"Minute"}>Min</MenuItem>
               <MenuItem value={"Hours"}>Hrs</MenuItem>
             </Select>
+            {formErrors.unit && (
+              <FormHelperText id="component-error-text">Error</FormHelperText>
+            )}
           </FormControl>
         </FormGroup>
         <FormGroup
@@ -220,11 +424,20 @@ function AddForm() {
             justifyContent: "space-between",
           }}
         >
-          <FormControl style={{ flex: "1", marginRight: "1rem" }}>
+          <FormControl
+            style={{ flex: "1", marginRight: "1rem" }}
+            error={formErrors.meal}
+          >
             <InputLabel>Meal Type</InputLabel>
             <Input onChange={handleMeal} required />
+            {formErrors.meal && (
+              <FormHelperText id="component-error-text">Error</FormHelperText>
+            )}
           </FormControl>
-          <FormControl style={{ flex: "0 0 20%", marginRight: 20 }}>
+          <FormControl
+            style={{ flex: "0 0 20%", marginRight: 20 }}
+            error={formErrors.protein}
+          >
             <InputLabel>Protein</InputLabel>
             <Select
               value={protein}
@@ -237,8 +450,11 @@ function AddForm() {
               <MenuItem value={"Pork"}>Pork</MenuItem>
               <MenuItem value={"No Protein"}>No Protein</MenuItem>
             </Select>
+            {formErrors.protein && (
+              <FormHelperText id="component-error-text">Error</FormHelperText>
+            )}
           </FormControl>
-          <FormControl style={{ flex: "0 0 20%" }}>
+          <FormControl style={{ flex: "0 0 20%" }} error={formErrors.energy}>
             <InputLabel>Energy</InputLabel>
             <Select
               value={energy}
@@ -250,6 +466,9 @@ function AddForm() {
               <MenuItem value={"Moderate"}>Moderate</MenuItem>
               <MenuItem value={"Difficult"}>Difficult</MenuItem>
             </Select>
+            {formErrors.energy && (
+              <FormHelperText id="component-error-text">Error</FormHelperText>
+            )}
           </FormControl>
         </FormGroup>
         {[...Array(numUtensils)].map((_, index) => (
@@ -262,6 +481,7 @@ function AddForm() {
               width: "100%",
             }}
             key={index}
+            error={formErrors.utensils[index]}
           >
             <InputLabel>Utensil {index + 1}</InputLabel>
             <Input
@@ -289,7 +509,7 @@ function AddForm() {
         <Button
           variant="outlined"
           color="secondary"
-          style={{ marginTop: 10, width: "20%", marginBottom: 10 }}
+          style={{ marginTop: 10, width: "20%", marginBottom: 20 }}
           onClick={handleAddUtensil}
         >
           Add Utensil
@@ -304,6 +524,7 @@ function AddForm() {
               width: "100%",
             }}
             key={index}
+            error={formErrors.steps[index]}
           >
             <InputLabel>Step {index + 1}</InputLabel>
             <Input
@@ -341,7 +562,14 @@ function AddForm() {
           {ingredients.map((group, groupIndex) => (
             <Box key={groupIndex} sx={{ mb: 2 }}>
               {groupIndex !== 0 && (
-                <FormControl fullWidth>
+                <FormControl
+                  fullWidth
+                  error={
+                    formErrors.ingredients[groupIndex] &&
+                    (!group.title ||
+                      formErrors.ingredients[groupIndex].items === undefined)
+                  } // Check for title and items
+                >
                   <InputLabel>Ingredient Title</InputLabel>
                   <Input
                     value={group.title}
@@ -362,6 +590,11 @@ function AddForm() {
                     marginBottom: "16px",
                     width: "100%",
                   }}
+                  error={
+                    formErrors.ingredients[groupIndex] &&
+                    (!item ||
+                      formErrors.ingredients[groupIndex].items[itemIndex])
+                  }
                 >
                   <InputLabel>Ingredient {itemIndex + 1}</InputLabel>
                   <Input
@@ -423,6 +656,8 @@ function AddForm() {
           </Box>
         </FormGroup>
 
+        <UploadImage onImageUpload={handleImageUpload}></UploadImage>
+
         <Box
           display="flex"
           justifyContent="center"
@@ -438,14 +673,28 @@ function AddForm() {
             Submit
           </Button>
           <Snackbar
-            open={openNotif}
+            open={openNotifFail}
             autoHideDuration={3000}
-            onClose={handleCloseSnackbar}
+            onClose={handleCloseFail}
           >
             <MuiAlert
               elevation={6}
               variant="filled"
-              onClose={handleCloseSnackbar}
+              onClose={handleCloseFail}
+              severity="error"
+            >
+              Please fill required form
+            </MuiAlert>
+          </Snackbar>
+          <Snackbar
+            open={openNotifSucess}
+            autoHideDuration={3000}
+            onClose={handleCloseSucess}
+          >
+            <MuiAlert
+              elevation={6}
+              variant="filled"
+              onClose={handleCloseSucess}
               severity="success"
             >
               Recipe Added
