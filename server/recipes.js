@@ -82,10 +82,10 @@ async function editRecipe(recipeId, updatedRecipeData) {
 
     // if result is acknowledged by the server
     if (result.acknowledged === true) {
-        console.log("Recipe ${recipeId} updated");
+        console.log(`Recipe ${recipeId} updated`);
     } 
     else {
-        console.log("Recipe ${recipeId} not updated");
+        console.log(`Recipe ${recipeId} not updated`);
     }
     await client.close();
     client = null;
