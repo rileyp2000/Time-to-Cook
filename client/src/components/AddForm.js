@@ -371,7 +371,7 @@ function AddForm() {
       <h1 style={{ color: "grey" }}>Add New Recipe</h1>
       <FormGroup
         style={{
-          width: "50%",
+          width: "70%",
           margin: "auto",
           padding: 20,
           paddingTop: 20,
@@ -387,10 +387,10 @@ function AddForm() {
           }}
         >
           <FormControl
-            style={{ marginBottom: "1rem", marginRight: "2rem", width: "50%" }}
+            style={{ marginBottom: "4rem", marginRight: "2rem", width: "56%" }}
             error={formErrors.title}
           >
-            <InputLabel>Title</InputLabel>
+            <InputLabel sx={{ fontSize: 22 }}>Title</InputLabel>
             <Input onChange={handleTitle} required />
             {formErrors.title && (
               <FormHelperText id="component-error-text">Error</FormHelperText>
@@ -400,14 +400,14 @@ function AddForm() {
             style={{ flex: "1", marginRight: "2rem" }}
             error={formErrors.time}
           >
-            <InputLabel>Time</InputLabel>
+            <InputLabel sx={{ fontSize: 22 }}>Time</InputLabel>
             <Input onChange={handleTime} required />
             {formErrors.time && (
               <FormHelperText id="component-error-text">Error</FormHelperText>
             )}
           </FormControl>
           <FormControl style={{ flex: "0 0 20%" }} error={formErrors.unit}>
-            <InputLabel>Unit</InputLabel>
+            <InputLabel sx={{ fontSize: 22 }}>Unit</InputLabel>
             <Select value={unit} label="Unit" onChange={handleUnit} required>
               <MenuItem value={"Minute"}>Min</MenuItem>
               <MenuItem value={"Hours"}>Hrs</MenuItem>
@@ -422,13 +422,14 @@ function AddForm() {
             flexDirection: "row",
             alignItems: "baseline",
             justifyContent: "space-between",
+            marginBottom: "4rem",
           }}
         >
           <FormControl
             style={{ flex: "1", marginRight: "1rem" }}
             error={formErrors.meal}
           >
-            <InputLabel>Meal Type</InputLabel>
+            <InputLabel sx={{ fontSize: 22 }}>Meal Type</InputLabel>
             <Input onChange={handleMeal} required />
             {formErrors.meal && (
               <FormHelperText id="component-error-text">Error</FormHelperText>
@@ -438,7 +439,7 @@ function AddForm() {
             style={{ flex: "0 0 20%", marginRight: 20 }}
             error={formErrors.protein}
           >
-            <InputLabel>Protein</InputLabel>
+            <InputLabel sx={{ fontSize: 22 }}>Protein</InputLabel>
             <Select
               value={protein}
               label="Protein"
@@ -455,7 +456,7 @@ function AddForm() {
             )}
           </FormControl>
           <FormControl style={{ flex: "0 0 20%" }} error={formErrors.energy}>
-            <InputLabel>Energy</InputLabel>
+            <InputLabel sx={{ fontSize: 22 }}>Energy</InputLabel>
             <Select
               value={energy}
               label="Energy"
@@ -479,11 +480,12 @@ function AddForm() {
               alignItems: "baseline",
               marginBottom: "16px",
               width: "100%",
+              marginTop: "1rem",
             }}
             key={index}
             error={formErrors.utensils[index]}
           >
-            <InputLabel>Utensil {index + 1}</InputLabel>
+            <InputLabel sx={{ fontSize: 22 }}>Utensil {index + 1}</InputLabel>
             <Input
               value={utensils[index]}
               onChange={(event) => handleUtensilChange(event, index)}
@@ -509,7 +511,12 @@ function AddForm() {
         <Button
           variant="outlined"
           color="secondary"
-          style={{ marginTop: 10, width: "20%", marginBottom: 20 }}
+          style={{
+            marginTop: 10,
+            width: "20%",
+            marginBottom: "3rem",
+            fontSize: 16,
+          }}
           onClick={handleAddUtensil}
         >
           Add Utensil
@@ -522,11 +529,12 @@ function AddForm() {
               alignItems: "baseline",
               marginBottom: "16px",
               width: "100%",
+              marginTop: "1rem",
             }}
             key={index}
             error={formErrors.steps[index]}
           >
-            <InputLabel>Step {index + 1}</InputLabel>
+            <InputLabel sx={{ fontSize: 22 }}>Step {index + 1}</InputLabel>
             <Input
               value={steps[index]}
               onChange={(event) => handleStepChange(event, index)}
@@ -552,7 +560,12 @@ function AddForm() {
         <Button
           variant="outlined"
           color="secondary"
-          style={{ marginTop: 10, width: "20%", marginBottom: 10 }}
+          style={{
+            marginTop: 10,
+            width: "20%",
+            marginBottom: "3rem",
+            fontSize: 16,
+          }}
           onClick={handleAddStep}
         >
           Add Step
@@ -570,7 +583,9 @@ function AddForm() {
                       formErrors.ingredients[groupIndex].items === undefined)
                   } // Check for title and items
                 >
-                  <InputLabel>Ingredient Title</InputLabel>
+                  <InputLabel sx={{ fontSize: 22 }}>
+                    Ingredient Title
+                  </InputLabel>
                   <Input
                     value={group.title}
                     onChange={(event) =>
@@ -589,6 +604,7 @@ function AddForm() {
                     alignItems: "baseline",
                     marginBottom: "16px",
                     width: "100%",
+                    marginTop: "2rem",
                   }}
                   error={
                     formErrors.ingredients[groupIndex] &&
@@ -596,7 +612,9 @@ function AddForm() {
                       formErrors.ingredients[groupIndex].items[itemIndex])
                   }
                 >
-                  <InputLabel>Ingredient {itemIndex + 1}</InputLabel>
+                  <InputLabel sx={{ fontSize: 22 }}>
+                    Ingredient {itemIndex + 1}
+                  </InputLabel>
                   <Input
                     value={item}
                     onChange={(event) =>
@@ -626,7 +644,7 @@ function AddForm() {
               <Button
                 variant="outlined"
                 color="secondary"
-                style={{ marginTop: "16px" }}
+                style={{ marginTop: "16px", fontSize: 16 }}
                 onClick={() => {
                   handleAddIngredientItem(groupIndex);
                 }}
@@ -636,7 +654,7 @@ function AddForm() {
               <Button
                 variant="outlined"
                 color="error"
-                style={{ marginTop: "16px", marginLeft: "16px" }}
+                style={{ marginTop: "16px", marginLeft: "16px", fontSize: 16 }}
                 onClick={() => {
                   handleDeleteIngredientGroup(groupIndex);
                 }}
@@ -649,7 +667,7 @@ function AddForm() {
             <Button
               variant="outlined"
               onClick={handleAddIngredientGroup}
-              style={{ marginBottom: 24 }}
+              style={{ marginBottom: "3rem", fontSize: 16 }}
             >
               Add Group
             </Button>
@@ -667,7 +685,7 @@ function AddForm() {
           <Button
             variant="outlined"
             color="secondary"
-            style={{ marginTop: 10, width: "20%" }}
+            style={{ marginTop: 10, width: "20%", fontSize: 16}}
             onClick={handleSubmit}
           >
             Submit
