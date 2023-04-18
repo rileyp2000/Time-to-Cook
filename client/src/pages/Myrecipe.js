@@ -14,6 +14,7 @@ function MyRecipe() {
       .catch((error) => console.error(error));
   }, []);
 
+  console.log(recipes);
 
   return (
     // <div>
