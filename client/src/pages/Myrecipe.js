@@ -1,36 +1,676 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import RecipeCard from "../components/RecipeCard";
+import "./MyRecipe.css";
 
 function MyRecipe() {
-  const [recipes, setRecipes] = useState([]);
+  const [cards] = React.useState([
+    {
+      title: "Snickerdoodles",
+      time: "20mins",
+      energy: "Moderate",
+      mealType: "Sweets",
+      utensils: ["Measuring spoons", "2 bowls", "stove", "baking sheet"],
+      ingredients: {
+        Snickerdoodles: [
+          "2 ¾ cups all purpose flour",
+          "2tsp cream of tartar",
+          "½ tsp salt",
+          "1tsp baking powder",
+          "1 cup unsalted butter, softened",
+          "2 eggs",
+          "1 tsp vanilla extract",
+        ],
+        "Cinnamon Sugar Coating:": ["⅓ cup sugar", "2 tbsp cinnamon"],
+      },
+      steps: [
+        "Preheat Oven to 350℉",
+        "In a large bowl, cream together butter and sugar",
+        "Mix flour, cream of tartar, baking soda, and salt together in another bowl and then slowly combine wet and dry ingredients",
+        "Combine sugar and cinnamon for the cinnamon sugar coating",
+        "Scoop out dough and roll into a ball",
+        "Bake for 8-10 minutes",
+      ],
+      image: {
+        mime: "image/jpeg",
+        path: "/some/path/to/file",
+      },
+      filters: ["No Protein"],
+      favorite: false,
+    },
+    {
+      title: "Brownies",
+      time: "45mins",
+      energy: "Moderate",
+      mealType: "Sweets",
+      utensils: [
+        "Measuring spoons",
+        "1 bowl",
+        "stove",
+        "8x8 pan",
+        "spatula",
+        "parchment paper",
+        "whisk",
+        "some patience",
+      ],
+      ingredients: {
+        Brownies: [
+          "8oz semi sweet chocolate, chopped",
+          "12tbsp melted butter",
+          "1 ¼ cup sugar",
+          "2 eggs",
+          "2tsp vanilla extract",
+          "¾ cup all purpose flour",
+          "¼ cup cocoa powder",
+          "1tsp salt",
+        ],
+      },
+      steps: [
+        "Preheat Oven to 350℉",
+        "Line an 8x8 pan with parchment paper and grease",
+        "Melt 4oz of the chopped chocolate in the microwave",
+        "In a large bowl, cream the butter and sugar together with a mixer, then beat in the eggs and vanilla fro 2 minutes until the mixture becomes light and fluffy",
+        "Whisk in the melted chocolate",
+        "Fold in the remaining 4oz of chopped chocolate and transfer batter to the prepared 8x8 pan",
+        "Bake for 20-25 minutes- check using the toothpick method",
+        "Eat and burn your mouth because you forgot to let them cool",
+      ],
+      image: {
+        mime: "image/jpeg",
+        path: "https://cafedelites.com/wp-content/uploads/2018/02/Best-Fudgiest-Brownies-IMAGE-1001.jpg",
+      },
+      filters: ["No Protein"],
+    },
+    {
+      title: "Snickerdoodles",
+      time: "20mins",
+      energy: "Moderate",
+      mealType: "Sweets",
+      utensils: ["Measuring spoons", "2 bowls", "stove", "baking sheet"],
+      ingredients: {
+        Snickerdoodles: [
+          "2 ¾ cups all purpose flour",
+          "2tsp cream of tartar",
+          "½ tsp salt",
+          "1tsp baking powder",
+          "1 cup unsalted butter, softened",
+          "2 eggs",
+          "1 tsp vanilla extract",
+        ],
+        "Cinnamon Sugar Coating:": ["⅓ cup sugar", "2 tbsp cinnamon"],
+      },
+      steps: [
+        "Preheat Oven to 350℉",
+        "In a large bowl, cream together butter and sugar",
+        "Mix flour, cream of tartar, baking soda, and salt together in another bowl and then slowly combine wet and dry ingredients",
+        "Combine sugar and cinnamon for the cinnamon sugar coating",
+        "Scoop out dough and roll into a ball",
+        "Bake for 8-10 minutes",
+      ],
+      image: {
+        mime: "image/jpeg",
+        path: "/some/path/to/file",
+      },
+      filters: ["No Protein"],
+      favorite: false,
+    },
+    {
+      title: "Brownies",
+      time: "45mins",
+      energy: "Moderate",
+      mealType: "Sweets",
+      utensils: [
+        "Measuring spoons",
+        "1 bowl",
+        "stove",
+        "8x8 pan",
+        "spatula",
+        "parchment paper",
+        "whisk",
+        "some patience",
+      ],
+      ingredients: {
+        Brownies: [
+          "8oz semi sweet chocolate, chopped",
+          "12tbsp melted butter",
+          "1 ¼ cup sugar",
+          "2 eggs",
+          "2tsp vanilla extract",
+          "¾ cup all purpose flour",
+          "¼ cup cocoa powder",
+          "1tsp salt",
+        ],
+      },
+      steps: [
+        "Preheat Oven to 350℉",
+        "Line an 8x8 pan with parchment paper and grease",
+        "Melt 4oz of the chopped chocolate in the microwave",
+        "In a large bowl, cream the butter and sugar together with a mixer, then beat in the eggs and vanilla fro 2 minutes until the mixture becomes light and fluffy",
+        "Whisk in the melted chocolate",
+        "Fold in the remaining 4oz of chopped chocolate and transfer batter to the prepared 8x8 pan",
+        "Bake for 20-25 minutes- check using the toothpick method",
+        "Eat and burn your mouth because you forgot to let them cool",
+      ],
+      image: {
+        mime: "image/jpeg",
+        path: "https://cafedelites.com/wp-content/uploads/2018/02/Best-Fudgiest-Brownies-IMAGE-1001.jpg",
+      },
+      filters: ["No Protein"],
+    },
+    {
+      title: "Snickerdoodles",
+      time: "20mins",
+      energy: "Moderate",
+      mealType: "Sweets",
+      utensils: ["Measuring spoons", "2 bowls", "stove", "baking sheet"],
+      ingredients: {
+        Snickerdoodles: [
+          "2 ¾ cups all purpose flour",
+          "2tsp cream of tartar",
+          "½ tsp salt",
+          "1tsp baking powder",
+          "1 cup unsalted butter, softened",
+          "2 eggs",
+          "1 tsp vanilla extract",
+        ],
+        "Cinnamon Sugar Coating:": ["⅓ cup sugar", "2 tbsp cinnamon"],
+      },
+      steps: [
+        "Preheat Oven to 350℉",
+        "In a large bowl, cream together butter and sugar",
+        "Mix flour, cream of tartar, baking soda, and salt together in another bowl and then slowly combine wet and dry ingredients",
+        "Combine sugar and cinnamon for the cinnamon sugar coating",
+        "Scoop out dough and roll into a ball",
+        "Bake for 8-10 minutes",
+      ],
+      image: {
+        mime: "image/jpeg",
+        path: "/some/path/to/file",
+      },
+      filters: ["No Protein"],
+      favorite: false,
+    },
+    {
+      title: "Brownies",
+      time: "45mins",
+      energy: "Moderate",
+      mealType: "Sweets",
+      utensils: [
+        "Measuring spoons",
+        "1 bowl",
+        "stove",
+        "8x8 pan",
+        "spatula",
+        "parchment paper",
+        "whisk",
+        "some patience",
+      ],
+      ingredients: {
+        Brownies: [
+          "8oz semi sweet chocolate, chopped",
+          "12tbsp melted butter",
+          "1 ¼ cup sugar",
+          "2 eggs",
+          "2tsp vanilla extract",
+          "¾ cup all purpose flour",
+          "¼ cup cocoa powder",
+          "1tsp salt",
+        ],
+      },
+      steps: [
+        "Preheat Oven to 350℉",
+        "Line an 8x8 pan with parchment paper and grease",
+        "Melt 4oz of the chopped chocolate in the microwave",
+        "In a large bowl, cream the butter and sugar together with a mixer, then beat in the eggs and vanilla fro 2 minutes until the mixture becomes light and fluffy",
+        "Whisk in the melted chocolate",
+        "Fold in the remaining 4oz of chopped chocolate and transfer batter to the prepared 8x8 pan",
+        "Bake for 20-25 minutes- check using the toothpick method",
+        "Eat and burn your mouth because you forgot to let them cool",
+      ],
+      image: {
+        mime: "image/jpeg",
+        path: "https://cafedelites.com/wp-content/uploads/2018/02/Best-Fudgiest-Brownies-IMAGE-1001.jpg",
+      },
+      filters: ["No Protein"],
+    },
+    {
+      title: "Snickerdoodles",
+      time: "20mins",
+      energy: "Moderate",
+      mealType: "Sweets",
+      utensils: ["Measuring spoons", "2 bowls", "stove", "baking sheet"],
+      ingredients: {
+        Snickerdoodles: [
+          "2 ¾ cups all purpose flour",
+          "2tsp cream of tartar",
+          "½ tsp salt",
+          "1tsp baking powder",
+          "1 cup unsalted butter, softened",
+          "2 eggs",
+          "1 tsp vanilla extract",
+        ],
+        "Cinnamon Sugar Coating:": ["⅓ cup sugar", "2 tbsp cinnamon"],
+      },
+      steps: [
+        "Preheat Oven to 350℉",
+        "In a large bowl, cream together butter and sugar",
+        "Mix flour, cream of tartar, baking soda, and salt together in another bowl and then slowly combine wet and dry ingredients",
+        "Combine sugar and cinnamon for the cinnamon sugar coating",
+        "Scoop out dough and roll into a ball",
+        "Bake for 8-10 minutes",
+      ],
+      image: {
+        mime: "image/jpeg",
+        path: "/some/path/to/file",
+      },
+      filters: ["No Protein"],
+      favorite: false,
+    },
+    {
+      title: "Brownies",
+      time: "45mins",
+      energy: "Moderate",
+      mealType: "Sweets",
+      utensils: [
+        "Measuring spoons",
+        "1 bowl",
+        "stove",
+        "8x8 pan",
+        "spatula",
+        "parchment paper",
+        "whisk",
+        "some patience",
+      ],
+      ingredients: {
+        Brownies: [
+          "8oz semi sweet chocolate, chopped",
+          "12tbsp melted butter",
+          "1 ¼ cup sugar",
+          "2 eggs",
+          "2tsp vanilla extract",
+          "¾ cup all purpose flour",
+          "¼ cup cocoa powder",
+          "1tsp salt",
+        ],
+      },
+      steps: [
+        "Preheat Oven to 350℉",
+        "Line an 8x8 pan with parchment paper and grease",
+        "Melt 4oz of the chopped chocolate in the microwave",
+        "In a large bowl, cream the butter and sugar together with a mixer, then beat in the eggs and vanilla fro 2 minutes until the mixture becomes light and fluffy",
+        "Whisk in the melted chocolate",
+        "Fold in the remaining 4oz of chopped chocolate and transfer batter to the prepared 8x8 pan",
+        "Bake for 20-25 minutes- check using the toothpick method",
+        "Eat and burn your mouth because you forgot to let them cool",
+      ],
+      image: {
+        mime: "image/jpeg",
+        path: "https://cafedelites.com/wp-content/uploads/2018/02/Best-Fudgiest-Brownies-IMAGE-1001.jpg",
+      },
+      filters: ["No Protein"],
+    },
+    {
+      title: "Brownies",
+      time: "45mins",
+      energy: "Moderate",
+      mealType: "Sweets",
+      utensils: [
+        "Measuring spoons",
+        "1 bowl",
+        "stove",
+        "8x8 pan",
+        "spatula",
+        "parchment paper",
+        "whisk",
+        "some patience",
+      ],
+      ingredients: {
+        Brownies: [
+          "8oz semi sweet chocolate, chopped",
+          "12tbsp melted butter",
+          "1 ¼ cup sugar",
+          "2 eggs",
+          "2tsp vanilla extract",
+          "¾ cup all purpose flour",
+          "¼ cup cocoa powder",
+          "1tsp salt",
+        ],
+      },
+      steps: [
+        "Preheat Oven to 350℉",
+        "Line an 8x8 pan with parchment paper and grease",
+        "Melt 4oz of the chopped chocolate in the microwave",
+        "In a large bowl, cream the butter and sugar together with a mixer, then beat in the eggs and vanilla fro 2 minutes until the mixture becomes light and fluffy",
+        "Whisk in the melted chocolate",
+        "Fold in the remaining 4oz of chopped chocolate and transfer batter to the prepared 8x8 pan",
+        "Bake for 20-25 minutes- check using the toothpick method",
+        "Eat and burn your mouth because you forgot to let them cool",
+      ],
+      image: {
+        mime: "image/jpeg",
+        path: "https://cafedelites.com/wp-content/uploads/2018/02/Best-Fudgiest-Brownies-IMAGE-1001.jpg",
+      },
+      filters: ["No Protein"],
+    },
+    {
+      title: "Brownies",
+      time: "45mins",
+      energy: "Moderate",
+      mealType: "Sweets",
+      utensils: [
+        "Measuring spoons",
+        "1 bowl",
+        "stove",
+        "8x8 pan",
+        "spatula",
+        "parchment paper",
+        "whisk",
+        "some patience",
+      ],
+      ingredients: {
+        Brownies: [
+          "8oz semi sweet chocolate, chopped",
+          "12tbsp melted butter",
+          "1 ¼ cup sugar",
+          "2 eggs",
+          "2tsp vanilla extract",
+          "¾ cup all purpose flour",
+          "¼ cup cocoa powder",
+          "1tsp salt",
+        ],
+      },
+      steps: [
+        "Preheat Oven to 350℉",
+        "Line an 8x8 pan with parchment paper and grease",
+        "Melt 4oz of the chopped chocolate in the microwave",
+        "In a large bowl, cream the butter and sugar together with a mixer, then beat in the eggs and vanilla fro 2 minutes until the mixture becomes light and fluffy",
+        "Whisk in the melted chocolate",
+        "Fold in the remaining 4oz of chopped chocolate and transfer batter to the prepared 8x8 pan",
+        "Bake for 20-25 minutes- check using the toothpick method",
+        "Eat and burn your mouth because you forgot to let them cool",
+      ],
+      image: {
+        mime: "image/jpeg",
+        path: "https://cafedelites.com/wp-content/uploads/2018/02/Best-Fudgiest-Brownies-IMAGE-1001.jpg",
+      },
+      filters: ["No Protein"],
+    },
+    {
+      title: "Brownies",
+      time: "45mins",
+      energy: "Moderate",
+      mealType: "Sweets",
+      utensils: [
+        "Measuring spoons",
+        "1 bowl",
+        "stove",
+        "8x8 pan",
+        "spatula",
+        "parchment paper",
+        "whisk",
+        "some patience",
+      ],
+      ingredients: {
+        Brownies: [
+          "8oz semi sweet chocolate, chopped",
+          "12tbsp melted butter",
+          "1 ¼ cup sugar",
+          "2 eggs",
+          "2tsp vanilla extract",
+          "¾ cup all purpose flour",
+          "¼ cup cocoa powder",
+          "1tsp salt",
+        ],
+      },
+      steps: [
+        "Preheat Oven to 350℉",
+        "Line an 8x8 pan with parchment paper and grease",
+        "Melt 4oz of the chopped chocolate in the microwave",
+        "In a large bowl, cream the butter and sugar together with a mixer, then beat in the eggs and vanilla fro 2 minutes until the mixture becomes light and fluffy",
+        "Whisk in the melted chocolate",
+        "Fold in the remaining 4oz of chopped chocolate and transfer batter to the prepared 8x8 pan",
+        "Bake for 20-25 minutes- check using the toothpick method",
+        "Eat and burn your mouth because you forgot to let them cool",
+      ],
+      image: {
+        mime: "image/jpeg",
+        path: "https://cafedelites.com/wp-content/uploads/2018/02/Best-Fudgiest-Brownies-IMAGE-1001.jpg",
+      },
+      filters: ["No Protein"],
+    },
+    {
+      title: "Brownies",
+      time: "45mins",
+      energy: "Moderate",
+      mealType: "Sweets",
+      utensils: [
+        "Measuring spoons",
+        "1 bowl",
+        "stove",
+        "8x8 pan",
+        "spatula",
+        "parchment paper",
+        "whisk",
+        "some patience",
+      ],
+      ingredients: {
+        Brownies: [
+          "8oz semi sweet chocolate, chopped",
+          "12tbsp melted butter",
+          "1 ¼ cup sugar",
+          "2 eggs",
+          "2tsp vanilla extract",
+          "¾ cup all purpose flour",
+          "¼ cup cocoa powder",
+          "1tsp salt",
+        ],
+      },
+      steps: [
+        "Preheat Oven to 350℉",
+        "Line an 8x8 pan with parchment paper and grease",
+        "Melt 4oz of the chopped chocolate in the microwave",
+        "In a large bowl, cream the butter and sugar together with a mixer, then beat in the eggs and vanilla fro 2 minutes until the mixture becomes light and fluffy",
+        "Whisk in the melted chocolate",
+        "Fold in the remaining 4oz of chopped chocolate and transfer batter to the prepared 8x8 pan",
+        "Bake for 20-25 minutes- check using the toothpick method",
+        "Eat and burn your mouth because you forgot to let them cool",
+      ],
+      image: {
+        mime: "image/jpeg",
+        path: "https://cafedelites.com/wp-content/uploads/2018/02/Best-Fudgiest-Brownies-IMAGE-1001.jpg",
+      },
+      filters: ["No Protein"],
+    },
+    {
+      title: "Brownies",
+      time: "45mins",
+      energy: "Moderate",
+      mealType: "Sweets",
+      utensils: [
+        "Measuring spoons",
+        "1 bowl",
+        "stove",
+        "8x8 pan",
+        "spatula",
+        "parchment paper",
+        "whisk",
+        "some patience",
+      ],
+      ingredients: {
+        Brownies: [
+          "8oz semi sweet chocolate, chopped",
+          "12tbsp melted butter",
+          "1 ¼ cup sugar",
+          "2 eggs",
+          "2tsp vanilla extract",
+          "¾ cup all purpose flour",
+          "¼ cup cocoa powder",
+          "1tsp salt",
+        ],
+      },
+      steps: [
+        "Preheat Oven to 350℉",
+        "Line an 8x8 pan with parchment paper and grease",
+        "Melt 4oz of the chopped chocolate in the microwave",
+        "In a large bowl, cream the butter and sugar together with a mixer, then beat in the eggs and vanilla fro 2 minutes until the mixture becomes light and fluffy",
+        "Whisk in the melted chocolate",
+        "Fold in the remaining 4oz of chopped chocolate and transfer batter to the prepared 8x8 pan",
+        "Bake for 20-25 minutes- check using the toothpick method",
+        "Eat and burn your mouth because you forgot to let them cool",
+      ],
+      image: {
+        mime: "image/jpeg",
+        path: "https://cafedelites.com/wp-content/uploads/2018/02/Best-Fudgiest-Brownies-IMAGE-1001.jpg",
+      },
+      filters: ["No Protein"],
+    },
+    {
+      title: "Brownies",
+      time: "45mins",
+      energy: "Moderate",
+      mealType: "Sweets",
+      utensils: [
+        "Measuring spoons",
+        "1 bowl",
+        "stove",
+        "8x8 pan",
+        "spatula",
+        "parchment paper",
+        "whisk",
+        "some patience",
+      ],
+      ingredients: {
+        Brownies: [
+          "8oz semi sweet chocolate, chopped",
+          "12tbsp melted butter",
+          "1 ¼ cup sugar",
+          "2 eggs",
+          "2tsp vanilla extract",
+          "¾ cup all purpose flour",
+          "¼ cup cocoa powder",
+          "1tsp salt",
+        ],
+      },
+      steps: [
+        "Preheat Oven to 350℉",
+        "Line an 8x8 pan with parchment paper and grease",
+        "Melt 4oz of the chopped chocolate in the microwave",
+        "In a large bowl, cream the butter and sugar together with a mixer, then beat in the eggs and vanilla fro 2 minutes until the mixture becomes light and fluffy",
+        "Whisk in the melted chocolate",
+        "Fold in the remaining 4oz of chopped chocolate and transfer batter to the prepared 8x8 pan",
+        "Bake for 20-25 minutes- check using the toothpick method",
+        "Eat and burn your mouth because you forgot to let them cool",
+      ],
+      image: {
+        mime: "image/jpeg",
+        path: "https://cafedelites.com/wp-content/uploads/2018/02/Best-Fudgiest-Brownies-IMAGE-1001.jpg",
+      },
+      filters: ["No Protein"],
+    },
+    {
+      title: "Brownies",
+      time: "45mins",
+      energy: "Moderate",
+      mealType: "Sweets",
+      utensils: [
+        "Measuring spoons",
+        "1 bowl",
+        "stove",
+        "8x8 pan",
+        "spatula",
+        "parchment paper",
+        "whisk",
+        "some patience",
+      ],
+      ingredients: {
+        Brownies: [
+          "8oz semi sweet chocolate, chopped",
+          "12tbsp melted butter",
+          "1 ¼ cup sugar",
+          "2 eggs",
+          "2tsp vanilla extract",
+          "¾ cup all purpose flour",
+          "¼ cup cocoa powder",
+          "1tsp salt",
+        ],
+      },
+      steps: [
+        "Preheat Oven to 350℉",
+        "Line an 8x8 pan with parchment paper and grease",
+        "Melt 4oz of the chopped chocolate in the microwave",
+        "In a large bowl, cream the butter and sugar together with a mixer, then beat in the eggs and vanilla fro 2 minutes until the mixture becomes light and fluffy",
+        "Whisk in the melted chocolate",
+        "Fold in the remaining 4oz of chopped chocolate and transfer batter to the prepared 8x8 pan",
+        "Bake for 20-25 minutes- check using the toothpick method",
+        "Eat and burn your mouth because you forgot to let them cool",
+      ],
+      image: {
+        mime: "image/jpeg",
+        path: "https://cafedelites.com/wp-content/uploads/2018/02/Best-Fudgiest-Brownies-IMAGE-1001.jpg",
+      },
+      filters: ["No Protein"],
+    },
+    {
+      title: "Brownies",
+      time: "45mins",
+      energy: "Moderate",
+      mealType: "Sweets",
+      utensils: [
+        "Measuring spoons",
+        "1 bowl",
+        "stove",
+        "8x8 pan",
+        "spatula",
+        "parchment paper",
+        "whisk",
+        "some patience",
+      ],
+      ingredients: {
+        Brownies: [
+          "8oz semi sweet chocolate, chopped",
+          "12tbsp melted butter",
+          "1 ¼ cup sugar",
+          "2 eggs",
+          "2tsp vanilla extract",
+          "¾ cup all purpose flour",
+          "¼ cup cocoa powder",
+          "1tsp salt",
+        ],
+      },
+      steps: [
+        "Preheat Oven to 350℉",
+        "Line an 8x8 pan with parchment paper and grease",
+        "Melt 4oz of the chopped chocolate in the microwave",
+        "In a large bowl, cream the butter and sugar together with a mixer, then beat in the eggs and vanilla fro 2 minutes until the mixture becomes light and fluffy",
+        "Whisk in the melted chocolate",
+        "Fold in the remaining 4oz of chopped chocolate and transfer batter to the prepared 8x8 pan",
+        "Bake for 20-25 minutes- check using the toothpick method",
+        "Eat and burn your mouth because you forgot to let them cool",
+      ],
+      image: {
+        mime: "image/jpeg",
+        path: "https://cafedelites.com/wp-content/uploads/2018/02/Best-Fudgiest-Brownies-IMAGE-1001.jpg",
+      },
+      filters: ["No Protein"],
+    },
+  ]);
 
-  useEffect(() => {
-    fetch("/getRecipes")
-      .then((response) => response.json())
-      .then((data) => {
-        setRecipes(data);
-      })
-      .catch((error) => console.error(error));
-  }, []);
+  // const [recipes, setRecipes] = useState([]);
 
   console.log(recipes);
 
   return (
-    // <div>
-    //   {typeof recipes.users === "undefined" ? (
-    //     <p>Loading...</p>
-    //   ) : (
-    //     recipes.users.map((user, i) => <p key={i}>{user}</p>)
-    //   )}
-    // </div>
-    <div>
-      <h1>MyRecipe</h1>
-      {recipes.length > 0 ? (
-        recipes.map((recipe) => <RecipeCard key={recipe._id} rec={recipe} />)
-      ) : (
-        <p>Loading...</p>
-      )}
+    <div className="cards-container">
+      <section>
+        <h1 style={{ borderBottom: "1px solid grey" }}>My Recipes</h1>
+        <div className="cards">
+          {cards.map((card, index) => (
+            <div key={index} className="card">
+              <RecipeCard key={index} rec={card} />
+            </div>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }

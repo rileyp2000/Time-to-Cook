@@ -102,7 +102,7 @@ function RecipeCard(props) {
     <div>
       <Card
         variant="outlined"
-        sx={{ width: 200, borderColor: "hsl(294deg 9% 91%)", padding: "16px" }}
+        sx={{ width: "100%", borderColor: "hsl(294deg 9% 91%)", padding: "17px", marginBottom: "20px"}}
       >
         <IconButton
           aria-label="Like minimal photography"
