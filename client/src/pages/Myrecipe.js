@@ -657,7 +657,7 @@ function MyRecipe() {
 
   // const [recipes, setRecipes] = useState([]);
 
-  console.log(recipes);
+  //console.log(recipes);
 
   return (
     <div className="cards-container">
