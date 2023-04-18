@@ -20,8 +20,10 @@ function MyRecipe() {
         <h1 style={{ borderBottom: "1px solid grey" }}>My Recipes</h1>
         <div className="cards">
           {recipes.length > 0 ? (
-            recipes.map((recipe) => (
-              <RecipeCard key={recipe._id} rec={recipe} />
+            recipes.map((recipe, index) => (
+              <div key={index} className="card">
+                <RecipeCard key={recipe._id} rec={recipe} />
+              </div>
             ))
           ) : (
             <p>No Results</p>
