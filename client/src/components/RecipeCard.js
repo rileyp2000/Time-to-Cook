@@ -207,14 +207,12 @@ function RecipeCard(props) {
               <Box
                 sx={{
                   display: "flex",
+                  justifyContent: "space-between", // Add this property to evenly space the buttons
+                  alignItems: "center", // Add this property to vertically align the buttons
+                  mb: 2,
                 }}
               >
-                <Box
-                  sx={{
-                    justifyContent: "flex-start", // Update justifyContent to flex-start
-                    mb: 2,
-                  }}
-                >
+                <Box>
                   <Button
                     variant="outlined"
                     color="secondary"
@@ -239,17 +237,8 @@ function RecipeCard(props) {
                     XXL
                   </Button>
                 </Box>
-                <Box
-                  sx={{
-                    justifyContent: "flex-end", // Update justifyContent to flex-end
-                    mb: 2,
-                  }}
-                >
-                  <Button
-                    sx={{ ml: "9rem", mr: "1rem" }} // Update margin left to margin right
-                    variant="outlined"
-                    endIcon={<EditOutlinedIcon />}
-                  >
+                <Box>
+                  <Button variant="outlined" endIcon={<EditOutlinedIcon />}>
                     Edit
                   </Button>
                   <Button
@@ -257,6 +246,7 @@ function RecipeCard(props) {
                     color="error"
                     onClick={handleDelete}
                     startIcon={<DeleteIcon />}
+                    sx={{ ml: 2 }} // Add this property to add some space between the buttons
                   >
                     Delete
                   </Button>
@@ -304,9 +294,14 @@ function RecipeCard(props) {
                   textColor="text.primary"
                   style={{ fontSize: `${fontSize}` }}
                 >
-                  <ul>
+                  <ul style={{ paddingLeft: "1em" }}>
                     {props.rec.utensils.map((utensil, index) => (
-                      <li key={index}>{utensil}</li>
+                      <li
+                        key={index}
+                        style={{ textIndent: "-1em", paddingLeft: "2em" }}
+                      >
+                        {utensil}
+                      </li>
                     ))}
                   </ul>
                 </Typography>
@@ -334,9 +329,14 @@ function RecipeCard(props) {
                         <Typography variant="h6" gutterBottom>
                           {title}
                         </Typography>
-                        <ul>
+                        <ul style={{ paddingLeft: "1em" }}>
                           {ingredients.map((ingredient, index) => (
-                            <li key={index}>{ingredient}</li>
+                            <li
+                              key={index}
+                              style={{ textIndent: "-1em", paddingLeft: "2em" }}
+                            >
+                              {ingredient}
+                            </li>
                           ))}
                         </ul>
                       </div>
