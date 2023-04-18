@@ -657,14 +657,7 @@ function MyRecipe() {
 
   // const [recipes, setRecipes] = useState([]);
 
-  // useEffect(() => {
-  //   fetch("/getRecipes")
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       setRecipes(data);
-  //     })
-  //     .catch((error) => console.error(error));
-  // }, []);
+  console.log(recipes);
 
   return (
     <div className="cards-container">
