@@ -3,11 +3,9 @@ const app = express();
 const { MongoClient } = require('mongodb');
 const { getRecipes, toggleFavorite, deleteRecipe, loadSamples, getFilters, addRecipe, editRecipe } = require("./recipes.js");
 const path = require('path');
+require('dotenv').config({path: __dirname + '/.env.docker'});
 
-//const cors = require("cors");
-require("dotenv").config({ path: "./config.env" });
-const port = 5000;
-const url = process.env.CONN_STR;
+const port = process.env.PORT; //5000;
 //app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'build')));

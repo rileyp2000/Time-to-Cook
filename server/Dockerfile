@@ -6,6 +6,7 @@ COPY package-lock.json /usr/local/app/
 RUN npm install
 COPY server.js /usr/local/app/
 COPY recipes.js /usr/local/app/
+COPY .env.docker /usr/local/app/
 
 EXPOSE 5000
 
