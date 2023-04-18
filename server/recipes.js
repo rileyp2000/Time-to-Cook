@@ -71,13 +71,21 @@ async function addRecipe(recipeData) {
   return { added: result.insertedId };
 }
 
+function makeCaseInsensitive(query){
+  let modified  = {};
+  for (const k in query){
+    modified[k] = new RegExp("^" + query[k].toLowerCase(), "i");
+  }
+  return modified;
+}
+
 async function getRecipes(query) {
   //console.log("hello")
   const collection = await getRecipesCollection();
   if('favorite' in query === true){
     query['favorite'] = query['favorite'] === 'true' ? true : false;
   }
-  let recipes = await collection.find(query).toArray();
+  let recipes = await collection.find(makeCaseInsensitive(query)).toArray();
   console.log(recipes.length);
   if (recipes.length === 0)
     return {
