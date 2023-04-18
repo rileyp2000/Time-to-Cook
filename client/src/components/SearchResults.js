@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { useParams } from "react-router-dom";
 import RecipeCard from "./RecipeCard";
+import { useState, useEffect } from "react";
 
 function SearchResults() {
   const array = [
@@ -82,27 +83,64 @@ function SearchResults() {
       filters: ["No Protein"],
     },
   ];
+  // const { query } = useParams(); // Retrieve the search query parameter
+
+  // const getRecipe = (recipe) => {
+  //   for (let i = 0; i < array.length; i++) {
+  //     if (array[i].title.toLowerCase() == recipe.toLowerCase()) {
+  //       console.log(array[i]);
+  //       return array[i];
+  //     }
+  //   }
+  //   return null;
+  // };
+
+  // const recipe = getRecipe(query);
+
   const { query } = useParams(); // Retrieve the search query parameter
+  const [recipe, setRecipe] = useState([]);
 
-  const getRecipe = (recipe) => {
-    for (let i = 0; i < array.length; i++) {
-      if (array[i].title.toLowerCase() == recipe.toLowerCase()) {
-        console.log(array[i]);
-        return array[i];
-      }
-    }
-    return null;
-  };
-
-  const recipe = getRecipe(query);
+  useEffect(() => {
+    fetch("/getRecipes?title=${query}")
+      .then((response) => response.json())
+      .then((data) => {
+        setRecipe(data);
+      })
+      .catch((error) => console.error(error));
+  }, [query]);
 
   // Use the search query to fetch search results from your backend, or render static search results based on the query
   return (
-    <div>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "flex-start",
+        alignItems: "center",
+      }}
+    >
       {recipe ? (
-        <RecipeCard rec={recipe} />
+        <div
+          style={{
+            maxWidth: "400px",
+            marginTop: "20px",
+            alignContent: "center",
+          }}
+        >
+          <h2
+            style={{
+              textAlign: "center",
+              marginBottom: "20px",
+              borderBottom: "1px solid grey",
+            }}
+          >
+            Search Result for {query}
+          </h2>
+          <RecipeCard rec={recipe} />
+        </div>
       ) : (
-        <h2>No results found for `{query}`</h2>
+        <h2 style={{ textAlign: "center", marginTop: "20px" }}>
+          No results found for `{query}`
+        </h2>
       )}
     </div>
   );

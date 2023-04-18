@@ -17,6 +17,8 @@ import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import { Link, NavLink } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
+import { useNavigate } from "react-router-dom";
+import SearchResults from "./SearchResults";
 
 const pages = ["Home", "MyRecipe", "Favorites", "Add Recipe"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -82,6 +84,19 @@ function ResponsiveAppBar() {
     },
   }));
 
+  const [searchQuery, setSearchQuery] = React.useState(""); // Initialize search query state to an empty string
+  const navigate = useNavigate(); // Get the navigate function from the useNavigate hook
+
+  const handleSearch = (event) => {
+    if (event.key === "Enter") {
+      const query = event.target.value;
+      event.target.value = "";
+      console.log(query);
+      setSearchQuery(query); // Set search query state to the entered query when a search is performed
+      navigate(`/searchresults/${query}`); // Navigate to the SearchResults page with the search query as a parameter
+    }
+  };
+
   return (
     <AppBar
       position="static"
@@ -104,7 +119,6 @@ function ResponsiveAppBar() {
               mr: 2,
               display: { xs: "none", md: "flex" },
               fontWeight: 700,
-              letterSpacing: ".1rem",
               color: "inherit",
               textDecoration: "none",
             }}
@@ -198,13 +212,14 @@ function ResponsiveAppBar() {
             ))}
           </Box>
 
-          <Search style={{backgroundColor: "#F3F3F3"}}>
+          <Search style={{ backgroundColor: "#F3F3F3" }}>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
+              onKeyPress={handleSearch}
             />
           </Search>
         </Toolbar>
