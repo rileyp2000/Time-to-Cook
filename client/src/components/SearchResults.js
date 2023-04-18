@@ -98,18 +98,23 @@ function SearchResults() {
   // const recipe = getRecipe(query);
 
   const { query } = useParams(); // Retrieve the search query parameter
-  const [recipe, setRecipe] = useState([]);
+  const [recipe, setRecipe] = useState(null); // Initialize recipe state to null
 
   useEffect(() => {
-    fetch("/getRecipes?title=${query}")
+    fetch(`/getRecipes?title=${query}`)
       .then((response) => response.json())
       .then((data) => {
-        setRecipe(data);
+        if (data.length > 0) {
+          // If there are any search results
+          setRecipe(data[0]); // Set recipe state to the first result
+        } else {
+          setRecipe(null); // Otherwise, set recipe state to null
+        }
       })
       .catch((error) => console.error(error));
   }, [query]);
 
-  // Use the search query to fetch search results from your backend, or render static search results based on the query
+  // Render the search results based on the recipe state
   return (
     <div
       style={{
@@ -146,8 +151,8 @@ function SearchResults() {
   );
 }
 
-// SearchResults.propTypes = {
-//   query: PropTypes.string.isRequired,
-// };
+SearchResults.propTypes = {
+  query: PropTypes.string.isRequired,
+};
 
 export default SearchResults;
