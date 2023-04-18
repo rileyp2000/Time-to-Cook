@@ -31,10 +31,9 @@ app.use(express.json());
 //   await client.close();
 // }
 
-app.get("/test", (req, res) => {
-  console.log('hitting test');
-  res.json({"users": ["userOne", "userTwo", "userThree"]})
-})
+app.listen(port, () => {
+  console.log(`Server is running on port: ${port}`);
+});
 
 app.get('/getFilters', (req, res) => {
   console.log("/getFilters");
