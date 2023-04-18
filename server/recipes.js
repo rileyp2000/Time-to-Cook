@@ -71,46 +71,29 @@ async function addRecipe(recipeData) {
   return { added: result.insertedId };
 }
 
+function makeCaseInsensitive(query){
+  let modified  = {};
+  for (const k in query){
+    if(typeof query[k] === 'boolean'){
+      modified[k] = query[k];
+    } else {
+      modified[k] = new RegExp("^" + query[k].toLowerCase(), "i");
+    }
+  }
+  return modified;
+}
+
 async function getRecipes(query) {
   //console.log("hello")
   const collection = await getRecipesCollection();
   if('favorite' in query === true){
     query['favorite'] = query['favorite'] === 'true' ? true : false;
   }
-  let recipes = await collection.find(query).toArray();
+  let recipes = await collection.find(makeCaseInsensitive(query)).toArray();
   console.log(recipes.length);
   if (recipes.length === 0)
     return {
       results: 'No results found for this query'
-      // title: 'Snickerdoodles',
-      // time: '20mins',
-      // energy: 'Moderate',
-      // mealType: 'Sweets',
-      // utensils: ['Measuring spoons', '2 bowls', 'stove', 'baking sheet'],
-      // ingredients: {
-      //   Snickerdoodles: [
-      //     '2 ¾ cups all purpose flour',
-      //     '2tsp cream of tartar',
-      //     '½ tsp salt',
-      //     '1tsp baking powder',
-      //     '1 cup unsalted butter, softened',
-      //     '2 eggs',
-      //     '1 tsp vanilla extract'
-      //   ],
-      //   'Cinnamon Sugar Coating:': ['⅓ cup sugar', '2 tbsp cinnamon']
-      // },
-      // steps: [
-      //   'Preheat Oven to 350℉',
-      //   'In a large bowl, cream together butter and sugar',
-      //   'Mix flour, cream of tartar, baking soda, and salt together in another bowl and then slowly combine wet and dry ingredients',
-      //   'Combine sugar and cinnamon for the cinnamon sugar coating',
-      //   'Scoop out dough and roll into a ball',
-      //   'Bake for 8-10 minutes'
-      // ],
-      // image: { mime: 'image/jpeg', path: '/some/path/to/file' },
-      // filters: ['No Protein'],
-      // favorite: false,
-      // fake: 'true'
     };
   
   return recipes;

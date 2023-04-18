@@ -39,6 +39,8 @@ section {
   width: 100%;
   margin-bottom: 20px;
   margin-right: 20px;
+  min-width: 300px;
+  min-height: 400px;
 }
 
 @media (max-width: 969px) {
