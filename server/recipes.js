@@ -1,8 +1,12 @@
 const { MongoClient } = require("mongodb");
 var mongo = require("mongodb");
 let mongoCollection = null;
+const path = require('path');
+require('dotenv').config({path: __dirname + '/.env.docker'});
 
-const hostname = "mongodb://mongo:27017";
+const hostname = process.env.CONN_STR;
+
+//const hostname = "mongodb://mongo:27017";
 
 let client = null;
 
