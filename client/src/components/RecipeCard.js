@@ -102,7 +102,12 @@ function RecipeCard(props) {
     <div>
       <Card
         variant="outlined"
-        sx={{ width: "100%", borderColor: "hsl(294deg 9% 91%)", padding: "17px", marginBottom: "20px"}}
+        sx={{
+          width: "100%",
+          borderColor: "hsl(294deg 9% 91%)",
+          padding: "17px",
+          marginBottom: "20px",
+        }}
       >
         <IconButton
           aria-label="Like minimal photography"
@@ -146,7 +151,7 @@ function RecipeCard(props) {
           </Typography>
           <Typography level="body2" sx={{ mt: 0.5, mb: 2 }}>
             <Typography startDecorator={<TimerIcon />} textColor="neutral.700">
-              {props.rec.time}
+              {props.rec.time.join(" ")}
             </Typography>
           </Typography>
         </CardActionArea>

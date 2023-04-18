@@ -354,15 +354,35 @@ function AddForm() {
       energy: energy,
       mealType: meal,
       utensils: utensils,
-      ingredients: ingredients.map((ingredient, index) => ({
-        [index !== 0 ? ingredient.title : title]: ingredient.items,
-      })),
+      ingredients: ingredients.reduce(
+        (acc, ingredient, index) => ({
+          ...acc,
+          [index !== 0 ? ingredient.title : title]: ingredient.items,
+        }),
+        {}
+      ),
       steps: steps,
       image: { mime: "image/jpeg", path: "/some/path/to/file" },
       filters: protein,
       favorite: false,
     };
     console.log(recipe);
+
+    fetch("/addRecipe", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(recipe),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     setopenNotifSucess(true);
   };
 
@@ -409,8 +429,8 @@ function AddForm() {
           <FormControl style={{ flex: "0 0 20%" }} error={formErrors.unit}>
             <InputLabel sx={{ fontSize: 22 }}>Unit</InputLabel>
             <Select value={unit} label="Unit" onChange={handleUnit} required>
-              <MenuItem value={"Minute"}>Min</MenuItem>
-              <MenuItem value={"Hours"}>Hrs</MenuItem>
+              <MenuItem value={"Mins"}>Min</MenuItem>
+              <MenuItem value={"Hrs"}>Hrs</MenuItem>
             </Select>
             {formErrors.unit && (
               <FormHelperText id="component-error-text">Error</FormHelperText>
@@ -685,7 +705,7 @@ function AddForm() {
           <Button
             variant="outlined"
             color="secondary"
-            style={{ marginTop: 10, width: "20%", fontSize: 16}}
+            style={{ marginTop: 10, width: "20%", fontSize: 16 }}
             onClick={handleSubmit}
           >
             Submit

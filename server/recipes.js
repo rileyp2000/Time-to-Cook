@@ -107,7 +107,7 @@ async function loadSamples() {
       {
         "_id": new mongo.ObjectId("6422011aabee3b0007ba19bd"),
         "title": "Snickerdoodles",
-        "time": "20mins",
+        "time": ["20", "Mins"],
         "energy": "Moderate",
         "mealType": "Sweets",
         "utensils": [
@@ -151,7 +151,7 @@ async function loadSamples() {
       {
         "_id": new mongo.ObjectId("64220139abee3b0007ba19be"),
         "title": "Brownies",
-        "time": "45mins",
+        "time": ["45", "Mins"],
         "energy": "Moderate",
         "mealType": "Sweets",
         "utensils": [
