@@ -725,7 +725,7 @@ function AddForm() {
               onClose={handleCloseFail}
               severity="error"
             >
-              Please fill required form
+              Please fill out required form
             </MuiAlert>
           </Snackbar>
           <Snackbar
