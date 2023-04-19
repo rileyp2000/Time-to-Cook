@@ -1,8 +1,7 @@
 const express = require("express");
 const app = express();
 const { MongoClient } = require('mongodb');
-const { getRecipes, toggleFavorite, deleteRecipe, loadSamples, getFilters, addRecipe } = require("./recipes.js");
-
+const { getRecipes, toggleFavorite, deleteRecipe, loadSamples, getFilters, addRecipe, editRecipe } = require("./recipes.js");
 //const cors = require("cors");
 //require("dotenv").config({ path: "./config.env" });
 const port = 5000;
@@ -66,7 +65,7 @@ app.post("/deleteRecipe", (req, res) => {
 });
 
 // the purpose of this method is to have the functionality of adding new recipes to the interface
-// takes in an endpot that says /addrecipe uisng a post request
+// takes in an endpot that says /addRecipe uisng a post request
 app.post("/addRecipe", (req, res) => {
   // pass the body into the reqest
   console.log("/addRecipe");
@@ -78,6 +77,28 @@ app.post("/addRecipe", (req, res) => {
     .catch((error) => {
       console.error("Error adding recipe:", error);
       res.status(500).json({ error: "Failed to add recipe" });
+    });
+});
+
+// the purpose of this method is to have the functionality of editing recipes entities already in the interface
+// takes in an endpoint that says /editRecipe using a post request
+app.post('/editRecipe', (req, res) => {
+  // get the recipe ID from request body
+  const recipeId = req.body._id;
+  if (!recipeId) {
+    return res.status(400).json({error: "No Recipe ID matches"});
+  }
+
+  // take whole body to pass to function that has the edit function (in recipes.js) 
+  console.log("/editRecipe");
+  console.log(req.body);
+
+  // Call the function in recipes.js to update the recipe by ID
+  editRecipe(recipeId, req.body)
+    .then(result => res.json(result))
+    .catch(error => {
+      console.error("Error editing recipe:", error);
+      res.status(500).json({error: "Failed to edit recipe"});
     });
 });
 
