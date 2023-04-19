@@ -61,6 +61,12 @@ function RecipeCard(props) {
     setDeleteModalOpen(false);
   };
 
+  const [fontSize, setFontSize] = React.useState(""); // State for storing the current font size
+
+  const handleFontSizeChange = (size) => {
+    setFontSize(size);
+  };
+
   //setting based on status of recipecard:
   const [isFavorite, setIsFavorite] = React.useState(props.rec.favorite);
 
@@ -96,7 +102,7 @@ function RecipeCard(props) {
     <div>
       <Card
         variant="outlined"
-        sx={{ width: 200, borderColor: "hsl(294deg 9% 91%)", padding: "16px" }}
+        sx={{ width: "100%", borderColor: "hsl(294deg 9% 91%)", padding: "17px", marginBottom: "20px"}}
       >
         <IconButton
           aria-label="Like minimal photography"
@@ -119,7 +125,7 @@ function RecipeCard(props) {
         >
           <FavoriteIcon
             sx={{
-              color: isFavorite ? "purple" : "white",
+              color: isFavorite ? "#6B48FF" : "white",
               fontSize: "40px",
             }}
           />
@@ -135,7 +141,7 @@ function RecipeCard(props) {
               />
             </AspectRatio>
           </CardOverflow>
-          <Typography level="h2" sx={{ fontSize: "md", mt: 2, }}>
+          <Typography level="h2" sx={{ fontSize: "md", mt: 2 }}>
             {props.rec.title}
           </Typography>
           <Typography level="body2" sx={{ mt: 0.5, mb: 2 }}>
@@ -185,7 +191,7 @@ function RecipeCard(props) {
             <Sheet
               variant="outlined"
               sx={{
-                maxWidth: 500,
+                maxWidth: 600,
                 borderRadius: "md",
                 p: 3,
                 boxShadow: "none",
@@ -193,32 +199,65 @@ function RecipeCard(props) {
                 height: "80%", //tells us what the height of the modal content
               }}
             >
-              <Button
-                variant="outlined"
+              <Box
                 sx={{
-                  position: "absolute",
-                  top: 8,
-                  right: 15,
-                  zIndex: 1,
+                  display: "flex",
                 }}
-                endIcon={<EditOutlinedIcon />}
               >
-                Edit
-              </Button>
-              <Button
-                variant="outlined"
-                color="error"
-                sx={{
-                  position: "absolute",
-                  top: 8,
-                  right: 115,
-                  zIndex: 1,
-                }}
-                onClick={handleDelete}
-                startIcon={<DeleteIcon />}
-              >
-                Delete
-              </Button>
+                <Box
+                  sx={{
+                    justifyContent: "flex-start", // Update justifyContent to flex-start
+                    mb: 2,
+                  }}
+                >
+                  <Button
+                    variant="outlined"
+                    color="secondary"
+                    onClick={() => handleFontSizeChange("16px")}
+                    sx={{ mr: 2 }}
+                  >
+                    L
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    color="secondary"
+                    onClick={() => handleFontSizeChange("20px")}
+                    sx={{ mr: 2 }}
+                  >
+                    XL
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    color="secondary"
+                    onClick={() => handleFontSizeChange("24px")}
+                  >
+                    XXL
+                  </Button>
+                </Box>
+                <Box
+                  sx={{
+                    justifyContent: "flex-end", // Update justifyContent to flex-end
+                    mb: 2,
+                  }}
+                >
+                  <Button
+                    sx={{ ml: "9rem", mr: "1rem" }} // Update margin left to margin right
+                    variant="outlined"
+                    endIcon={<EditOutlinedIcon />}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    color="error"
+                    onClick={handleDelete}
+                    startIcon={<DeleteIcon />}
+                  >
+                    Delete
+                  </Button>
+                </Box>
+              </Box>
+
               <Typography
                 component="h2"
                 id="modal-title"
@@ -227,11 +266,18 @@ function RecipeCard(props) {
                 fontWeight="fontWeightBold"
                 mb={1}
                 mt={3}
-                style={{ borderBottom: "1px solid grey", mt: 2}}
+                style={{
+                  borderBottom: "1px solid grey",
+                  mt: 2,
+                }}
               >
                 {props.rec.title}
               </Typography>
-              <Typography id="modal-desc" textColor="text.primary">
+              <Typography
+                id="modal-desc"
+                textColor="text.primary"
+                style={{ fontSize: `${fontSize}` }}
+              >
                 MealType: {props.rec.mealType}
               </Typography>
               {/* my stands for margin y this makes space between each seciton
@@ -240,7 +286,7 @@ function RecipeCard(props) {
                 <Typography
                   component="h2"
                   id="modal-title"
-                  level="h3"
+                  level="h2"
                   textColor="inherit"
                   fontWeight="fontWeightRegular"
                   mb={1}
@@ -248,7 +294,11 @@ function RecipeCard(props) {
                 >
                   Utensils
                 </Typography>
-                <Typography id="modal-desc" textColor="text.primary">
+                <Typography
+                  id="modal-desc"
+                  textColor="text.primary"
+                  style={{ fontSize: `${fontSize}` }}
+                >
                   <ul>
                     {props.rec.utensils.map((utensil, index) => (
                       <li key={index}>{utensil}</li>
@@ -260,7 +310,7 @@ function RecipeCard(props) {
                 <Typography
                   component="h2"
                   id="modal-title"
-                  level="h3"
+                  level="h2"
                   textColor="inherit"
                   fontWeight="fontWeightRegular"
                   mb={1}
@@ -268,7 +318,11 @@ function RecipeCard(props) {
                 >
                   Ingredients
                 </Typography>
-                <Typography id="modal-desc" textColor="text.primary">
+                <Typography
+                  id="modal-desc"
+                  textColor="text.primary"
+                  style={{ fontSize: `${fontSize}` }}
+                >
                   {Object.entries(props.rec.ingredients).map(
                     ([title, ingredients]) => (
                       <div key={title}>
@@ -289,7 +343,7 @@ function RecipeCard(props) {
                 <Typography
                   component="h2"
                   id="modal-title"
-                  level="h3"
+                  level="h2"
                   textColor="inherit"
                   fontWeight="fontWeightRegular"
                   mb={2}
@@ -297,7 +351,11 @@ function RecipeCard(props) {
                 >
                   Steps
                 </Typography>
-                <Typography id="modal-desc" textColor="text.primary">
+                <Typography
+                  id="modal-desc"
+                  textColor="text.primary"
+                  style={{ fontSize: `${fontSize}` }}
+                >
                   {props.rec.steps.map((step, index) => (
                     <div key={index} style={{ marginBottom: "8px" }}>
                       <span style={{ marginRight: "8px", fontWeight: "bold" }}>
