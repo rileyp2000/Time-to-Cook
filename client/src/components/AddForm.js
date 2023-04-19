@@ -363,7 +363,7 @@ function AddForm() {
         {}
       ),
       steps: steps,
-      image: { mime: "image/jpeg", path: "/some/path/to/file" },
+      image: { mime: "image/jpeg", data: image },
       filters: protein,
       favorite: false,
     };
@@ -454,6 +454,20 @@ function AddForm() {
             error={formErrors.meal}
           >
             <InputLabel sx={{ fontSize: 22 }}>Meal Type</InputLabel>
+            <Select
+              value={meal}
+              label="Protein"
+              onChange={handleProtein}
+              required
+            >
+              <MenuItem value={"Chicken"}>Chicken</MenuItem>
+              <MenuItem value={"Beef"}>Beef</MenuItem>
+              <MenuItem value={"Pork"}>Pork</MenuItem>
+              <MenuItem value={"No Protein"}>No Protein</MenuItem>
+            </Select>
+            {formErrors.protein && (
+              <FormHelperText id="component-error-text">Error</FormHelperText>
+            )}
             <Input onChange={handleMeal} required />
             {formErrors.meal && (
               <FormHelperText id="component-error-text">Error</FormHelperText>

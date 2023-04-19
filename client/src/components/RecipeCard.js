@@ -139,8 +139,8 @@ function RecipeCard(props) {
           <CardOverflow>
             <AspectRatio ratio="2">
               <img
-                src={props.rec.image.path}
-                srcSet={`${props.rec.image.path} 2x`}
+                src={props.rec.image.data}
+                srcSet={`${props.rec.image.data} 2x`}
                 loading="lazy"
                 alt=""
               />
@@ -440,7 +440,7 @@ RecipeCard.propTypes = {
     steps: PropTypes.arrayOf(PropTypes.string).isRequired,
     image: PropTypes.shape({
       mime: PropTypes.string.isRequired,
-      path: PropTypes.string.isRequired,
+      data: PropTypes.string.isRequired,
     }).isRequired,
     filters: PropTypes.arrayOf(PropTypes.string).isRequired,
     favorite: PropTypes.bool.isRequired,
