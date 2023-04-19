@@ -41,54 +41,74 @@ async function toggleFavorite(id, value) {
   return result
 }
 
+// the purpose of this function is to delete recipes from the database using the recipe id
 async function deleteRecipe(id) {
+  // recipes will become the result of the call to await getRecipesCollection() 
   const recipes = await getRecipesCollection();
+  // creates a query object from the recipe's id field
   const query = { _id: new mongo.ObjectId(id) };
+  // result will become the deleted query from the deleteOne() call
   const result = await recipes.deleteOne(query);
+  // if there was a count of 1 for the objects deleted 
   if (result.deletedCount === 1) {
+    // then send a message to the console that deletion was successful
     console.log("Successfully deleted one document.");
   } else {
+    // if not, then a message will be sent to the console that the deletion was unsuccessful 
     console.log("No documents matched the query. Deleted 0 documents.");
   }
+  // closes database connection
   await client.close();
+  // sets client variable to null
   client = null;
+  // returns how many objects were deleted from the result variable
   return { deleted: result.deletedCount };
 }
 
 // the purpose of this function is to add recipes to the database
 async function addRecipe(recipeData) {
+  // recipes will become the result of the call to await getRecipesCollection() 
   const recipes = await getRecipesCollection();
-  //delete recipeData._id;
-  //const query =  {_id: new mongo.ObjectId(id)};
+  // result will become the inserted query from the insertOne() call
   const result = await recipes.insertOne(recipeData);
+  // if the result was successfully acknowledged by the server
   if (result.acknowledged === true) {
+    // then send a message to the console that insertion was successful
     console.log("Successfully added one recipe.");
   } else {
+    // if not, then a message will be sent to the console that the insertion failed 
     console.log("Failed to add recipe to collection.");
   }
+  // closes database connection
   await client.close();
+  // sets client variable to null
   client = null;
+  // returns how many objects were inserted from the result variable
   return { added: result.insertedId };
 }
 
-
+// the purpose of this function is to edit the recipes in the database
 async function editRecipe(recipeId, updatedRecipeData) {
+    // recipes will become the result of the call to await getRecipesCollection() 
     const recipes = await getRecipesCollection();
-  
+    // this deletes the id created of the recipe
     delete updatedRecipeData._id;
-    
-    // Update the recipe by ID with the updated recipe data
+    // update the recipe by ID with the updated recipe data
     const result = await recipes.updateOne({ _id: new mongo.ObjectId(recipeId) }, { $set: updatedRecipeData });
-
-    // if result is acknowledged by the server
+    // if the modified count of the result is 1 
     if (result.modifiedCount === 1) {
+        // then a message will be sent to the console that the recipe was updated
         console.log(`Recipe ${recipeId} updated`);
     } 
     else {
+        // if not, then a message will be sent to the console that the recipe was not updated  
         console.log(`Recipe ${recipeId} not updated`);
     }
+    // closes database connection
     await client.close();
+    // sets client variable to null
     client = null;
+    // returns how many recipes were updated from the result variable
     return {updated: result.modifiedCount};
 }
 
