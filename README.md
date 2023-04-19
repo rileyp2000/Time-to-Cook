@@ -31,7 +31,3 @@ docker compose down
 5. Navigate to the `server/` directory and run `npm install`
 6. Once complete, run `node server.js` to start the site! If you would like the 
     service to run in the background, instead run `node server.js &`
-
-
-
-1. ensure that
