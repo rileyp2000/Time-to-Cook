@@ -186,22 +186,23 @@ function AddForm() {
         ...prevFormErrors,
         title: false,
       }));
-      isFormValid = true;
+      //isFormValid = true;
     }
 
-    // Check for time
-    if (!time) {
+    // Check for time, made sure that it has to be numbers
+    if (!time || isNaN(time)) {
       setFormErrors((prevFormErrors) => ({
         ...prevFormErrors,
         time: true,
       }));
       isFormValid = false;
+      console.log(time);
     } else {
       setFormErrors((prevFormErrors) => ({
         ...prevFormErrors,
         time: false,
       }));
-      isFormValid = true;
+      //isFormValid = true;
     }
 
     // Check for unit
@@ -216,7 +217,7 @@ function AddForm() {
         ...prevFormErrors,
         unit: false,
       }));
-      isFormValid = true;
+      //isFormValid = true;
     }
 
     // Check for energy
@@ -231,7 +232,7 @@ function AddForm() {
         ...prevFormErrors,
         energy: false,
       }));
-      isFormValid = true;
+      //isFormValid = true;
     }
 
     // Check for meal
@@ -246,7 +247,7 @@ function AddForm() {
         ...prevFormErrors,
         meal: false,
       }));
-      isFormValid = true;
+      //isFormValid = true;
     }
 
     // Check for protein
@@ -261,7 +262,7 @@ function AddForm() {
         ...prevFormErrors,
         protein: false,
       }));
-      isFormValid = true;
+      //isFormValid = true;
     }
 
     // Check for utensils
@@ -276,7 +277,7 @@ function AddForm() {
         ...prevFormErrors,
         utensils: utensils.map(() => false),
       }));
-      isFormValid = true;
+      //isFormValid = true;
     }
 
     // Check for ingredients
@@ -312,7 +313,7 @@ function AddForm() {
             items: ingredient.items.map(() => false),
           })),
         }));
-        isFormValid = true;
+        //isFormValid = true;
       } else {
         setFormErrors((prevFormErrors) => ({
           ...prevFormErrors,
@@ -338,7 +339,7 @@ function AddForm() {
         ...prevFormErrors,
         steps: steps.map(() => false),
       }));
-      isFormValid = true;
+      //isFormValid = true;
     }
 
     // Show Snackbar error message if form is not valid
@@ -384,6 +385,9 @@ function AddForm() {
         console.log(error);
       });
     setopenNotifSucess(true);
+    setTimeout(() => {
+      window.location.reload();
+    }, 500); // 0.5 seconds delay
   };
 
   return (
