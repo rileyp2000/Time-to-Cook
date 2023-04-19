@@ -102,7 +102,12 @@ function RecipeCard(props) {
     <div>
       <Card
         variant="outlined"
-        sx={{ width: "100%", borderColor: "hsl(294deg 9% 91%)", padding: "17px", marginBottom: "20px"}}
+        sx={{
+          width: "100%",
+          borderColor: "hsl(294deg 9% 91%)",
+          padding: "17px",
+          marginBottom: "20px",
+        }}
       >
         <IconButton
           aria-label="Like minimal photography"
@@ -134,8 +139,8 @@ function RecipeCard(props) {
           <CardOverflow>
             <AspectRatio ratio="2">
               <img
-                src={props.rec.image.path}
-                srcSet={`${props.rec.image.path} 2x`}
+                src={props.rec.image.data}
+                srcSet={`${props.rec.image.data} 2x`}
                 loading="lazy"
                 alt=""
               />
@@ -146,7 +151,7 @@ function RecipeCard(props) {
           </Typography>
           <Typography level="body2" sx={{ mt: 0.5, mb: 2 }}>
             <Typography startDecorator={<TimerIcon />} textColor="neutral.700">
-              {props.rec.time}
+              {props.rec.time.join(" ")}
             </Typography>
           </Typography>
         </CardActionArea>
@@ -435,7 +440,7 @@ RecipeCard.propTypes = {
     steps: PropTypes.arrayOf(PropTypes.string).isRequired,
     image: PropTypes.shape({
       mime: PropTypes.string.isRequired,
-      path: PropTypes.string.isRequired,
+      data: PropTypes.string.isRequired,
     }).isRequired,
     filters: PropTypes.arrayOf(PropTypes.string).isRequired,
     favorite: PropTypes.bool.isRequired,

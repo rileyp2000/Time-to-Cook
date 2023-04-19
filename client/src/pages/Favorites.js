@@ -17,11 +17,11 @@ function Favorite() {
 
   return (
     <div>
-      <h1>Favorites</h1>
+      <h1 style={{marginBottom: "20px", marginTop: "20px"}}>Favorites</h1>
       {recipes.length > 0 ? (
         recipes.map((recipe) => <RecipeCard key={recipe._id} rec={recipe} />)
       ) : (
-        <p>Loading...</p>
+        <p>No Results</p>
       )}
     </div>
   );

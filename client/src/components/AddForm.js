@@ -186,22 +186,23 @@ function AddForm() {
         ...prevFormErrors,
         title: false,
       }));
-      isFormValid = true;
+      //isFormValid = true;
     }
 
-    // Check for time
-    if (!time) {
+    // Check for time, made sure that it has to be numbers
+    if (!time || isNaN(time)) {
       setFormErrors((prevFormErrors) => ({
         ...prevFormErrors,
         time: true,
       }));
       isFormValid = false;
+      console.log(time);
     } else {
       setFormErrors((prevFormErrors) => ({
         ...prevFormErrors,
         time: false,
       }));
-      isFormValid = true;
+      //isFormValid = true;
     }
 
     // Check for unit
@@ -216,7 +217,7 @@ function AddForm() {
         ...prevFormErrors,
         unit: false,
       }));
-      isFormValid = true;
+      //isFormValid = true;
     }
 
     // Check for energy
@@ -231,7 +232,7 @@ function AddForm() {
         ...prevFormErrors,
         energy: false,
       }));
-      isFormValid = true;
+      //isFormValid = true;
     }
 
     // Check for meal
@@ -246,7 +247,7 @@ function AddForm() {
         ...prevFormErrors,
         meal: false,
       }));
-      isFormValid = true;
+      //isFormValid = true;
     }
 
     // Check for protein
@@ -261,7 +262,7 @@ function AddForm() {
         ...prevFormErrors,
         protein: false,
       }));
-      isFormValid = true;
+      //isFormValid = true;
     }
 
     // Check for utensils
@@ -276,7 +277,7 @@ function AddForm() {
         ...prevFormErrors,
         utensils: utensils.map(() => false),
       }));
-      isFormValid = true;
+      //isFormValid = true;
     }
 
     // Check for ingredients
@@ -312,7 +313,7 @@ function AddForm() {
             items: ingredient.items.map(() => false),
           })),
         }));
-        isFormValid = true;
+        //isFormValid = true;
       } else {
         setFormErrors((prevFormErrors) => ({
           ...prevFormErrors,
@@ -338,7 +339,7 @@ function AddForm() {
         ...prevFormErrors,
         steps: steps.map(() => false),
       }));
-      isFormValid = true;
+      //isFormValid = true;
     }
 
     // Show Snackbar error message if form is not valid
@@ -354,16 +355,39 @@ function AddForm() {
       energy: energy,
       mealType: meal,
       utensils: utensils,
-      ingredients: ingredients.map((ingredient, index) => ({
-        [index !== 0 ? ingredient.title : title]: ingredient.items,
-      })),
+      ingredients: ingredients.reduce(
+        (acc, ingredient, index) => ({
+          ...acc,
+          [index !== 0 ? ingredient.title : title]: ingredient.items,
+        }),
+        {}
+      ),
       steps: steps,
-      image: { mime: "image/jpeg", path: "/some/path/to/file" },
+      image: { mime: "image/jpeg", data: image },
       filters: protein,
       favorite: false,
     };
     console.log(recipe);
+
+    fetch("/addRecipe", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(recipe),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     setopenNotifSucess(true);
+    setTimeout(() => {
+      window.location.reload();
+    }, 500); // 0.5 seconds delay
   };
 
   return (
@@ -409,8 +433,8 @@ function AddForm() {
           <FormControl style={{ flex: "0 0 20%" }} error={formErrors.unit}>
             <InputLabel sx={{ fontSize: 22 }}>Unit</InputLabel>
             <Select value={unit} label="Unit" onChange={handleUnit} required>
-              <MenuItem value={"Minute"}>Min</MenuItem>
-              <MenuItem value={"Hours"}>Hrs</MenuItem>
+              <MenuItem value={"Mins"}>Min</MenuItem>
+              <MenuItem value={"Hrs"}>Hrs</MenuItem>
             </Select>
             {formErrors.unit && (
               <FormHelperText id="component-error-text">Error</FormHelperText>
@@ -430,6 +454,20 @@ function AddForm() {
             error={formErrors.meal}
           >
             <InputLabel sx={{ fontSize: 22 }}>Meal Type</InputLabel>
+            <Select
+              value={meal}
+              label="Protein"
+              onChange={handleProtein}
+              required
+            >
+              <MenuItem value={"Chicken"}>Chicken</MenuItem>
+              <MenuItem value={"Beef"}>Beef</MenuItem>
+              <MenuItem value={"Pork"}>Pork</MenuItem>
+              <MenuItem value={"No Protein"}>No Protein</MenuItem>
+            </Select>
+            {formErrors.protein && (
+              <FormHelperText id="component-error-text">Error</FormHelperText>
+            )}
             <Input onChange={handleMeal} required />
             {formErrors.meal && (
               <FormHelperText id="component-error-text">Error</FormHelperText>
@@ -685,7 +723,7 @@ function AddForm() {
           <Button
             variant="outlined"
             color="secondary"
-            style={{ marginTop: 10, width: "20%", fontSize: 16}}
+            style={{ marginTop: 10, width: "20%", fontSize: 16 }}
             onClick={handleSubmit}
           >
             Submit
@@ -701,7 +739,7 @@ function AddForm() {
               onClose={handleCloseFail}
               severity="error"
             >
-              Please fill required form
+              Please fill out required form
             </MuiAlert>
           </Snackbar>
           <Snackbar
