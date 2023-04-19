@@ -1,11 +1,9 @@
 import * as React from "react";
 import AddForm from "../components/AddForm";
 
+function Addrecipe() {
 
-function Addrecipe(){
-    return (
-        <AddForm></AddForm>
-    );
+  return <AddForm></AddForm>;
 }
 
 export default Addrecipe;

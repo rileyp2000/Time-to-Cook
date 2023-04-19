@@ -7,6 +7,8 @@ import MenuItem from "@mui/material/MenuItem";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import UploadImage from "./UploadImage";
+import PropTypes from "prop-types";
+import { useLocation } from "react-router-dom";
 
 import {
   FormControl,
@@ -19,7 +21,11 @@ import {
 } from "@mui/material";
 
 function AddForm() {
-  const [unit, setUnit] = React.useState("");
+  const { state } = useLocation();
+  const editingRecipe = state?.editingRecipe;
+  console.log(editingRecipe);
+
+  const [unit, setUnit] = React.useState(editingRecipe?.time[1] || "");
 
   const handleUnit = (event) => {
     setUnit(event.target.value);
@@ -39,13 +45,13 @@ function AddForm() {
     setTime(event.target.value);
   };
 
-  const [energy, setEnergy] = React.useState("");
+  const [energy, setEnergy] = React.useState(editingRecipe?.energy || "");
 
   const handleEnergy = (event) => {
     setEnergy(event.target.value);
   };
 
-  const [protein, setProtein] = React.useState("");
+  const [protein, setProtein] = React.useState(editingRecipe?.protein || "");
 
   const handleProtein = (event) => {
     setProtein(event.target.value);
@@ -58,7 +64,9 @@ function AddForm() {
   };
 
   const [numUtensils, setnumUtensils] = React.useState(1);
-  const [utensils, setUtensils] = React.useState([""]);
+  const [utensils, setUtensils] = React.useState(
+    editingRecipe?.utensils || [""]
+  );
 
   const handleAddUtensil = () => {
     setnumUtensils(numUtensils + 1);
@@ -384,6 +392,9 @@ function AddForm() {
         console.log(error);
       });
     setopenNotifSucess(true);
+    setTimeout(() => {
+      window.location.reload();
+    }, 500); // 0.5 seconds delay
   };
 
   return (
@@ -411,7 +422,11 @@ function AddForm() {
             error={formErrors.title}
           >
             <InputLabel sx={{ fontSize: 22 }}>Title</InputLabel>
-            <Input onChange={handleTitle} required />
+            <Input
+              onChange={handleTitle}
+              required
+              defaultValue={editingRecipe?.title || ""}
+            />
             {formErrors.title && (
               <FormHelperText id="component-error-text">Error</FormHelperText>
             )}
@@ -421,7 +436,11 @@ function AddForm() {
             error={formErrors.time}
           >
             <InputLabel sx={{ fontSize: 22 }}>Time</InputLabel>
-            <Input onChange={handleTime} required />
+            <Input
+              onChange={handleTime}
+              required
+              defaultValue={editingRecipe?.time[0] || ""}
+            />
             {formErrors.time && (
               <FormHelperText id="component-error-text">Error</FormHelperText>
             )}
@@ -743,5 +762,14 @@ function AddForm() {
     </div>
   );
 }
+
+AddForm.propTypes = {
+  recipe: PropTypes.object.isRequired,
+  location: PropTypes.shape({
+    state: PropTypes.shape({
+      editingRecipe: PropTypes.object.isRequired,
+    }).isRequired,
+  }).isRequired,
+};
 
 export default AddForm;

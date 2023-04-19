@@ -19,6 +19,8 @@ import { purple } from "@mui/material/colors";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function RecipeCard(props) {
   //used to handle modal being opened
@@ -90,6 +92,16 @@ function RecipeCard(props) {
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  const [editingRecipe, setEditingRecipe] = React.useState(null);
+  const navigate = useNavigate();
+
+  const handleEditClick = (recipe) => {
+    // const editRecipe = recipe;
+    setEditingRecipe(recipe);
+    // navigate(`/addform/${editRecipe}`);
+    navigate("/addform", { state: { editingRecipe: recipe } });
   };
 
   // Add a check to make sure that the `rec` prop is not undefined
@@ -238,7 +250,11 @@ function RecipeCard(props) {
                   </Button>
                 </Box>
                 <Box>
-                  <Button variant="outlined" endIcon={<EditOutlinedIcon />}>
+                  <Button
+                    variant="outlined"
+                    onClick={() => handleEditClick(props.rec)}
+                    endIcon={<EditOutlinedIcon />}
+                  >
                     Edit
                   </Button>
                   <Button
