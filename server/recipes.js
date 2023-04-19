@@ -71,6 +71,27 @@ async function addRecipe(recipeData) {
   return { added: result.insertedId };
 }
 
+
+async function editRecipe(recipeId, updatedRecipeData) {
+    const recipes = await getRecipesCollection();
+  
+    delete updatedRecipeData._id;
+    
+    // Update the recipe by ID with the updated recipe data
+    const result = await recipes.updateOne({ _id: new mongo.ObjectId(recipeId) }, { $set: updatedRecipeData });
+
+    // if result is acknowledged by the server
+    if (result.modifiedCount === 1) {
+        console.log(`Recipe ${recipeId} updated`);
+    } 
+    else {
+        console.log(`Recipe ${recipeId} not updated`);
+    }
+    await client.close();
+    client = null;
+    return {updated: result.modifiedCount};
+}
+
 function makeCaseInsensitive(query){
   let modified  = {};
   for (const k in query){
@@ -234,5 +255,8 @@ module.exports = {
     toggleFavorite,
     deleteRecipe,
     loadSamples,
+    addRecipe,
+    editRecipe,
+    getFilters,
     addRecipe
 };
