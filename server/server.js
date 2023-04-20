@@ -57,46 +57,52 @@ app.post("/toggleFavorite", (req, res) => {
   //res.status(200).send("please work");
 });
 
+// route handler function that uses post to create a route handling for the /deleteRecipe endpoint
 app.post("/deleteRecipe", (req, res) => {
+  // logs string /deleteRecipe to the console
   console.log("/deleteRecipe");
+  // logs the requests's body to the console
   console.log(req.body);
+  // calls the deleteRecipe function in recipes.js with the body's id
   deleteRecipe(req.body._id).then((result) => res.json(result));
   //res.status(200).send("please work");
 });
 
-// the purpose of this method is to have the functionality of adding new recipes to the interface
-// takes in an endpot that says /addRecipe uisng a post request
+// route handler function that uses post to create a route handling for the /addRecipe endpoint
 app.post("/addRecipe", (req, res) => {
-  // pass the body into the reqest
+  // logs string /addRecipe to the console
   console.log("/addRecipe");
+  // logs the requests's body to the console
   console.log(req.body);
-  // delete req.body._id;
   // take whole body to pass to function that has the add function (in recipes.js)
   addRecipe(req.body)
     .then((result) => res.json(result))
     .catch((error) => {
+      // catching the console error and sends the message that it cannot add recipe
       console.error("Error adding recipe:", error);
       res.status(500).json({ error: "Failed to add recipe" });
     });
 });
 
-// the purpose of this method is to have the functionality of editing recipes entities already in the interface
-// takes in an endpoint that says /editRecipe using a post request
+// route handler function that uses post to create a route handling for the /editRecipe endpoint
 app.post('/editRecipe', (req, res) => {
   // get the recipe ID from request body
   const recipeId = req.body._id;
+  // if recipe ID is not in the database
   if (!recipeId) {
+    // will send a message that there is no recipe ID that matches input
     return res.status(400).json({error: "No Recipe ID matches"});
   }
-
-  // take whole body to pass to function that has the edit function (in recipes.js) 
+  // logs string /addRecipe to the console
   console.log("/editRecipe");
+  // logs the requests's body to the console
   console.log(req.body);
 
-  // Call the function in recipes.js to update the recipe by ID
+  // Call the function in recipes.js to update the recipe by ID and body
   editRecipe(recipeId, req.body)
     .then(result => res.json(result))
     .catch(error => {
+      // catching the console error and sends the message that it cannot edit recipe
       console.error("Error editing recipe:", error);
       res.status(500).json({error: "Failed to edit recipe"});
     });
