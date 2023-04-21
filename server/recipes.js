@@ -106,18 +106,32 @@ function makeCaseInsensitive(query){
 
 async function getRecipes(query) {
   //console.log("hello")
-  const collection = await getRecipesCollection();
-  if('favorite' in query === true){
-    query['favorite'] = query['favorite'] === 'true' ? true : false;
-  }
-  let recipes = await collection.find(makeCaseInsensitive(query)).toArray();
-  console.log(recipes.length);
-  if (recipes.length === 0)
-    return {
-      results: 'No results found for this query'
-    };
+  try {
+    const collection = await getRecipesCollection().catch((err) => {
+      console.error("# MongoDB Connection Error:\n", err);
+      throw new Error("Could not connect to the MongoDB database.");
+    });
+
+    if('favorite' in query === true){
+      query['favorite'] = query['favorite'] === 'true' ? true : false;
+    }
+    let recipes = await collection.find(makeCaseInsensitive(query)).toArray();
+    console.log(recipes.length);
+    if (recipes.length === 0) {
+      return {
+        results: 'No results found for this query'
+      };
+    }
   
-  return recipes;
+    return recipes;
+  } 
+  catch (err) {
+    console.error("An unknown error has occ:\n", err);
+    return { 
+      insertedId: null,
+      message: "An unknown error occurred."
+    };
+  }
 }
 
 async function loadSamples() {
