@@ -57,7 +57,7 @@ function AddForm() {
     setProtein(event.target.value);
   };
 
-  const [meal, setMeal] = React.useState("");
+  const [meal, setMeal] = React.useState(editingRecipe?.mealType || "");
 
   const handleMeal = (event) => {
     setMeal(event.target.value);
@@ -84,10 +84,20 @@ function AddForm() {
     setUtensils(newUtensils);
   };
 
+  let ingredientsArray = [];
+  if (editingRecipe) {
+    ingredientsArray = Object.entries(editingRecipe?.ingredients).map(
+      ([title, items]) => ({
+        title: title,
+        items: items,
+      })
+    );
+  }
+
   const [numIngredient, setNumIngredient] = React.useState(1);
-  const [ingredients, setIngredients] = React.useState([
-    { title: "", items: [""] },
-  ]);
+  const [ingredients, setIngredients] = React.useState(
+    editingRecipe ? ingredientsArray : [{ title: "", items: [""] }]
+  );
 
   const handleAddIngredient = () => {
     setNumIngredient(numIngredient + 1);
@@ -355,6 +365,7 @@ function AddForm() {
       setopenNotifFail(true);
       return;
     }
+    console.log("here is ingredeints:" + JSON.stringify(ingredients, null, 2));
 
     const recipe = {
       title: title,
@@ -371,7 +382,7 @@ function AddForm() {
       ),
       steps: steps,
       image: { mime: "image/jpeg", path: "/some/path/to/file" },
-      filters: protein,
+      protein: protein,
       favorite: false,
     };
     console.log("changed recipe:" + JSON.stringify(recipe, null, 2));
@@ -399,8 +410,8 @@ function AddForm() {
   };
 
   return (
-    <div style={{ textAlign: "center" }}>
-      <h1 style={{ color: "grey" }}>Add New Recipe</h1>
+    <div style={{ textAlign: "center", marginTop: "2rem" }}>
+      <h1 style={{ color: "grey" }}>{editingRecipe ? "Edit Recipe" : "Add Recipe"}</h1>
       <FormGroup
         style={{
           width: "70%",
@@ -477,6 +488,7 @@ function AddForm() {
           >
             <InputLabel sx={{ fontSize: 22 }}>Meal Type</InputLabel>
             <Input
+              value={meal}
               onChange={handleMeal}
               required
               defaultValue={editingRecipe?.mealType || ""}
@@ -741,7 +753,7 @@ function AddForm() {
             style={{ marginTop: 10, width: "20%", fontSize: 16 }}
             onClick={handleSubmit}
           >
-            Submit
+            {editingRecipe ? "Update" : "Submit"}
           </Button>
           <Snackbar
             open={openNotifFail}
