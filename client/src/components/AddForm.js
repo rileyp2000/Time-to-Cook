@@ -461,25 +461,45 @@ function AddForm() {
     console.log("changed recipe:" + JSON.stringify(recipe, null, 2));
     //console.log(recipe.title);
 
-    // fetch("/addRecipe", {
-    //   method: "POST",
-    //   headers: {
-    //     Accept: "application/json",
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(recipe),
-    // })
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     console.log(data);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
-    // setopenNotifSucess(true);
-    // setTimeout(() => {
-    //   window.location.reload();
-    // }, 500); // 0.5 seconds delay
+    if (!editingRecipe) {
+      fetch("/addRecipe", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(recipe),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      fetch("/editRecipe", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(
+          Object.assign(recipe, { _id: editingRecipe?._id })
+        ),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+    setopenNotifSucess(true);
+    setTimeout(() => {
+      window.location.reload();
+    }, 500); // 0.5 seconds delay
   };
 
   return (
@@ -905,7 +925,7 @@ function AddForm() {
               onClose={handleCloseSucess}
               severity="success"
             >
-              Recipe Added
+              {!editingRecipe ? "Recipe Added" : "Recipe Updated"}
             </MuiAlert>
           </Snackbar>
         </Box>

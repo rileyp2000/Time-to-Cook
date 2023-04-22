@@ -5,11 +5,19 @@ import PropTypes from "prop-types";
 import { useEffect } from "react";
 
 const UploadImage = ({ onImageUpload, initialImage }) => {
-  const [imagePreview, setImagePreview] = useState(`data:${initialImage.mime};base64,${initialImage.data}` || null); // State for storing image preview URL
+  const [imagePreview, setImagePreview] = useState(
+    initialImage
+      ? `data:${initialImage.mime};base64,${initialImage.data}`
+      : null
+  ); // State for storing image preview URL
   const [uploadProgress, setUploadProgress] = useState(0); // State for tracking upload progress
 
   useEffect(() => {
-    setImagePreview(`data:${initialImage.mime};base64,${initialImage.data}` || null);
+    setImagePreview(
+      initialImage
+        ? `data:${initialImage.mime};base64,${initialImage.data}`
+        : null
+    );
   }, [initialImage]);
 
   const handleFileUpload = (event) => {
