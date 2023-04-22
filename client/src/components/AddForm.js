@@ -31,7 +31,7 @@ function AddForm() {
     setUnit(event.target.value);
   };
 
-  const [title, setTitle] = React.useState("");
+  const [title, setTitle] = React.useState(editingRecipe?.title || "");
 
   const handleTitle = (event) => {
     setTitle(event.target.value);
@@ -39,7 +39,7 @@ function AddForm() {
   };
 
   //time has to be a number?
-  const [time, setTime] = React.useState("");
+  const [time, setTime] = React.useState(editingRecipe?.time[0] || "");
 
   const handleTime = (event) => {
     setTime(event.target.value);
@@ -129,7 +129,7 @@ function AddForm() {
   };
 
   const [numSteps, setNumSteps] = React.useState(1);
-  const [steps, setSteps] = React.useState([""]);
+  const [steps, setSteps] = React.useState(editingRecipe?.steps || [""]);
 
   const handleAddStep = () => {
     setNumSteps(numSteps + 1);
@@ -374,27 +374,28 @@ function AddForm() {
       filters: protein,
       favorite: false,
     };
-    console.log(recipe);
+    console.log("changed recipe:" + JSON.stringify(recipe, null, 2));
+    //console.log(recipe.title);
 
-    fetch("/addRecipe", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(recipe),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    setopenNotifSucess(true);
-    setTimeout(() => {
-      window.location.reload();
-    }, 500); // 0.5 seconds delay
+    // fetch("/addRecipe", {
+    //   method: "POST",
+    //   headers: {
+    //     Accept: "application/json",
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(recipe),
+    // })
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     console.log(data);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
+    // setopenNotifSucess(true);
+    // setTimeout(() => {
+    //   window.location.reload();
+    // }, 500); // 0.5 seconds delay
   };
 
   return (
@@ -447,7 +448,13 @@ function AddForm() {
           </FormControl>
           <FormControl style={{ flex: "0 0 20%" }} error={formErrors.unit}>
             <InputLabel sx={{ fontSize: 22 }}>Unit</InputLabel>
-            <Select value={unit} label="Unit" onChange={handleUnit} required>
+            <Select
+              value={unit}
+              label="Unit"
+              onChange={handleUnit}
+              required
+              defaultValue={editingRecipe?.time[1] || ""}
+            >
               <MenuItem value={"Mins"}>Min</MenuItem>
               <MenuItem value={"Hrs"}>Hrs</MenuItem>
             </Select>
@@ -469,7 +476,11 @@ function AddForm() {
             error={formErrors.meal}
           >
             <InputLabel sx={{ fontSize: 22 }}>Meal Type</InputLabel>
-            <Input onChange={handleMeal} required />
+            <Input
+              onChange={handleMeal}
+              required
+              defaultValue={editingRecipe?.mealType || ""}
+            />
             {formErrors.meal && (
               <FormHelperText id="component-error-text">Error</FormHelperText>
             )}
@@ -484,6 +495,7 @@ function AddForm() {
               label="Protein"
               onChange={handleProtein}
               required
+              defaultValue={editingRecipe?.protein || ""}
             >
               <MenuItem value={"Chicken"}>Chicken</MenuItem>
               <MenuItem value={"Beef"}>Beef</MenuItem>
@@ -501,6 +513,7 @@ function AddForm() {
               label="Energy"
               onChange={handleEnergy}
               required
+              defaultValue={editingRecipe?.energy || ""}
             >
               <MenuItem value={"Easy"}>Easy</MenuItem>
               <MenuItem value={"Moderate"}>Moderate</MenuItem>
@@ -511,7 +524,7 @@ function AddForm() {
             )}
           </FormControl>
         </FormGroup>
-        {[...Array(numUtensils)].map((_, index) => (
+        {utensils.map((utensil, index) => (
           <FormControl
             style={{
               display: "flex",
@@ -526,7 +539,7 @@ function AddForm() {
           >
             <InputLabel sx={{ fontSize: 22 }}>Utensil {index + 1}</InputLabel>
             <Input
-              value={utensils[index]}
+              value={utensil}
               onChange={(event) => handleUtensilChange(event, index)}
               required
               sx={{ width: "80%" }}
@@ -547,6 +560,7 @@ function AddForm() {
             )}
           </FormControl>
         ))}
+
         <Button
           variant="outlined"
           color="secondary"
@@ -560,7 +574,7 @@ function AddForm() {
         >
           Add Utensil
         </Button>
-        {[...Array(numSteps)].map((_, index) => (
+        {steps.map((utensil, index) => (
           <FormControl
             style={{
               display: "flex",
