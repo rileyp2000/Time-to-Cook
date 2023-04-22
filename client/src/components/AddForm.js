@@ -404,7 +404,7 @@ function AddForm() {
       ),
       steps: steps,
       image: image,
-      filters: protein,
+      protein: protein,
       favorite: false,
     };
     console.log(recipe);
@@ -549,7 +549,7 @@ function AddForm() {
               </FormControl>
             ) : (
               <FormControl>
-                <InputLabel sx={{ fontSize: 22 }}>Meal Type</InputLabel>
+                <InputLabel sx={{ fontSize: 22 }}>Protein</InputLabel>
                 <Select
                   value={protein}
                   label="Protein"
