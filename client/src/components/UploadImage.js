@@ -25,34 +25,15 @@ const UploadImage = ({ onImageUpload }) => {
       const base64String = reader.result
         .replace("data:", "")
         .replace(/^.+,/, "");
-      // Send the base64String to the backend or do whatever you need with it
-      onImageUpload(base64String);
+      // Create image object with mime type and base64 data
+      const image = {
+        mime: file.type,
+        data: base64String,
+      };
+      // Send the image object to the backend or do whatever you need with it
+      onImageUpload(image);
     };
   };
-
-  //-------
-
-  //   const handleFileUpload = async (event) => {
-  //     const files = event.target.files;
-  //     const file = files[0];
-
-  //     // Send image file to backend server using FormData
-  //     const formData = new FormData();
-  //     formData.append("image", file);
-  //     const response = await fetch("/api/upload", {
-  //       method: "POST",
-  //       body: formData,
-  //     });
-  //     const result = await response.json();
-
-  //     // Set file path in JSON object
-  //     const image = {
-  //       mime: file.type,
-  //       path: result.filePath, // Replace with the actual file path or local API link returned from the backend
-  //     };
-  //     // Call onImageUpload with the image object
-  //     onImageUpload(image);
-  //   };
 
   return (
     <div>
