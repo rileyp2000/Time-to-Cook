@@ -8,6 +8,7 @@ import MyRecipe from "./pages/Myrecipe";
 import Addrecipe from "./pages/Addrecipe";
 import { Route, Routes } from "react-router-dom";
 import SearchResults from "./components/SearchResults";
+import AddForm from "./components/AddForm";
 
 function App() {
   return (
@@ -19,6 +20,8 @@ function App() {
         <Route path="/myrecipe" element={<MyRecipe />} />
         <Route path="/add recipe" element={<Addrecipe />} />
         <Route path="/searchresults/:query" element={<SearchResults />} />
+        <Route path="/addform" element={<AddForm />} />
+
       </Routes>
     </>
   );
