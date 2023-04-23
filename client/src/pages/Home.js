@@ -2,6 +2,7 @@ import React from "react";
 import "./Home.css";
 import SearchResults from "../components/SearchResults";
 import { Link, useNavigate } from "react-router-dom";
+import FilterOptions from "../components/FilterOptions";
 
 function Home() {
   const [searchQuery, setSearchQuery] = React.useState(""); // Initialize search query state to an empty string
@@ -30,7 +31,9 @@ function Home() {
       ) : (
         <SearchResults query={searchQuery} />
       )}
+      <FilterOptions></FilterOptions>
     </div>
+    
   );
 }
 
