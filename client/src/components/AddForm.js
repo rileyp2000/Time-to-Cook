@@ -7,6 +7,9 @@ import MenuItem from "@mui/material/MenuItem";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import UploadImage from "./UploadImage";
+import PropTypes from "prop-types";
+import { useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 import {
   FormControl,
@@ -19,13 +22,17 @@ import {
 } from "@mui/material";
 
 function AddForm() {
-  const [unit, setUnit] = React.useState("");
+  const { state } = useLocation();
+  const editingRecipe = state?.editingRecipe;
+  console.log(editingRecipe);
+
+  const [unit, setUnit] = React.useState(editingRecipe?.time[1] || "");
 
   const handleUnit = (event) => {
     setUnit(event.target.value);
   };
 
-  const [title, setTitle] = React.useState("");
+  const [title, setTitle] = React.useState(editingRecipe?.title || "");
 
   const handleTitle = (event) => {
     setTitle(event.target.value);
@@ -33,32 +40,97 @@ function AddForm() {
   };
 
   //time has to be a number?
-  const [time, setTime] = React.useState("");
+  const [time, setTime] = React.useState(editingRecipe?.time[0] || "");
 
   const handleTime = (event) => {
     setTime(event.target.value);
   };
 
-  const [energy, setEnergy] = React.useState("");
+  const [energy, setEnergy] = React.useState(editingRecipe?.energy || "");
 
   const handleEnergy = (event) => {
     setEnergy(event.target.value);
   };
 
-  const [protein, setProtein] = React.useState("");
+  useEffect(() => {
+    if (
+      editingRecipe?.protein &&
+      !["Chicken", "Beef", "Pork", "Turkey", "Fish", "No Protein"].includes(
+        editingRecipe.protein
+      )
+    ) {
+      setProtein(editingRecipe.protein);
+      setShowOtherProtein(true);
+    }
+  }, [editingRecipe]);
+
+  const [protein, setProtein] = React.useState(editingRecipe?.protein || "");
+  const [showOtherProtein, setShowOtherProtein] = React.useState(false);
+  const [prevProtein, setPrevProtein] = React.useState("");
 
   const handleProtein = (event) => {
+    const value = event.target.value;
+    if (value === "Other") {
+      setShowOtherProtein(true);
+    } else {
+      setProtein(value);
+      setShowOtherProtein(false);
+    }
+  };
+
+  const handleOtherProtein = (event) => {
     setProtein(event.target.value);
   };
 
-  const [meal, setMeal] = React.useState("");
+  const handleBackProtein = () => {
+    setShowOtherProtein(false);
+    setProtein(prevMeal);
+  };
+  useEffect(() => {
+    if (
+      editingRecipe?.mealType &&
+      ![
+        "Entree",
+        "Breakfast",
+        "Lunch",
+        "Dinner",
+        "Side Dish",
+        "Sweets",
+      ].includes(editingRecipe.mealType)
+    ) {
+      setMeal(editingRecipe.mealType);
+      setShowOtherMeal(true);
+    }
+  }, [editingRecipe]);
+
+  const [meal, setMeal] = React.useState(editingRecipe?.mealType || "");
+
+  const [showOtherMeal, setShowOtherMeal] = React.useState(false);
+  const [prevMeal, setPrevMeal] = React.useState("");
 
   const handleMeal = (event) => {
+    const value = event.target.value;
+    if (value === "Other") {
+      setShowOtherMeal(true);
+    } else {
+      setMeal(value);
+      setShowOtherMeal(false);
+    }
+  };
+
+  const handleOtherMeal = (event) => {
     setMeal(event.target.value);
   };
 
+  const handleBackMeal = () => {
+    setShowOtherMeal(false);
+    setMeal(prevMeal);
+  };
+
   const [numUtensils, setnumUtensils] = React.useState(1);
-  const [utensils, setUtensils] = React.useState([""]);
+  const [utensils, setUtensils] = React.useState(
+    editingRecipe?.utensils || [""]
+  );
 
   const handleAddUtensil = () => {
     setnumUtensils(numUtensils + 1);
@@ -76,10 +148,20 @@ function AddForm() {
     setUtensils(newUtensils);
   };
 
+  let ingredientsArray = [];
+  if (editingRecipe) {
+    ingredientsArray = Object.entries(editingRecipe?.ingredients).map(
+      ([title, items]) => ({
+        title: title,
+        items: items,
+      })
+    );
+  }
+
   const [numIngredient, setNumIngredient] = React.useState(1);
-  const [ingredients, setIngredients] = React.useState([
-    { title: "", items: [""] },
-  ]);
+  const [ingredients, setIngredients] = React.useState(
+    editingRecipe ? ingredientsArray : [{ title: "", items: [""] }]
+  );
 
   const handleAddIngredient = () => {
     setNumIngredient(numIngredient + 1);
@@ -121,7 +203,7 @@ function AddForm() {
   };
 
   const [numSteps, setNumSteps] = React.useState(1);
-  const [steps, setSteps] = React.useState([""]);
+  const [steps, setSteps] = React.useState(editingRecipe?.steps || [""]);
 
   const handleAddStep = () => {
     setNumSteps(numSteps + 1);
@@ -186,22 +268,23 @@ function AddForm() {
         ...prevFormErrors,
         title: false,
       }));
-      isFormValid = true;
+      //isFormValid = true;
     }
 
-    // Check for time
-    if (!time) {
+    // Check for time, made sure that it has to be numbers
+    if (!time || isNaN(time)) {
       setFormErrors((prevFormErrors) => ({
         ...prevFormErrors,
         time: true,
       }));
       isFormValid = false;
+      console.log(time);
     } else {
       setFormErrors((prevFormErrors) => ({
         ...prevFormErrors,
         time: false,
       }));
-      isFormValid = true;
+      //isFormValid = true;
     }
 
     // Check for unit
@@ -216,7 +299,7 @@ function AddForm() {
         ...prevFormErrors,
         unit: false,
       }));
-      isFormValid = true;
+      //isFormValid = true;
     }
 
     // Check for energy
@@ -231,7 +314,7 @@ function AddForm() {
         ...prevFormErrors,
         energy: false,
       }));
-      isFormValid = true;
+      //isFormValid = true;
     }
 
     // Check for meal
@@ -246,7 +329,7 @@ function AddForm() {
         ...prevFormErrors,
         meal: false,
       }));
-      isFormValid = true;
+      //isFormValid = true;
     }
 
     // Check for protein
@@ -261,7 +344,7 @@ function AddForm() {
         ...prevFormErrors,
         protein: false,
       }));
-      isFormValid = true;
+      //isFormValid = true;
     }
 
     // Check for utensils
@@ -276,7 +359,7 @@ function AddForm() {
         ...prevFormErrors,
         utensils: utensils.map(() => false),
       }));
-      isFormValid = true;
+      //isFormValid = true;
     }
 
     // Check for ingredients
@@ -312,7 +395,7 @@ function AddForm() {
             items: ingredient.items.map(() => false),
           })),
         }));
-        isFormValid = true;
+        //isFormValid = true;
       } else {
         setFormErrors((prevFormErrors) => ({
           ...prevFormErrors,
@@ -338,7 +421,7 @@ function AddForm() {
         ...prevFormErrors,
         steps: steps.map(() => false),
       }));
-      isFormValid = true;
+      //isFormValid = true;
     }
 
     // Show Snackbar error message if form is not valid
@@ -347,6 +430,7 @@ function AddForm() {
       setopenNotifFail(true);
       return;
     }
+    console.log("here is ingredeints:" + JSON.stringify(ingredients, null, 2));
 
     const recipe = {
       title: title,
@@ -354,21 +438,67 @@ function AddForm() {
       energy: energy,
       mealType: meal,
       utensils: utensils,
-      ingredients: ingredients.map((ingredient, index) => ({
-        [index !== 0 ? ingredient.title : title]: ingredient.items,
-      })),
+      ingredients: ingredients.reduce(
+        (acc, ingredient, index) => ({
+          ...acc,
+          [index !== 0 ? ingredient.title : title]: ingredient.items,
+        }),
+        {}
+      ),
       steps: steps,
-      image: { mime: "image/jpeg", path: "/some/path/to/file" },
+      image: { mime: "image/jpeg", data: image },
       filters: protein,
       favorite: false,
     };
-    console.log(recipe);
+    console.log("changed recipe:" + JSON.stringify(recipe, null, 2));
+    //console.log(recipe.title);
+
+    if (!editingRecipe) {
+      fetch("/addRecipe", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(recipe),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      fetch("/editRecipe", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(
+          Object.assign(recipe, { _id: editingRecipe?._id })
+        ),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
     setopenNotifSucess(true);
+    setTimeout(() => {
+      window.location.reload();
+    }, 500); // 0.5 seconds delay
   };
 
   return (
-    <div style={{ textAlign: "center" }}>
-      <h1 style={{ color: "grey" }}>Add New Recipe</h1>
+    <div style={{ textAlign: "center", marginTop: "2rem" }}>
+      <h1 style={{ color: "grey" }}>
+        {editingRecipe ? "Edit Recipe" : "Add Recipe"}
+      </h1>
       <FormGroup
         style={{
           width: "70%",
@@ -391,7 +521,11 @@ function AddForm() {
             error={formErrors.title}
           >
             <InputLabel sx={{ fontSize: 22 }}>Title</InputLabel>
-            <Input onChange={handleTitle} required />
+            <Input
+              onChange={handleTitle}
+              required
+              defaultValue={editingRecipe?.title || ""}
+            />
             {formErrors.title && (
               <FormHelperText id="component-error-text">Error</FormHelperText>
             )}
@@ -401,16 +535,26 @@ function AddForm() {
             error={formErrors.time}
           >
             <InputLabel sx={{ fontSize: 22 }}>Time</InputLabel>
-            <Input onChange={handleTime} required />
+            <Input
+              onChange={handleTime}
+              required
+              defaultValue={editingRecipe?.time[0] || ""}
+            />
             {formErrors.time && (
               <FormHelperText id="component-error-text">Error</FormHelperText>
             )}
           </FormControl>
           <FormControl style={{ flex: "0 0 20%" }} error={formErrors.unit}>
             <InputLabel sx={{ fontSize: 22 }}>Unit</InputLabel>
-            <Select value={unit} label="Unit" onChange={handleUnit} required>
-              <MenuItem value={"Minute"}>Min</MenuItem>
-              <MenuItem value={"Hours"}>Hrs</MenuItem>
+            <Select
+              value={unit}
+              label="Unit"
+              onChange={handleUnit}
+              required
+              defaultValue={editingRecipe?.time[1] || ""}
+            >
+              <MenuItem value={"Mins"}>Min</MenuItem>
+              <MenuItem value={"Hrs"}>Hrs</MenuItem>
             </Select>
             {formErrors.unit && (
               <FormHelperText id="component-error-text">Error</FormHelperText>
@@ -429,28 +573,81 @@ function AddForm() {
             style={{ flex: "1", marginRight: "1rem" }}
             error={formErrors.meal}
           >
-            <InputLabel sx={{ fontSize: 22 }}>Meal Type</InputLabel>
-            <Input onChange={handleMeal} required />
+            {showOtherMeal ? (
+              <FormControl>
+                <InputLabel sx={{ fontSize: 22 }}>Meal Type</InputLabel>
+                <Input
+                  value={meal}
+                  onChange={handleOtherMeal}
+                  onClick={(e) => e.stopPropagation()}
+                  required
+                  defaultValue={editingRecipe?.mealType || ""}
+                />
+                <Button onClick={handleBackMeal} sx={{ marginTop: "1rem" }}>
+                  Back
+                </Button>
+              </FormControl>
+            ) : (
+              <FormControl>
+                <InputLabel sx={{ fontSize: 22 }}>Meal Type</InputLabel>
+                <Select
+                  value={meal}
+                  label="Mealtype"
+                  onChange={handleMeal}
+                  required
+                >
+                  <MenuItem value={"Entree"}>Entree</MenuItem>
+                  <MenuItem value={"Breakfast"}>Breakfast</MenuItem>
+                  <MenuItem value={"Lunch"}>Lunch</MenuItem>
+                  <MenuItem value={"Dinner"}>Dinner</MenuItem>
+                  <MenuItem value={"Side Dish"}>Side Dish</MenuItem>
+                  <MenuItem value={"Sweets"}>Sweets</MenuItem>
+                  <MenuItem value={"Other"}>Other</MenuItem>
+                </Select>
+              </FormControl>
+            )}
             {formErrors.meal && (
               <FormHelperText id="component-error-text">Error</FormHelperText>
             )}
           </FormControl>
+
           <FormControl
             style={{ flex: "0 0 20%", marginRight: 20 }}
             error={formErrors.protein}
           >
-            <InputLabel sx={{ fontSize: 22 }}>Protein</InputLabel>
-            <Select
-              value={protein}
-              label="Protein"
-              onChange={handleProtein}
-              required
-            >
-              <MenuItem value={"Chicken"}>Chicken</MenuItem>
-              <MenuItem value={"Beef"}>Beef</MenuItem>
-              <MenuItem value={"Pork"}>Pork</MenuItem>
-              <MenuItem value={"No Protein"}>No Protein</MenuItem>
-            </Select>
+            {showOtherProtein ? (
+              <FormControl>
+                <InputLabel sx={{ fontSize: 22 }}>Protein</InputLabel>
+                <Input
+                  value={protein}
+                  onChange={handleOtherProtein}
+                  onClick={(e) => e.stopPropagation()}
+                  required
+                />
+                <Button onClick={handleBackProtein} sx={{ marginTop: "1rem" }}>
+                  Back
+                </Button>
+              </FormControl>
+            ) : (
+              <FormControl>
+                <InputLabel sx={{ fontSize: 22 }}>Protein</InputLabel>
+                <Select
+                  value={protein}
+                  label="Protein"
+                  onChange={handleProtein}
+                  required
+                  defaultValue={editingRecipe?.protein || ""}
+                >
+                  <MenuItem value={"Chicken"}>Chicken</MenuItem>
+                  <MenuItem value={"Beef"}>Beef</MenuItem>
+                  <MenuItem value={"Pork"}>Pork</MenuItem>
+                  <MenuItem value={"Turkey"}>Turkey</MenuItem>
+                  <MenuItem value={"Fish"}>Fish</MenuItem>
+                  <MenuItem value={"No Protein"}>No Protein</MenuItem>
+                  <MenuItem value={"Other"}>Other</MenuItem>
+                </Select>
+              </FormControl>
+            )}
             {formErrors.protein && (
               <FormHelperText id="component-error-text">Error</FormHelperText>
             )}
@@ -462,6 +659,7 @@ function AddForm() {
               label="Energy"
               onChange={handleEnergy}
               required
+              defaultValue={editingRecipe?.energy || ""}
             >
               <MenuItem value={"Easy"}>Easy</MenuItem>
               <MenuItem value={"Moderate"}>Moderate</MenuItem>
@@ -472,7 +670,7 @@ function AddForm() {
             )}
           </FormControl>
         </FormGroup>
-        {[...Array(numUtensils)].map((_, index) => (
+        {utensils.map((utensil, index) => (
           <FormControl
             style={{
               display: "flex",
@@ -487,7 +685,7 @@ function AddForm() {
           >
             <InputLabel sx={{ fontSize: 22 }}>Utensil {index + 1}</InputLabel>
             <Input
-              value={utensils[index]}
+              value={utensil}
               onChange={(event) => handleUtensilChange(event, index)}
               required
               sx={{ width: "80%" }}
@@ -508,6 +706,7 @@ function AddForm() {
             )}
           </FormControl>
         ))}
+
         <Button
           variant="outlined"
           color="secondary"
@@ -521,7 +720,7 @@ function AddForm() {
         >
           Add Utensil
         </Button>
-        {[...Array(numSteps)].map((_, index) => (
+        {steps.map((utensil, index) => (
           <FormControl
             style={{
               display: "flex",
@@ -674,7 +873,10 @@ function AddForm() {
           </Box>
         </FormGroup>
 
-        <UploadImage onImageUpload={handleImageUpload}></UploadImage>
+        <UploadImage
+          onImageUpload={handleImageUpload}
+          initialImage={editingRecipe ? editingRecipe?.image : null}
+        ></UploadImage>
 
         <Box
           display="flex"
@@ -685,10 +887,10 @@ function AddForm() {
           <Button
             variant="outlined"
             color="secondary"
-            style={{ marginTop: 10, width: "20%", fontSize: 16}}
+            style={{ marginTop: "3rem", width: "20%", fontSize: 16 }}
             onClick={handleSubmit}
           >
-            Submit
+            {editingRecipe ? "Update" : "Submit"}
           </Button>
           <Snackbar
             open={openNotifFail}
@@ -701,7 +903,7 @@ function AddForm() {
               onClose={handleCloseFail}
               severity="error"
             >
-              Please fill required form
+              Please fill out required form
             </MuiAlert>
           </Snackbar>
           <Snackbar
@@ -715,7 +917,7 @@ function AddForm() {
               onClose={handleCloseSucess}
               severity="success"
             >
-              Recipe Added
+              {!editingRecipe ? "Recipe Added" : "Recipe Updated"}
             </MuiAlert>
           </Snackbar>
         </Box>
@@ -723,5 +925,14 @@ function AddForm() {
     </div>
   );
 }
+
+AddForm.propTypes = {
+  recipe: PropTypes.object.isRequired,
+  location: PropTypes.shape({
+    state: PropTypes.shape({
+      editingRecipe: PropTypes.object.isRequired,
+    }).isRequired,
+  }).isRequired,
+};
 
 export default AddForm;

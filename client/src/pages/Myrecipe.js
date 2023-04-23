@@ -1,10 +1,8 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import RecipeCard from "../components/RecipeCard";
-import "./MyRecipe.css";
+import ListOfRecipeCards from "../components/ListOfRecipeCards";
 
 function MyRecipe() {
-
   const [recipes, setRecipes] = useState([]);
   useEffect(() => {
     fetch("/getRecipes")
@@ -16,18 +14,10 @@ function MyRecipe() {
   }, []);
 
   return (
-    <div className="cards-container">
-      <section>
-        <h1 style={{ borderBottom: "1px solid grey" }}>My Recipes</h1>
-        <div className="cards">
-          {recipes.map((card, index) => (
-            <div key={index} className="card">
-              <RecipeCard key={index} rec={card} />
-            </div>
-          ))}
-        </div>
-      </section>
-    </div>
+    <ListOfRecipeCards
+      recipes={recipes}
+      title={"My Recipe"}
+    ></ListOfRecipeCards>
   );
 }
 

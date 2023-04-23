@@ -19,6 +19,8 @@ import { purple } from "@mui/material/colors";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function RecipeCard(props) {
   //used to handle modal being opened
@@ -92,6 +94,16 @@ function RecipeCard(props) {
       });
   };
 
+  const [editingRecipe, setEditingRecipe] = React.useState(null);
+  const navigate = useNavigate();
+
+  const handleEditClick = (recipe) => {
+    // const editRecipe = recipe;
+    setEditingRecipe(recipe);
+    // navigate(`/addform/${editRecipe}`);
+    navigate("/addform", { state: { editingRecipe: recipe } });
+  };
+
   // Add a check to make sure that the `rec` prop is not undefined
   if (!props.rec) {
     console.log("we returned null");
@@ -102,7 +114,12 @@ function RecipeCard(props) {
     <div>
       <Card
         variant="outlined"
-        sx={{ width: "100%", borderColor: "hsl(294deg 9% 91%)", padding: "17px", marginBottom: "20px"}}
+        sx={{
+          width: "100%",
+          borderColor: "hsl(294deg 9% 91%)",
+          padding: "17px",
+          marginBottom: "20px",
+        }}
       >
         <IconButton
           aria-label="Like minimal photography"
@@ -133,12 +150,8 @@ function RecipeCard(props) {
         <CardActionArea onClick={handleOpenCard} sx={{ width: "100%" }}>
           <CardOverflow>
             <AspectRatio ratio="2">
-              <img
-                src={props.rec.image.path}
-                srcSet={`${props.rec.image.path} 2x`}
-                loading="lazy"
-                alt=""
-              />
+              <img src={`data:${props.rec.image.mime};base64,${props.rec.image.data}`} alt="" loading="lazy"/>
+
             </AspectRatio>
           </CardOverflow>
           <Typography level="h2" sx={{ fontSize: "md", mt: 2 }}>
@@ -146,7 +159,7 @@ function RecipeCard(props) {
           </Typography>
           <Typography level="body2" sx={{ mt: 0.5, mb: 2 }}>
             <Typography startDecorator={<TimerIcon />} textColor="neutral.700">
-              {props.rec.time}
+              {props.rec.time.join(" ")}
             </Typography>
           </Typography>
         </CardActionArea>
@@ -202,14 +215,12 @@ function RecipeCard(props) {
               <Box
                 sx={{
                   display: "flex",
+                  justifyContent: "space-between", // Add this property to evenly space the buttons
+                  alignItems: "center", // Add this property to vertically align the buttons
+                  mb: 2,
                 }}
               >
-                <Box
-                  sx={{
-                    justifyContent: "flex-start", // Update justifyContent to flex-start
-                    mb: 2,
-                  }}
-                >
+                <Box>
                   <Button
                     variant="outlined"
                     color="secondary"
@@ -234,15 +245,10 @@ function RecipeCard(props) {
                     XXL
                   </Button>
                 </Box>
-                <Box
-                  sx={{
-                    justifyContent: "flex-end", // Update justifyContent to flex-end
-                    mb: 2,
-                  }}
-                >
+                <Box>
                   <Button
-                    sx={{ ml: "9rem", mr: "1rem" }} // Update margin left to margin right
                     variant="outlined"
+                    onClick={() => handleEditClick(props.rec)}
                     endIcon={<EditOutlinedIcon />}
                   >
                     Edit
@@ -252,6 +258,7 @@ function RecipeCard(props) {
                     color="error"
                     onClick={handleDelete}
                     startIcon={<DeleteIcon />}
+                    sx={{ ml: 2 }} // Add this property to add some space between the buttons
                   >
                     Delete
                   </Button>
@@ -299,9 +306,14 @@ function RecipeCard(props) {
                   textColor="text.primary"
                   style={{ fontSize: `${fontSize}` }}
                 >
-                  <ul>
+                  <ul style={{ paddingLeft: "1em" }}>
                     {props.rec.utensils.map((utensil, index) => (
-                      <li key={index}>{utensil}</li>
+                      <li
+                        key={index}
+                        style={{ textIndent: "-1em", paddingLeft: "2em" }}
+                      >
+                        {utensil}
+                      </li>
                     ))}
                   </ul>
                 </Typography>
@@ -329,9 +341,14 @@ function RecipeCard(props) {
                         <Typography variant="h6" gutterBottom>
                           {title}
                         </Typography>
-                        <ul>
+                        <ul style={{ paddingLeft: "1em" }}>
                           {ingredients.map((ingredient, index) => (
-                            <li key={index}>{ingredient}</li>
+                            <li
+                              key={index}
+                              style={{ textIndent: "-1em", paddingLeft: "2em" }}
+                            >
+                              {ingredient}
+                            </li>
                           ))}
                         </ul>
                       </div>
@@ -435,7 +452,7 @@ RecipeCard.propTypes = {
     steps: PropTypes.arrayOf(PropTypes.string).isRequired,
     image: PropTypes.shape({
       mime: PropTypes.string.isRequired,
-      path: PropTypes.string.isRequired,
+      data: PropTypes.string.isRequired,
     }).isRequired,
     filters: PropTypes.arrayOf(PropTypes.string).isRequired,
     favorite: PropTypes.bool.isRequired,

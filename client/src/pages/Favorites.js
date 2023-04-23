@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import RecipeCard from "../components/RecipeCard";
+import ListOfRecipeCards from "../components/ListOfRecipeCards";
 
 function Favorite() {
   const [recipes, setRecipes] = useState([]);
@@ -14,16 +15,11 @@ function Favorite() {
       .catch((error) => console.error(error));
   }, []);
 
-
   return (
-    <div>
-      <h1>Favorites</h1>
-      {recipes.length > 0 ? (
-        recipes.map((recipe) => <RecipeCard key={recipe._id} rec={recipe} />)
-      ) : (
-        <p>Loading...</p>
-      )}
-    </div>
+    <ListOfRecipeCards
+      recipes={recipes}
+      title={"Favorites"}
+    ></ListOfRecipeCards>
   );
 }
 

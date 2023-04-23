@@ -106,26 +106,11 @@ function ResponsiveAppBar() {
         backgroundColor: "#FFFFFF",
         color: "#6B48FF",
         boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
+        height: "70px", //increase height of navbar
       }}
     >
       <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          {/* <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="/"
-            sx={{
-              mr: 2,
-              display: { xs: "none", md: "flex" },
-              fontWeight: 700,
-              color: "inherit",
-              textDecoration: "none",
-            }}
-          >
-            Time!toCook
-          </Typography> */}
-
+        <Toolbar disableGutters sx={{ paddingLeft: 0, marginLeft: 0 }}>
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
@@ -168,28 +153,11 @@ function ResponsiveAppBar() {
               ))}
             </Menu>
           </Box>
-          {/* <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href=""
-            sx={{
-              mr: 2,
-              display: { xs: "flex", md: "none" },
-              flexGrow: 1,
-              fontWeight: 700,
-              color: "inherit",
-              textDecoration: "none",
-            }}
-          >
-            Time!toCook
-          </Typography> */}
-          {/* Section for nav bar regular buttons */}
           <Box
             sx={{
               flexGrow: 1,
               display: { xs: "none", md: "flex" },
-              justifyContent: "flex-start", // added this line
+              justifyContent: "flex-start",
             }}
           >
             {pages.map((page) => (
@@ -202,7 +170,7 @@ function ResponsiveAppBar() {
                   color: "#6B48FF",
                   display: "block",
                   fontWeight: "bold",
-                  fontSize: "1.1em",
+                  fontSize: "1.3em",
                 }}
                 component={Link}
                 to={page === "Home" ? "/" : `/${page.toLowerCase()}`}

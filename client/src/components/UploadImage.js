@@ -2,10 +2,23 @@ import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import PropTypes from "prop-types";
+import { useEffect } from "react";
 
-const UploadImage = ({ onImageUpload }) => {
-  const [imagePreview, setImagePreview] = useState(null); // State for storing image preview URL
+const UploadImage = ({ onImageUpload, initialImage }) => {
+  const [imagePreview, setImagePreview] = useState(
+    initialImage
+      ? `data:${initialImage.mime};base64,${initialImage.data}`
+      : null
+  ); // State for storing image preview URL
   const [uploadProgress, setUploadProgress] = useState(0); // State for tracking upload progress
+
+  useEffect(() => {
+    setImagePreview(
+      initialImage
+        ? `data:${initialImage.mime};base64,${initialImage.data}`
+        : null
+    );
+  }, [initialImage]);
 
   const handleFileUpload = (event) => {
     const files = event.target.files;
@@ -25,34 +38,15 @@ const UploadImage = ({ onImageUpload }) => {
       const base64String = reader.result
         .replace("data:", "")
         .replace(/^.+,/, "");
-      // Send the base64String to the backend or do whatever you need with it
-      onImageUpload(base64String);
+      // Create image object with mime type and base64 data
+      const image = {
+        mime: file.type,
+        data: base64String,
+      };
+      // Send the image object to the backend or do whatever you need with it
+      onImageUpload(image);
     };
   };
-
-  //-------
-
-  //   const handleFileUpload = async (event) => {
-  //     const files = event.target.files;
-  //     const file = files[0];
-
-  //     // Send image file to backend server using FormData
-  //     const formData = new FormData();
-  //     formData.append("image", file);
-  //     const response = await fetch("/api/upload", {
-  //       method: "POST",
-  //       body: formData,
-  //     });
-  //     const result = await response.json();
-
-  //     // Set file path in JSON object
-  //     const image = {
-  //       mime: file.type,
-  //       path: result.filePath, // Replace with the actual file path or local API link returned from the backend
-  //     };
-  //     // Call onImageUpload with the image object
-  //     onImageUpload(image);
-  //   };
 
   return (
     <div>
@@ -73,7 +67,7 @@ const UploadImage = ({ onImageUpload }) => {
       </Button>
       {/* Image Preview */}
       {imagePreview && (
-        <div style={{ marginTop: 10 }}>
+        <div style={{ marginTop: 10, marginBottom: 10 }}>
           <img
             src={imagePreview}
             alt="Image Preview"
@@ -94,6 +88,7 @@ const UploadImage = ({ onImageUpload }) => {
 // Define prop validation using PropTypes
 UploadImage.propTypes = {
   onImageUpload: PropTypes.string.isRequired, // Specify the type and make it required
+  initialImage: PropTypes.string, // Add a prop for the initial image
 };
 
 export default UploadImage;
