@@ -24,18 +24,31 @@ function FilterOptions() {
     setOpenCard(true);
   };
 
-  const changeProtein = (newQuery) => {
+  const handleApplyFilters = () => {
+    const newSelectedOptions = {
+      protein: proteinQuery.split("|"),
+      mealType: mealQuery.split("|"),
+      energy: energyQuery.split("|"),
+    };
+    setSelectedOptions(newSelectedOptions);
+    setOpenCard(false);
+  };
+
+  const changeProtein = (newQuery, newSelectedOptions) => {
     setProteinQuery(newQuery);
+    setSelectedOptions({ ...selectedOptions, protein: newSelectedOptions });
     buildQuery(newQuery, mealQuery, energyQuery);
   };
 
-  const changeMeal = (newQuery) => {
+  const changeMeal = (newQuery, newSelectedOptions) => {
     setMealQuery(newQuery);
+    setSelectedOptions({ ...selectedOptions, mealType: newSelectedOptions });
     buildQuery(proteinQuery, newQuery, energyQuery);
   };
 
-  const changeEnergy = (newQuery) => {
+  const changeEnergy = (newQuery, newSelectedOptions) => {
     setEnergyQuery(newQuery);
+    setSelectedOptions({ ...selectedOptions, energy: newSelectedOptions });
     buildQuery(proteinQuery, mealQuery, newQuery);
   };
 
@@ -59,7 +72,7 @@ function FilterOptions() {
         aria-labelledby="modal-title"
         aria-describedby="modal-desc"
         open={openCard}
-        onClose={() => setOpenCard(false)}
+        onClose={handleApplyFilters}
         style={{
           display: "flex",
           justifyContent: "center",
@@ -82,17 +95,19 @@ function FilterOptions() {
             parentButton={"Protein"}
             options={proteinOptions}
             onQueryChange={changeProtein}
+            selectedOptions={selectedOptions.protein || []}
           />
           <CheckBoxes
             parentButton={"Meal Type"}
             options={mealOptions}
             onQueryChange={changeMeal}
+            selectedOptions={selectedOptions.mealType || []}
           />
-
           <CheckBoxes
             parentButton={"Energy Level"}
             options={energyOptions}
             onQueryChange={changeEnergy}
+            selectedOptions={selectedOptions.energy || []}
           />
           <p>query string: {query}</p>
         </div>

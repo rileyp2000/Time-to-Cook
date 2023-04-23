@@ -4,14 +4,34 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
 
-function Checkboxes(props) {
-  const [selectedOptions, setSelectedOptions] = useState([]);
+function Checkboxes({
+  parentButton,
+  options,
+  onQueryChange,
+  selectedOptions: initialSelectedOptions,
+}) {
+  const [selectedOptions, setSelectedOptions] = useState(
+    initialSelectedOptions || []
+  );
   const [parentChecked, setParentChecked] = useState(false);
   const [indeterminate, setIndeterminate] = useState(false);
 
   useEffect(() => {
     const query = selectedOptions.join("|");
-    props.onQueryChange(query);
+    onQueryChange(query);
+  }, [selectedOptions]);
+
+  useEffect(() => {
+    if (selectedOptions.length === 0) {
+      setParentChecked(false);
+      setIndeterminate(false);
+    } else if (selectedOptions.length === options.length) {
+      setParentChecked(true);
+      setIndeterminate(false);
+    } else {
+      setParentChecked(false);
+      setIndeterminate(true);
+    }
   }, [selectedOptions]);
 
   const handleOptionChange = (event) => {
@@ -27,25 +47,13 @@ function Checkboxes(props) {
     setParentChecked(event.target.checked);
     setIndeterminate(false);
     if (event.target.checked) {
-      setSelectedOptions(props.options);
+      setSelectedOptions(options);
     } else {
       setSelectedOptions([]);
     }
   };
 
-  useEffect(() => {
-    if (selectedOptions.length === 0) {
-      setParentChecked(false);
-      setIndeterminate(false);
-    } else if (selectedOptions.length === props.options.length) {
-      setParentChecked(true);
-      setIndeterminate(false);
-    } else {
-      setIndeterminate(true);
-    }
-  }, [selectedOptions]);
-
-  const children = props.options.map((option) => (
+  const children = options.map((option) => (
     <Box sx={{ display: "flex", flexDirection: "column", ml: 3 }} key={option}>
       <FormControlLabel
         control={
@@ -62,9 +70,9 @@ function Checkboxes(props) {
 
   return (
     <div>
-      {props.parentButton && (
+      {parentButton && (
         <FormControlLabel
-          label={props.parentButton}
+          label={parentButton}
           control={
             <Checkbox
               checked={parentChecked}
@@ -83,6 +91,7 @@ Checkboxes.propTypes = {
   options: PropTypes.array.isRequired,
   onQueryChange: PropTypes.func.isRequired,
   parentButton: PropTypes.node,
+  selectedOptions: PropTypes.array,
 };
 
 export default Checkboxes;
