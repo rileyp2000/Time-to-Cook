@@ -1,60 +1,104 @@
-import React, { useState } from 'react';
-import RadioButtons from './RadioButtons';
+import React, { useState } from "react";
+import RadioButtons from "./RadioButtons";
+import CheckBoxes from "./CheckBoxes";
+import Modal from "@mui/material/Modal";
+import Button from "@mui/material/Button";
+import { useEffect } from "react";
 
-const Menu = () => {
-  const [query, setQuery] = useState('');
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState('');
-  const proteinOptions = ['Beef', 'Pork', 'Turkey', 'Clam', 'Crab', 'Englishman'];
-  const mealOptions = ['Breakfast', 'Lunch', 'Dinner', 'Snack', 'Dessert'];
-  const energyOptions = ['Easy', 'Moderate', 'Difficult'];
-  const [proteinQuery, setProteinQuery] = useState('');
-  const [mealQuery, setMealQuery] = useState('');
-  const [energyQuery, setEnergyQuery] = useState('');
-  
+function FilterOptions() {
+  const [query, setQuery] = useState("");
+  const [openCard, setOpenCard] = useState(false);
+  const [selectedOptions, setSelectedOptions] = useState({
+    protein: [],
+    mealType: [],
+    energy: [],
+  });
+  const proteinOptions = ["Beef"];
+  const mealOptions = ["Breakfast"];
+  const energyOptions = ["Easy", "Moderate", "Difficult"];
+  const [proteinQuery, setProteinQuery] = useState("");
+  const [mealQuery, setMealQuery] = useState("");
+  const [energyQuery, setEnergyQuery] = useState("");
 
-  const handleMenuClick = () => {
-    setIsMenuOpen(!isMenuOpen);
+  const handleOpenCard = () => {
+    setOpenCard(true);
   };
 
   const changeProtein = (newQuery) => {
     setProteinQuery(newQuery);
     buildQuery(newQuery, mealQuery, energyQuery);
-  }
+  };
 
   const changeMeal = (newQuery) => {
     setMealQuery(newQuery);
     buildQuery(proteinQuery, newQuery, energyQuery);
-  }
+  };
 
   const changeEnergy = (newQuery) => {
     setEnergyQuery(newQuery);
     buildQuery(proteinQuery, mealQuery, newQuery);
-  }
+  };
 
   const buildQuery = (query1, query2, query3) => {
-    setQuery('getRecipes?protein='+ query1 + '&mealType=' + query2 + '&energy=' + query3);
-  }
+    setQuery(
+      "getRecipes?protein=" +
+        query1 +
+        "&mealType=" +
+        query2 +
+        "&energy=" +
+        query3
+    );
+  };
 
   return (
     <div className="Filtering Options">
-      <div className="menu-header" onClick={handleMenuClick}>
-        <h3>Advanced Filters</h3>
-        <button>{isMenuOpen ? '-' : '+'}</button>
-      </div>
-      {isMenuOpen && (
-        <div className="menu-options">
-          <h1>Select a Protein:</h1>
-          <RadioButtons options={proteinOptions} onQueryChange={changeProtein}/>
-          <h1>Select a Meal Type:</h1>
-          <RadioButtons options={mealOptions} onQueryChange={changeMeal}/>
-          <h1>Select an Energy Level:</h1>
-          <RadioButtons options={energyOptions} onQueryChange={changeEnergy}/>
+      <Button onClick={() => setOpenCard(true)} variant="outlined">
+        Filter Options
+      </Button>
+      <Modal
+        aria-labelledby="modal-title"
+        aria-describedby="modal-desc"
+        open={openCard}
+        onClose={() => setOpenCard(false)}
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <div
+          style={{
+            backgroundColor: "#fff",
+            padding: "20px",
+            boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.5)",
+            borderRadius: "10px",
+            height: "60vh",
+            width: "20%",
+            overflowY: "auto",
+          }}
+        >
+          <h1 style={{ borderBottom: "1px solid grey" }}>Filter Options</h1>
+          <CheckBoxes
+            parentButton={"Protein"}
+            options={proteinOptions}
+            onQueryChange={changeProtein}
+          />
+          <CheckBoxes
+            parentButton={"Meal Type"}
+            options={mealOptions}
+            onQueryChange={changeMeal}
+          />
+
+          <CheckBoxes
+            parentButton={"Energy Level"}
+            options={energyOptions}
+            onQueryChange={changeEnergy}
+          />
           <p>query string: {query}</p>
         </div>
-      )}
+      </Modal>
     </div>
   );
-};
+}
 
-export default Menu;
+export default FilterOptions;
