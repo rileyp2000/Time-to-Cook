@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
 
 function Checkboxes({
-  parentButton,
+  title,
   options,
   onQueryChange,
   selectedOptions: initialSelectedOptions,
@@ -13,25 +13,10 @@ function Checkboxes({
   const [selectedOptions, setSelectedOptions] = useState(
     initialSelectedOptions || []
   );
-  const [parentChecked, setParentChecked] = useState(false);
-  const [indeterminate, setIndeterminate] = useState(false);
 
   useEffect(() => {
     const query = selectedOptions.join("|");
     onQueryChange(query);
-  }, [selectedOptions]);
-
-  useEffect(() => {
-    if (selectedOptions.length === 0) {
-      setParentChecked(false);
-      setIndeterminate(false);
-    } else if (selectedOptions.length === options.length) {
-      setParentChecked(true);
-      setIndeterminate(false);
-    } else {
-      setParentChecked(false);
-      setIndeterminate(true);
-    }
   }, [selectedOptions]);
 
   const handleOptionChange = (event) => {
@@ -40,16 +25,6 @@ function Checkboxes({
       setSelectedOptions([...selectedOptions, option]);
     } else {
       setSelectedOptions(selectedOptions.filter((o) => o !== option));
-    }
-  };
-
-  const handleParentChange = (event) => {
-    setParentChecked(event.target.checked);
-    setIndeterminate(false);
-    if (event.target.checked) {
-      setSelectedOptions(options);
-    } else {
-      setSelectedOptions([]);
     }
   };
 
@@ -70,18 +45,7 @@ function Checkboxes({
 
   return (
     <div>
-      {parentButton && (
-        <FormControlLabel
-          label={parentButton}
-          control={
-            <Checkbox
-              checked={parentChecked}
-              indeterminate={indeterminate}
-              onChange={handleParentChange}
-            />
-          }
-        />
-      )}
+      <h3>{title}</h3>
       {children}
     </div>
   );
@@ -90,7 +54,7 @@ function Checkboxes({
 Checkboxes.propTypes = {
   options: PropTypes.array.isRequired,
   onQueryChange: PropTypes.func.isRequired,
-  parentButton: PropTypes.node,
+  title: PropTypes.string.isRequired,
   selectedOptions: PropTypes.array,
 };
 

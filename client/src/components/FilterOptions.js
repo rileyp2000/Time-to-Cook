@@ -12,13 +12,17 @@ function FilterOptions() {
     protein: [],
     mealType: [],
     energy: [],
+    favorite: false, // initialize as false
   });
-  const proteinOptions = ["Beef"];
-  const mealOptions = ["Breakfast"];
+
+  const proteinOptions = ["Chicken", "Beef", "Fish"];
+  const mealOptions = ["Breakfast", "Lunch", "Dinner", "Snack"];
   const energyOptions = ["Easy", "Moderate", "Difficult"];
+  const favoriteOptions = ["Favorite"];
   const [proteinQuery, setProteinQuery] = useState("");
   const [mealQuery, setMealQuery] = useState("");
   const [energyQuery, setEnergyQuery] = useState("");
+  const [favoriteQuery, setFavoriteQuery] = useState("");
 
   const handleOpenCard = () => {
     setOpenCard(true);
@@ -29,6 +33,7 @@ function FilterOptions() {
       protein: proteinQuery.split("|"),
       mealType: mealQuery.split("|"),
       energy: energyQuery.split("|"),
+      favorite: favoriteQuery.split("|"),
     };
     setSelectedOptions(newSelectedOptions);
     setOpenCard(false);
@@ -37,30 +42,47 @@ function FilterOptions() {
   const changeProtein = (newQuery, newSelectedOptions) => {
     setProteinQuery(newQuery);
     setSelectedOptions({ ...selectedOptions, protein: newSelectedOptions });
-    buildQuery(newQuery, mealQuery, energyQuery);
+    buildQuery(newQuery, mealQuery, energyQuery, favoriteQuery);
   };
 
   const changeMeal = (newQuery, newSelectedOptions) => {
     setMealQuery(newQuery);
     setSelectedOptions({ ...selectedOptions, mealType: newSelectedOptions });
-    buildQuery(proteinQuery, newQuery, energyQuery);
+    buildQuery(proteinQuery, newQuery, energyQuery, favoriteQuery);
   };
 
   const changeEnergy = (newQuery, newSelectedOptions) => {
     setEnergyQuery(newQuery);
     setSelectedOptions({ ...selectedOptions, energy: newSelectedOptions });
-    buildQuery(proteinQuery, mealQuery, newQuery);
+    buildQuery(proteinQuery, mealQuery, newQuery, favoriteQuery);
   };
 
-  const buildQuery = (query1, query2, query3) => {
-    setQuery(
-      "getRecipes?protein=" +
-        query1 +
-        "&mealType=" +
-        query2 +
-        "&energy=" +
-        query3
-    );
+  const changeFavorite = (newQuery, newSelectedOptions) => {
+    setFavoriteQuery(newQuery);
+    setSelectedOptions({ ...selectedOptions, favorite: newSelectedOptions });
+    buildQuery(proteinQuery, mealQuery, energyQuery, newQuery);
+  };
+
+  const buildQuery = (query1, query2, query3, query4) => {
+    let res = "/getRecipes";
+    if (query1 == null && query2 == null && query3 == null && query4 == null) {
+      setQuery(res);
+    } else {
+      res += "?";
+      if (query1) {
+        res += "&protein=" + query1;
+      }
+      if (query2) {
+        res += "&mealType=" + query2;
+      }
+      if (query3) {
+        res += "&energy=" + query3;
+      }
+      if (query4) {
+        res += "&favorite=" + "true";
+      }
+    }
+    setQuery(res);
   };
 
   return (
@@ -92,22 +114,28 @@ function FilterOptions() {
         >
           <h1 style={{ borderBottom: "1px solid grey" }}>Filter Options</h1>
           <CheckBoxes
-            parentButton={"Protein"}
+            title={"Protein"}
             options={proteinOptions}
             onQueryChange={changeProtein}
             selectedOptions={selectedOptions.protein || []}
           />
           <CheckBoxes
-            parentButton={"Meal Type"}
+            title={"Meal Type"}
             options={mealOptions}
             onQueryChange={changeMeal}
             selectedOptions={selectedOptions.mealType || []}
           />
           <CheckBoxes
-            parentButton={"Energy Level"}
+            title={"Energy Level"}
             options={energyOptions}
             onQueryChange={changeEnergy}
             selectedOptions={selectedOptions.energy || []}
+          />
+          <CheckBoxes
+            title={"Recipes"}
+            options={["Favorite"]}
+            onQueryChange={changeFavorite}
+            selectedOptions={selectedOptions.favorite}
           />
           <p>query string: {query}</p>
         </div>
