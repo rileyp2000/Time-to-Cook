@@ -63,8 +63,6 @@ function AddForm() {
       setShowOtherProtein(true);
     }
   }, [editingRecipe]);
-  const [showOtherProtein, setShowOtherProtein] = React.useState(false);
-  const [prevProtein, setPrevProtein] = React.useState("");
 
   const [protein, setProtein] = React.useState(editingRecipe?.protein || "");
   const [showOtherProtein, setShowOtherProtein] = React.useState(false);
@@ -88,15 +86,6 @@ function AddForm() {
     setShowOtherProtein(false);
     setProtein(prevMeal);
   };
-
-  const handleBackProtein = () => {
-    setShowOtherProtein(false);
-    setProtein(prevMeal);
-  };
-
-  const [showOtherMeal, setShowOtherMeal] = React.useState(false);
-  const [prevMeal, setPrevMeal] = React.useState("");
-
   useEffect(() => {
     if (
       editingRecipe?.mealType &&
