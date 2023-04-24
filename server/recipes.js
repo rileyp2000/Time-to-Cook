@@ -11,15 +11,30 @@ async function getRecipesCollection() {
 
   // TODO - Eventually update this to allow the hostname to be configurable
   // if (client == null) {
-     client = new MongoClient(hostname);
+  client = new MongoClient(hostname);
   // }
-  await client.connect();
-  console.log("Connected to mongo");
+  try {
+      await client.connect().catch((err) => {
+      console.error("# MongoDB Connection Error:\n", err);
+      throw new Error("Could not connect to the MongoDB database.");
+    });
+    
+    console.log("Connected to mongo");
 
-  const db = client.db("time-to-cook");
-  mongoCollection = db.collection("recipes");
+    const db = client.db("time-to-cook");
+    mongoCollection = db.collection("recipes");
 
-  return mongoCollection;
+    return mongoCollection;
+    
+  } 
+  catch (err) {
+    console.error("An unknown error has occ:\n", err);
+    return { 
+      insertedId: null,
+      message: "An unknown error occurred."
+    };
+  }
+  
 }
 
 
@@ -106,32 +121,18 @@ function makeCaseInsensitive(query){
 
 async function getRecipes(query) {
   //console.log("hello")
-  try {
-    const collection = await getRecipesCollection().catch((err) => {
-      console.error("# MongoDB Connection Error:\n", err);
-      throw new Error("Could not connect to the MongoDB database.");
-    });
-
-    if('favorite' in query === true){
-      query['favorite'] = query['favorite'] === 'true' ? true : false;
-    }
-    let recipes = await collection.find(makeCaseInsensitive(query)).toArray();
-    console.log(recipes.length);
-    if (recipes.length === 0) {
-      return {
-        results: 'No results found for this query'
-      };
-    }
-  
-    return recipes;
-  } 
-  catch (err) {
-    console.error("An unknown error has occ:\n", err);
-    return { 
-      insertedId: null,
-      message: "An unknown error occurred."
-    };
+  const collection = await getRecipesCollection();
+  if('favorite' in query === true){
+    query['favorite'] = query['favorite'] === 'true' ? true : false;
   }
+  let recipes = await collection.find(makeCaseInsensitive(query)).toArray();
+  console.log(recipes.length);
+  if (recipes.length === 0)
+    return {
+      results: 'No results found for this query'
+    };
+  
+  return recipes;
 }
 
 async function loadSamples() {
