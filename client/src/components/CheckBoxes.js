@@ -14,12 +14,29 @@ function Checkboxes({
     initialSelectedOptions || []
   );
 
+  // useEffect(() => {
+  //   console.log("selected options in checkBoxes are:", selectedOptions);
+  //   let query = "";
+  //   if (selectedOptions.length > 0) {
+  //     query = selectedOptions.join("|");
+  //   }
+  //   onQueryChange(query);
+  // }, [selectedOptions]);
+
   useEffect(() => {
-    const query = selectedOptions.join("|");
+    console.log("selected options in checkBoxes are:", selectedOptions);
+    const nonEmptySelectedOptions = selectedOptions.filter(
+      (option) => option !== ""
+    );
+    const query =
+      nonEmptySelectedOptions.length > 0
+        ? nonEmptySelectedOptions.join("|")
+        : "";
     onQueryChange(query);
   }, [selectedOptions]);
 
   const handleOptionChange = (event) => {
+    console.log("handleOptionChange is:", event.target.value);
     const option = event.target.value;
     if (event.target.checked) {
       setSelectedOptions([...selectedOptions, option]);
