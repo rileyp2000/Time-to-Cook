@@ -8,6 +8,7 @@ COPY server.js /usr/local/app/
 COPY recipes.js /usr/local/app/
 COPY build /usr/local/app/build
 COPY .env.docker /usr/local/app/
+COPY recipe_json.js /usr/local/app/
 
 EXPOSE 5000
 
