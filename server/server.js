@@ -10,15 +10,15 @@ require('dotenv').config({path: __dirname + '/.env.docker'});
 const port = process.env.PORT; //5000;
 //app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'build')));
 app.use("/images", express.static(path.join(__dirname, 'images')));
+app.use(express.static(path.join(__dirname, 'build')));
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'images/')
   },
   filename: function (req, file, cb) {
-    cb(null, file.originalname)
+    cb(null, JSON.parse(req.body.recipe).title + path.extname(file.originalname))
   }
 });
 
@@ -68,7 +68,7 @@ app.post("/addRecipe", upload.single('image'), (req, res) => {
   if(req.file != null){
     // take file, store on local machine
     // get name of file, append path, and save to json object
-    const imgName = {"image": "images/" + req.file.originalname};
+    const imgName = {"image": "images/" + recipe.title + path.extname(req.file.originalname)};
     recipe = {...recipe, ...imgName}; 
     console.log("change" + recipe);
   }
@@ -110,20 +110,6 @@ app.get("/devpreload", (req, res) => {
   loadSamples().then((result) => res.json(result));
   //res.status(200).send("please work");
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 app.get('/*', function (req, res) {
