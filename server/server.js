@@ -16,10 +16,10 @@ app.use("/images", express.static(path.join(__dirname, 'images')));
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'images/')
-  }//,
-  // filename: function (req, file, cb) {
-  //   cb(null, Date.now() + '.jpg') //Appending .jpg
-  // }
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname)
+  }
 });
 
 const upload = multer({ storage: storage });
@@ -63,16 +63,18 @@ app.post("/deleteRecipe", (req, res) => {
 app.post("/addRecipe", upload.single('image'), (req, res) => {
   // pass the body into the reqest
   console.log("/addRecipe");
-  console.log(req.body);
-
+  console.log(req.body.recipe);
+  let recipe = JSON.parse(req.body.recipe);
   if(req.file != null){
     // take file, store on local machine
     // get name of file, append path, and save to json object
-    console.log(req.file.originalname);
+    const imgName = {"image": "images/" + req.file.originalname};
+    recipe = {...recipe, ...imgName}; 
+    console.log("change" + recipe);
   }
   // delete req.body._id;
   // take whole body to pass to function that has the add function (in recipes.js)
-  addRecipe(req.body)
+  addRecipe(recipe)
     .then((result) => res.json(result))
     .catch((error) => {
       console.error("Error adding recipe:", error);
@@ -82,6 +84,7 @@ app.post("/addRecipe", upload.single('image'), (req, res) => {
 
 // the purpose of this method is to have the functionality of editing recipes entities already in the interface
 // takes in an endpoint that says /editRecipe using a post request
+//TODO: MAKE THIS MATCH ADD
 app.post('/editRecipe', (req, res) => {
   // get the recipe ID from request body
   const recipeId = req.body._id;
