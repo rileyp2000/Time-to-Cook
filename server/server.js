@@ -71,6 +71,9 @@ app.post("/addRecipe", upload.single('image'), (req, res) => {
     const imgName = {"image": "images/" + recipe.title + path.extname(req.file.originalname)};
     recipe = {...recipe, ...imgName}; 
     console.log("change" + recipe);
+  } else {
+    const imgName = {"image": "images/" + "placeholder.png"};
+    recipe = {...recipe, ...imgName}; 
   }
   // delete req.body._id;
   // take whole body to pass to function that has the add function (in recipes.js)
