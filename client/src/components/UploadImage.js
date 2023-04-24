@@ -30,22 +30,7 @@ const UploadImage = ({ onImageUpload, initialImage }) => {
       setImagePreview(reader.result);
     };
     reader.readAsDataURL(file);
-
-    // Add file upload logic here
-    // Update uploadProgress state to reflect progress
-    // Convert image to base64
-    reader.onloadend = () => {
-      const base64String = reader.result
-        .replace("data:", "")
-        .replace(/^.+,/, "");
-      // Create image object with mime type and base64 data
-      const image = {
-        mime: file.type,
-        data: base64String,
-      };
-      // Send the image object to the backend or do whatever you need with it
-      onImageUpload(image);
-    };
+    onImageUpload(file);
   };
 
   return (

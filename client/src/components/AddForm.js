@@ -454,21 +454,25 @@ function AddForm() {
         {}
       ),
       steps: steps,
-      image: image,
+      //image: image,
       protein: protein,
       favorite: false,
     };
     console.log("changed recipe:" + JSON.stringify(recipe, null, 2));
     //console.log(recipe.title);
 
+    //handling image for formdata
+    const formData = new FormData();
+    console.log("before appending image:", image);
+    // Add the file to the FormData object
+    formData.append("image", image);
+
     if (!editingRecipe) {
+      //adding recipe for when we are adding ant not editing
+      formData.append("recipe", JSON.stringify(recipe));
       fetch("/addRecipe", {
         method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(recipe),
+        body: formData, // send the formData as the body
       })
         .then((response) => response.json())
         .then((data) => {
@@ -478,28 +482,28 @@ function AddForm() {
           console.log(error);
         });
     } else {
+      const editedRecipe = Object.assign({}, recipe, {
+        _id: editingRecipe._id,
+      });
+      formData.append("recipe", JSON.stringify(editedRecipe));
+
+      // send FormData to server
       fetch("/editRecipe", {
         method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(
-          Object.assign(recipe, { _id: editingRecipe?._id })
-        ),
+        body: formData,
       })
         .then((response) => response.json())
         .then((data) => {
           console.log(data);
         })
         .catch((error) => {
-          console.log(error);
+          console.error(error);
         });
     }
     setopenNotifSucess(true);
-    setTimeout(() => {
-      window.location.reload();
-    }, 500); // 0.5 seconds delay
+    // setTimeout(() => {
+    //   window.location.reload();
+    // }, 500); // 0.5 seconds delay
   };
 
   return (
