@@ -447,7 +447,7 @@ function AddForm() {
       ),
       steps: steps,
       image: { mime: "image/jpeg", data: image },
-      filters: protein,
+      protein: protein,
       favorite: false,
     };
     console.log("changed recipe:" + JSON.stringify(recipe, null, 2));
