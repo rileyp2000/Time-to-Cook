@@ -1,4 +1,6 @@
 const express = require("express");
+const multer = require("multer");
+
 const app = express();
 const { MongoClient } = require('mongodb');
 const { getRecipes, toggleFavorite, deleteRecipe, loadSamples, getFilters, addRecipe, editRecipe } = require("./recipes.js");
@@ -9,6 +11,18 @@ const port = process.env.PORT; //5000;
 //app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'build')));
+app.use("/images", express.static(path.join(__dirname, 'images')));
+
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'images/')
+  }//,
+  // filename: function (req, file, cb) {
+  //   cb(null, Date.now() + '.jpg') //Appending .jpg
+  // }
+});
+
+const upload = multer({ storage: storage });
 
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
@@ -46,10 +60,16 @@ app.post("/deleteRecipe", (req, res) => {
 
 // the purpose of this method is to have the functionality of adding new recipes to the interface
 // takes in an endpot that says /addRecipe uisng a post request
-app.post("/addRecipe", (req, res) => {
+app.post("/addRecipe", upload.single('image'), (req, res) => {
   // pass the body into the reqest
   console.log("/addRecipe");
   console.log(req.body);
+
+  if(req.file != null){
+    // take file, store on local machine
+    // get name of file, append path, and save to json object
+    console.log(req.file.originalname);
+  }
   // delete req.body._id;
   // take whole body to pass to function that has the add function (in recipes.js)
   addRecipe(req.body)
@@ -87,6 +107,21 @@ app.get("/devpreload", (req, res) => {
   loadSamples().then((result) => res.json(result));
   //res.status(200).send("please work");
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 app.get('/*', function (req, res) {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
