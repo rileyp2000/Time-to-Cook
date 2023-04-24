@@ -45,7 +45,15 @@ function Checkboxes({
 
   return (
     <div>
-      <h3>{title}</h3>
+      <h3
+        style={{
+          borderBottom: "1px solid grey",
+          marginTop: "2rem",
+          width: "30%",
+        }}
+      >
+        {title}
+      </h3>
       {children}
     </div>
   );

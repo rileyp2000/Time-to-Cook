@@ -4,20 +4,34 @@ import CheckBoxes from "./CheckBoxes";
 import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
 import { useEffect } from "react";
+import PropTypes from "prop-types";
+import TuneIcon from "@mui/icons-material/Tune";
+import IconButton from "@mui/joy/IconButton";
 
-function FilterOptions() {
-  const [query, setQuery] = useState("");
+function FilterOptions(props) {
+  const [recipes, setRecipes] = useState([]);
+  const [query, setQuery] = useState(props.myrecipe ? "/getRecipes" : "");
   const [openCard, setOpenCard] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState({
     protein: [],
     mealType: [],
     energy: [],
-    favorite: false, // initialize as false
+    favorite: [], // initialize as an empty array
   });
 
-  const proteinOptions = ["Chicken", "Beef", "Fish"];
-  const mealOptions = ["Breakfast", "Lunch", "Dinner", "Snack"];
-  const energyOptions = ["Easy", "Moderate", "Difficult"];
+  const [proteinOptions, setProteinOptions] = useState([]);
+  const [mealOptions, setMealOptions] = useState([]);
+  const [energyOptions, setEnergyOptions] = useState([]);
+  useEffect(() => {
+    async function fetchFilters() {
+      const res = await fetch("/getFilters");
+      const filters = await res.json();
+      setProteinOptions(filters.protein);
+      setMealOptions(filters.mealType);
+      setEnergyOptions(filters.energy);
+    }
+    fetchFilters();
+  }, []);
   const favoriteOptions = ["Favorite"];
   const [proteinQuery, setProteinQuery] = useState("");
   const [mealQuery, setMealQuery] = useState("");
@@ -37,9 +51,36 @@ function FilterOptions() {
     };
     setSelectedOptions(newSelectedOptions);
     setOpenCard(false);
+    buildQuery(proteinQuery, mealQuery, energyQuery, favoriteQuery);
+    fetchRecipes(query);
+    console.log("here is the query we are passing", query);
+  };
+
+  useEffect(() => {
+    if (props.myrecipe) {
+      fetchRecipes("/getRecipes");
+    }
+  }, [props.myrecipe]);
+
+  useEffect(() => {
+    if (props.favorite) {
+      fetchRecipes("/getRecipes?favorite=true");
+    }
+  }, [props.favorite]);
+
+  const fetchRecipes = async (query) => {
+    try {
+      const response = await fetch(query);
+      const data = await response.json();
+      props.setRecipes(data);
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const changeProtein = (newQuery, newSelectedOptions) => {
+    console.log("we are in protein printing new query:", newQuery);
     setProteinQuery(newQuery);
     setSelectedOptions({ ...selectedOptions, protein: newSelectedOptions });
     buildQuery(newQuery, mealQuery, energyQuery, favoriteQuery);
@@ -87,7 +128,12 @@ function FilterOptions() {
 
   return (
     <div className="Filtering Options">
-      <Button onClick={() => setOpenCard(true)} variant="outlined">
+      <Button
+        onClick={() => setOpenCard(true)}
+        variant="outlined"
+        style={{ marginBottom: "3rem" }}
+        endIcon={<TuneIcon />}
+      >
         Filter Options
       </Button>
       <Modal
@@ -108,7 +154,7 @@ function FilterOptions() {
             boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.5)",
             borderRadius: "10px",
             height: "60vh",
-            width: "20%",
+            width: "30%",
             overflowY: "auto",
           }}
         >
@@ -118,6 +164,7 @@ function FilterOptions() {
             options={proteinOptions}
             onQueryChange={changeProtein}
             selectedOptions={selectedOptions.protein || []}
+            style={{ marginTop: "20px" }} // add margin to the top
           />
           <CheckBoxes
             title={"Meal Type"}
@@ -133,9 +180,9 @@ function FilterOptions() {
           />
           <CheckBoxes
             title={"Recipes"}
-            options={["Favorite"]}
+            options={favoriteOptions}
             onQueryChange={changeFavorite}
-            selectedOptions={selectedOptions.favorite}
+            selectedOptions={selectedOptions.favorite || []}
           />
           <p>query string: {query}</p>
         </div>
@@ -143,5 +190,11 @@ function FilterOptions() {
     </div>
   );
 }
+
+FilterOptions.propTypes = {
+  setRecipes: PropTypes.func.isRequired,
+  myrecipe: PropTypes.string.isRequired,
+  favorite: PropTypes.bool.isRequired,
+};
 
 export default FilterOptions;

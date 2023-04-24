@@ -150,8 +150,11 @@ function RecipeCard(props) {
         <CardActionArea onClick={handleOpenCard} sx={{ width: "100%" }}>
           <CardOverflow>
             <AspectRatio ratio="2">
-              <img src={`data:${props.rec.image.mime};base64,${props.rec.image.data}`} alt="" loading="lazy"/>
-
+              <img
+                src={`data:${props.rec.image.mime};base64,${props.rec.image.data}`}
+                alt=""
+                loading="lazy"
+              />
             </AspectRatio>
           </CardOverflow>
           <Typography level="h2" sx={{ fontSize: "md", mt: 2 }}>
@@ -204,6 +207,7 @@ function RecipeCard(props) {
             <Sheet
               variant="outlined"
               sx={{
+                minWidth: 500,
                 maxWidth: 600,
                 borderRadius: "md",
                 p: 3,

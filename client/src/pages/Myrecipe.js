@@ -1,24 +1,10 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import ListOfRecipeCards from "../components/ListOfRecipeCards";
+import RecipePage from "../components/RecipePage";
 
 function MyRecipe() {
-  const [recipes, setRecipes] = useState([]);
-  useEffect(() => {
-    fetch("/getRecipes")
-      .then((response) => response.json())
-      .then((data) => {
-        setRecipes(data);
-      })
-      .catch((error) => console.error(error));
-  }, []);
-
-  return (
-    <ListOfRecipeCards
-      recipes={recipes}
-      title={"My Recipe"}
-    ></ListOfRecipeCards>
-  );
+  return <RecipePage myrecipe={"true"} favorite={null}></RecipePage>;
 }
 
 export default MyRecipe;

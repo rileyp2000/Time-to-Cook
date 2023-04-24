@@ -31,7 +31,6 @@ function Home() {
       ) : (
         <SearchResults query={searchQuery} />
       )}
-      <FilterOptions></FilterOptions>
     </div>
   );
 }
