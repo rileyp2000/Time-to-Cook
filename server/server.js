@@ -64,14 +64,13 @@ app.post("/addRecipe", upload.single('image'), (req, res) => {
   // pass the body into the reqest
   console.log("/addRecipe");
   console.log(req.body.recipe);
-  console.log(req);
   let recipe = JSON.parse(req.body.recipe);
   if(req.file != null){
     // take file, store on local machine
     // get name of file, append path, and save to json object
     const imgName = {"image": "images/" + req.file.originalname};
     recipe = {...recipe, ...imgName}; 
-    console.log("change" + recipe);
+    //console.log("change" + recipe);
   } else {
     const imgName = {"image": "images/" + "placeholder.png"};
     recipe = {...recipe, ...imgName}; 
@@ -89,19 +88,28 @@ app.post("/addRecipe", upload.single('image'), (req, res) => {
 // the purpose of this method is to have the functionality of editing recipes entities already in the interface
 // takes in an endpoint that says /editRecipe using a post request
 //TODO: MAKE THIS MATCH ADD
-app.post('/editRecipe', (req, res) => {
+app.post('/editRecipe', upload.single('image'), (req, res) => {
   // get the recipe ID from request body
   const recipeId = req.body._id;
   if (!recipeId) {
     return res.status(400).json({error: "No Recipe ID matches"});
   }
 
+  let recipe = JSON.parse(req.body.recipe);
+  if(req.file != null){
+    // take file, store on local machine
+    // get name of file, append path, and save to json object
+    const imgName = {"image": "images/" + req.file.originalname};
+    recipe = {...recipe, ...imgName}; 
+    //console.log("change" + recipe);
+  }
+  
   // take whole body to pass to function that has the edit function (in recipes.js) 
   console.log("/editRecipe");
   console.log(req.body);
 
   // Call the function in recipes.js to update the recipe by ID
-  editRecipe(recipeId, req.body)
+  editRecipe(recipeId, recipe)
     .then(result => res.json(result))
     .catch(error => {
       console.error("Error editing recipe:", error);
