@@ -53,6 +53,11 @@ function Checkboxes({
             checked={selectedOptions.includes(option)}
             onChange={handleOptionChange}
             value={option}
+            sx={{
+              "&.Mui-checked": {
+                color: "#6B48FF",
+              },
+            }}
           />
         }
         label={option}

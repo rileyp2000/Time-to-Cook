@@ -5,7 +5,7 @@ import ListOfRecipeCards from "../components/ListOfRecipeCards";
 import RecipePage from "../components/RecipePage";
 
 function Favorite() {
-  return <RecipePage favorite={"true"} myrecipe={null}></RecipePage>;
+  return <RecipePage favorite={true} myrecipe={null}></RecipePage>;
 }
 
 export default Favorite;

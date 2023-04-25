@@ -19,6 +19,10 @@ function FilterOptions(props) {
     favorite: [], // initialize as an empty array
   });
 
+  const [isFavoritePage, setIsFavoritePage] = useState(
+    props.favorite ? true : false
+  );
+
   const [proteinOptions, setProteinOptions] = useState([]);
   const [mealOptions, setMealOptions] = useState([]);
   const [energyOptions, setEnergyOptions] = useState([]);
@@ -63,10 +67,10 @@ function FilterOptions(props) {
   }, [props.myrecipe]);
 
   useEffect(() => {
-    if (props.favorite) {
+    if (isFavoritePage) {
       fetchRecipes("/getRecipes?favorite=true");
     }
-  }, [props.favorite]);
+  }, [isFavoritePage]);
 
   const fetchRecipes = async (query) => {
     try {
@@ -99,6 +103,10 @@ function FilterOptions(props) {
   };
 
   const changeFavorite = (newQuery, newSelectedOptions) => {
+    if (isFavoritePage) {
+      setIsFavoritePage(false);
+    }
+
     setFavoriteQuery(newQuery);
     setSelectedOptions({ ...selectedOptions, favorite: newSelectedOptions });
     buildQuery(proteinQuery, mealQuery, energyQuery, newQuery);
@@ -182,7 +190,9 @@ function FilterOptions(props) {
             title={"Recipes"}
             options={favoriteOptions}
             onQueryChange={changeFavorite}
-            selectedOptions={selectedOptions.favorite || []}
+            selectedOptions={
+              isFavoritePage ? ["Favorite"] : selectedOptions.favorite
+            }
           />
           <p>query string: {query}</p>
         </div>
