@@ -5,21 +5,23 @@ import "./ListOfRecipeCards.css";
 
 function ListOfRecipeCards(props) {
   return (
-    <div className="cards-container">
-      <section>
-        <h1 style={{ borderBottom: "1px solid grey" }}>{props.title}</h1>
-        <div className="cards">
-          {props.recipes.length > 0 ? (
-            props.recipes.map((recipe, index) => (
-              <div key={index} className="card">
-                <RecipeCard key={recipe._id} rec={recipe} />
-              </div>
-            ))
-          ) : (
-            <p>No Results</p>
-          )}
-        </div>
-      </section>
+    <div>
+      <div className="cards-container">
+        <section>
+          <h1 style={{ borderBottom: "1px solid grey" }}>{props.title}</h1>
+          <div className="cards">
+            {props.recipes.length > 0 ? (
+              props.recipes.map((recipe, index) => (
+                <div key={index} className="card">
+                  <RecipeCard key={recipe._id} rec={recipe} />
+                </div>
+              ))
+            ) : (
+              <h1>No Results</h1>
+            )}
+          </div>
+        </section>
+      </div>
     </div>
   );
 }

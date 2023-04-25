@@ -208,6 +208,7 @@ function RecipeCard(props) {
             <Sheet
               variant="outlined"
               sx={{
+                minWidth: 500,
                 maxWidth: 600,
                 borderRadius: "md",
                 p: 3,
