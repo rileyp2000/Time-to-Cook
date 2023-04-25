@@ -10,7 +10,12 @@ function RecipePage(props) {
 
   return (
     <div
-      style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        marginTop: "5rem",
+      }}
     >
       <div>
         <h1

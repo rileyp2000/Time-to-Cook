@@ -98,7 +98,7 @@ function ResponsiveAppBar() {
 
   return (
     <AppBar
-      position="static"
+      position="fixed"
       color="primary"
       // style={{ backgroundColor: "hsl(294deg 45% 52%)" }}
       sx={{

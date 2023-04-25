@@ -508,7 +508,7 @@ function AddForm() {
   };
 
   return (
-    <div style={{ textAlign: "center", marginTop: "2rem" }}>
+    <div style={{ textAlign: "center", marginTop: "5rem" }}>
       <h1 style={{ color: "grey" }}>
         {editingRecipe ? "Edit Recipe" : "Add Recipe"}
       </h1>
