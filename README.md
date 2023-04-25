@@ -34,6 +34,6 @@ docker compose down
 3. Move the generated `build/` directory into the `server/` directory
 4. Copy over the `server/` directory onto the Pi.
 ### On the Pi
-5. Navigate to the `server/` directory and run `npm install`
+5. Navigate to the `server/` directory and run `npm install`. Additionally, change references to `.env.docker` in `recipes.js` and `server.js` to be `.env`.
 6. Once complete, run `node server.js` to start the site! If you would like the 
     service to run in the background, instead run `node server.js &`
