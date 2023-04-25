@@ -5,7 +5,6 @@ import PropTypes from "prop-types";
 import { useEffect } from "react";
 
 const UploadImage = ({ onImageUpload, initialImage }) => {
-  console.log("initial image is:", initialImage);
   const [imagePreview, setImagePreview] = useState(
     initialImage
       ? `data:${initialImage.mime};base64,${initialImage.data}`
@@ -81,7 +80,7 @@ const UploadImage = ({ onImageUpload, initialImage }) => {
 
 // Define prop validation using PropTypes
 UploadImage.propTypes = {
-  onImageUpload: PropTypes.string.isRequired, // Specify the type and make it required
+  onImageUpload: PropTypes.func.isRequired, // Specify the type and make it required
   initialImage: PropTypes.string, // Add a prop for the initial image
 };
 

@@ -91,7 +91,6 @@ function ResponsiveAppBar() {
     if (event.key === "Enter") {
       const query = event.target.value;
       event.target.value = "";
-      console.log(query);
       setSearchQuery(query); // Set search query state to the entered query when a search is performed
       navigate(`/searchresults/${query}`); // Navigate to the SearchResults page with the search query as a parameter
     }

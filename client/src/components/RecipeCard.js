@@ -23,7 +23,6 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 function RecipeCard(props) {
-  console.log("recipe", JSON.stringify(props.rec, null, 2));
   //used to handle modal being opened
   const [openCard, setOpenCard] = React.useState(false);
   const handleOpenCard = () => setOpenCard(true);

@@ -7,7 +7,6 @@ import PropTypes from "prop-types";
 
 function RecipePage(props) {
   const [recipes, setRecipes] = useState([]);
-  console.log("we are in recipepage for favorite:", props.favorite);
 
   return (
     <div
@@ -48,8 +47,8 @@ function RecipePage(props) {
 }
 
 RecipePage.propTypes = {
-  myrecipe: PropTypes.string.isRequired,
-  favorite: PropTypes.string.isRequired,
+  myrecipe: PropTypes.bool.isRequired,
+  favorite: PropTypes.bool.isRequired,
 };
 
 export default RecipePage;

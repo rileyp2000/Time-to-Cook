@@ -316,7 +316,7 @@ const recipes = [
     "title": "Grandma’s Herb Pretzels",
     "time": ["1.33", "Hrs"],
     "energy": "Easy",
-    "mealType": "?????",
+    "mealType": "Snack",
     "utensils": ["bowl", "spatula", "pan"],
     "ingredients": {
       "Grandma’s Herb Pretzels": ["12oz Redenbacher PopCorn Oil", "32oz small pretzels", "1pkg hidden valley dry ranch dressing", "½ tsp garlic powder", "1tsp onion powder", "2tbsp dry dill weed"]

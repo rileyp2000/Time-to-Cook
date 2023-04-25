@@ -24,7 +24,7 @@ import {
 function AddForm() {
   const { state } = useLocation();
   const editingRecipe = state?.editingRecipe;
-  console.log(editingRecipe);
+  //console.log(editingRecipe);
 
   const [unit, setUnit] = React.useState(editingRecipe?.time[1] || "");
 
@@ -248,8 +248,6 @@ function AddForm() {
   const [image, setImage] = React.useState({});
   const [newImage, setNewImage] = React.useState(false);
   const handleImageUpload = (image, isNewImage) => {
-    console.log("Image path", image);
-    console.log("new image?:", isNewImage);
     setNewImage(isNewImage);
     setImage(image);
   };
@@ -433,7 +431,6 @@ function AddForm() {
       setopenNotifFail(true);
       return;
     }
-    console.log("here is ingredeints:" + JSON.stringify(ingredients, null, 2));
 
     const recipe = {
       title: title,
@@ -452,12 +449,9 @@ function AddForm() {
       protein: protein,
       favorite: false,
     };
-    console.log("changed recipe:" + JSON.stringify(recipe, null, 2));
-    //console.log(recipe.title);
 
     //handling image for formdata
     const formData = new FormData();
-    console.log("before appending image:", image);
 
     if (!editingRecipe) {
       // Add the file to the FormData object
@@ -477,20 +471,17 @@ function AddForm() {
           console.log(error);
         });
     } else {
-      console.log("we are in the else case");
       //we add the id no matter what
       const editedRecipe = Object.assign({}, recipe, {
         _id: editingRecipe._id,
       });
 
       if (newImage) {
-        console.log("new image case:");
         //append new image, should get updated from handleFileUpload
         //send new image and recipe with no image in it
         formData.append("image", image);
         formData.append("recipe", JSON.stringify(editedRecipe));
       } else {
-        console.log("else new image case");
         let oldImageRecipe = Object.assign({}, editedRecipe, {
           image: editingRecipe.image,
         });
@@ -947,14 +938,5 @@ function AddForm() {
     </div>
   );
 }
-
-AddForm.propTypes = {
-  recipe: PropTypes.object.isRequired,
-  location: PropTypes.shape({
-    state: PropTypes.shape({
-      editingRecipe: PropTypes.object.isRequired,
-    }).isRequired,
-  }).isRequired,
-};
 
 export default AddForm;
