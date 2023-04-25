@@ -8,7 +8,9 @@ COPY server.js /usr/local/app/
 COPY recipes.js /usr/local/app/
 COPY build /usr/local/app/build
 COPY .env.docker /usr/local/app/
+COPY recipe_json.js /usr/local/app/
 COPY images/ /usr/local/app/images
+
 EXPOSE 5000
 
 CMD ["npm", "run", "docker"]
