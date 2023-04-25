@@ -38,15 +38,7 @@ function RecipePage(props) {
           favorite={props.favorite}
         ></FilterOptions>
       </div>
-      <ListOfRecipeCards
-        recipes={recipes}
-        style={
-          {
-            // boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.75)",
-            // borderRadius: "10px",// or any other value that fits your needs
-          }
-        }
-      ></ListOfRecipeCards>
+      <ListOfRecipeCards recipes={recipes}></ListOfRecipeCards>
     </div>
   );
 }

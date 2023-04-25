@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { useParams } from "react-router-dom";
 import RecipeCard from "./RecipeCard";
 import { useState, useEffect } from "react";
+import ListOfRecipeCards from "./ListOfRecipeCards";
 
 function SearchResults() {
   const { query } = useParams(); // Retrieve the search query parameter
@@ -14,7 +15,7 @@ function SearchResults() {
       .then((data) => {
         if (data.length > 0) {
           // If there are any search results
-          setRecipe(data[0]); // Set recipe state to the first result
+          setRecipe(data); // Set recipe state to the first result
         } else {
           setRecipe(null); // Otherwise, set recipe state to null
         }
@@ -24,35 +25,38 @@ function SearchResults() {
 
   // Render the search results based on the recipe state
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "flex-start",
-        alignItems: "center",
-        marginTop: "5rem",
-      }}
-    >
+    <div>
       {recipe ? (
         <div
           style={{
-            maxWidth: "400px",
-            marginTop: "20px",
-            alignContent: "center",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            marginTop: "5rem",
           }}
         >
-          <h2
+          <h1
             style={{
-              textAlign: "center",
-              marginBottom: "20px",
+              width: "30%",
               borderBottom: "1px solid grey",
+              textAlign: "center",
+              marginTop: "2rem",
+              marginBottom: "4rem",
             }}
           >
-            Search Result for {query}
-          </h2>
-          <RecipeCard rec={recipe} />
+            Search Result for `{query}`
+          </h1>
+          <ListOfRecipeCards recipes={recipe}></ListOfRecipeCards>
         </div>
       ) : (
-        <h2 style={{ textAlign: "center", marginTop: "20px" }}>
+        <h2
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            marginTop: "5rem",
+          }}
+        >
           No results found for `{query}`
         </h2>
       )}
