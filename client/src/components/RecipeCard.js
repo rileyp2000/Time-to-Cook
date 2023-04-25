@@ -152,7 +152,7 @@ function RecipeCard(props) {
           <CardOverflow>
             <AspectRatio ratio="2">
               <img
-                src={`http://localhost:5000/${props.rec.image}`}
+                src={`/${props.rec.image}`}
                 alt=""
                 loading="lazy"
               />
