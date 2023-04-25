@@ -23,6 +23,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 function RecipeCard(props) {
+  console.log("recipe", JSON.stringify(props.rec,null,2));
   //used to handle modal being opened
   const [openCard, setOpenCard] = React.useState(false);
   const handleOpenCard = () => setOpenCard(true);
@@ -150,8 +151,11 @@ function RecipeCard(props) {
         <CardActionArea onClick={handleOpenCard} sx={{ width: "100%" }}>
           <CardOverflow>
             <AspectRatio ratio="2">
-              <img src={`data:${props.rec.image.mime};base64,${props.rec.image.data}`} alt="" loading="lazy"/>
-
+              <img
+                src={`http://localhost:5000/${props.rec.image}`}
+                alt=""
+                loading="lazy"
+              />
             </AspectRatio>
           </CardOverflow>
           <Typography level="h2" sx={{ fontSize: "md", mt: 2 }}>
