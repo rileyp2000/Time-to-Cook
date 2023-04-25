@@ -5,18 +5,19 @@ import PropTypes from "prop-types";
 import { useEffect } from "react";
 
 const UploadImage = ({ onImageUpload, initialImage }) => {
+  console.log("initial image is:", initialImage);
   const [imagePreview, setImagePreview] = useState(
     initialImage
       ? `data:${initialImage.mime};base64,${initialImage.data}`
       : null
   ); // State for storing image preview URL
   const [uploadProgress, setUploadProgress] = useState(0); // State for tracking upload progress
+  const [isNewImage, setIsNewImage] = useState(false); // State for tracking whether the user has selected a new image
 
   useEffect(() => {
+    setIsNewImage(false);
     setImagePreview(
-      initialImage
-        ? `data:${initialImage.mime};base64,${initialImage.data}`
-        : null
+      initialImage ? `http://localhost:5000/${initialImage}` : null
     );
   }, [initialImage]);
 
@@ -30,7 +31,15 @@ const UploadImage = ({ onImageUpload, initialImage }) => {
       setImagePreview(reader.result);
     };
     reader.readAsDataURL(file);
-    onImageUpload(file);
+    //setIsNewImage true for both cases in roder for the preview to show
+    if (initialImage) {
+      //only want to set this newImage if we are editing
+      setIsNewImage(true);
+      onImageUpload(file, true);
+    } else {
+      setIsNewImage(true);
+      onImageUpload(file, false);
+    }
   };
 
   return (
@@ -54,7 +63,11 @@ const UploadImage = ({ onImageUpload, initialImage }) => {
       {imagePreview && (
         <div style={{ marginTop: 10, marginBottom: 10 }}>
           <img
-            src={imagePreview}
+            src={
+              isNewImage
+                ? imagePreview
+                : `http://localhost:5000/${initialImage}`
+            }
             alt="Image Preview"
             style={{ maxWidth: "80%", height: "auto", marginBottom: "3rem" }}
           />

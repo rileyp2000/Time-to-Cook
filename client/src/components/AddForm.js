@@ -246,8 +246,11 @@ function AddForm() {
   });
 
   const [image, setImage] = React.useState({});
-  const handleImageUpload = (image) => {
+  const [newImage, setNewImage] = React.useState(false);
+  const handleImageUpload = (image, isNewImage) => {
     console.log("Image path", image);
+    console.log("new image?:", isNewImage);
+    setNewImage(isNewImage);
     setImage(image);
   };
 
@@ -446,7 +449,6 @@ function AddForm() {
         {}
       ),
       steps: steps,
-      //image: image,
       protein: protein,
       favorite: false,
     };
@@ -456,12 +458,13 @@ function AddForm() {
     //handling image for formdata
     const formData = new FormData();
     console.log("before appending image:", image);
-    // Add the file to the FormData object
-    formData.append("image", image);
 
     if (!editingRecipe) {
+      // Add the file to the FormData object
+      formData.append("image", image);
       //adding recipe for when we are adding ant not editing
       formData.append("recipe", JSON.stringify(recipe));
+
       fetch("/addRecipe", {
         method: "POST",
         body: formData, // send the formData as the body
@@ -474,10 +477,25 @@ function AddForm() {
           console.log(error);
         });
     } else {
+      console.log("we are in the else case");
+      //we add the id no matter what
       const editedRecipe = Object.assign({}, recipe, {
         _id: editingRecipe._id,
       });
-      formData.append("recipe", JSON.stringify(editedRecipe));
+
+      if (newImage) {
+        console.log("new image case:");
+        //append new image, should get updated from handleFileUpload
+        //send new image and recipe with no image in it
+        formData.append("image", image);
+        formData.append("recipe", JSON.stringify(editedRecipe));
+      } else {
+        console.log("else new image case");
+        let oldImageRecipe = Object.assign({}, editedRecipe, {
+          image: editingRecipe.image,
+        });
+        formData.append("recipe", JSON.stringify(oldImageRecipe));
+      }
 
       // send FormData to server
       fetch("/editRecipe", {
