@@ -29,6 +29,7 @@ function SearchResults() {
         display: "flex",
         justifyContent: "flex-start",
         alignItems: "center",
+        marginTop: "5rem",
       }}
     >
       {recipe ? (

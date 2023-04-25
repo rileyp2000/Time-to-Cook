@@ -502,9 +502,9 @@ function AddForm() {
         });
     }
     setopenNotifSucess(true);
-    // setTimeout(() => {
-    //   window.location.reload();
-    // }, 500); // 0.5 seconds delay
+    setTimeout(() => {
+      window.location.reload();
+    }, 500); // 0.5 seconds delay
   };
 
   return (
