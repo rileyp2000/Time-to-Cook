@@ -32,7 +32,8 @@ const recipes = [
       "Serve"
     ],
     "protein": "No Protein",
-    "favorite": false
+    "favorite": false,
+    "image": "images/french-toast.jpg"
   }, 
   {
     "title": "Slow Cooker Mashed Potatoes",
@@ -65,7 +66,8 @@ const recipes = [
       "Eat"
     ],
     "protein": "No Protein",
-    "favorite": false
+    "favorite": false,
+    "image": "images/crock-pot-mashed-potatoes.jpg"
   }, 
   {
     "title": "Banana Bread",
@@ -103,7 +105,8 @@ const recipes = [
       "If the outside is brown, but the center is wet, cover with foil and continue cooking until cooked through"
     ],
     "protein": "No Protein",
-    "favorite": false
+    "favorite": false,
+    "image": "images/banana-bread.jpeg"
   }, 
   {
     "title": "Sausage Strata",
@@ -142,7 +145,9 @@ const recipes = [
       "Pour the weird bread/egg mixture over top of the sausage in the dish",
       "Bake for 45-50 minutes"
     ],
-    "protein": "No Protein"
+    "protein": "No Protein",
+    "favorite": false,
+    "image": "images/sausage-strata.jpg"
   },
   {
     "title": "Meatballs",
@@ -155,7 +160,8 @@ const recipes = [
     },
     "steps": ["Preheat Oven to 400℉", "Mix all ingredients but the olive oil in a medium bowl", "Using your hands, take about 2tbs worth of meat mixture, and form it into a packed ball. Continue this until your bowl is empty and you have an army of uncooked meatballs.", "Oil a pan using the olive oil and, over medium heat, give each meatball a couple minutes of cooking on 3 sides. I know they’re spheres and don’t have sides.", "Transfer the half-cooked meatballs to a foil-lined baking tray and bake for 20 minutes or until the insides are up to temp."],
     "protein": "Beef",
-    "favorite": false
+    "favorite": false,
+    image: "images/meatballs.jpg"
   },
   {
     "_id": new mongo.ObjectId("6422011aabee3b0007ba19bd"),
@@ -193,7 +199,8 @@ const recipes = [
       "Bake for 8-10 minutes"
     ],
     "protein": "No protein",
-    "favorite": false
+    "favorite": false,
+    "image": "images/snickerdoodles.jpg"
   },
   {
     "_id": new mongo.ObjectId("64220139abee3b0007ba19be"),
@@ -234,7 +241,8 @@ const recipes = [
       "Eat and burn your mouth because you forgot to let them cool"
     ],
     "protein": "No protein",
-    "favorite": false
+    "favorite": false,
+    "image": "images/brownies.jpg"
   },
   {
     "title": "Slow Cooker Honey Teriyaki Chicken",
@@ -256,49 +264,9 @@ const recipes = [
       "Serve on top of rice."
     ],
     "protein": "Chicken",
-    "favorite": false
-  },
-  {
-    "title": "Sausage Strata",
-    "time": ["1.20", "Hrs"],
-    "energy": "Moderate",
-    "mealType": "Entree",
-    "utensils": [
-      "Measuring spoons",
-      "dutch oven",
-      "knife",
-      "cutting board",
-      "spoon",
-      "casserole dishes"
-    ],
-    "ingredients": {
-      "Sausage Strata": [
-        "3 tbsp butter",
-        "3-4 large onions",
-        "¾ tsp salt",
-        "8 cups beef stock",
-        "1 cup dry wine",
-        "1 tbsp dry sherry",
-        "1 tbsp flour",
-        "½ tsp pepper",
-        "8 slices french bread",
-        "1 ½ cups grated gruyere or mozzarella cheese"
-      ]
-    },
-    "steps": [
-      "Chop onions. You can add a few different types instead of all one type",
-      "Melt the butter in a dutch oven over medium heat. Add the onions and ½ tsp salt and stir. Cover for 5 minutes",
-      "Remove the lid and caramelize the onions, stirring occasionally. This may take up to an hour",
-      "In a separate saucepan over low heat, warm the broth",
-      "After the onions have caramelized, add the wine and sherry and bring the mixture to a boil. Stir in the flour and let it thicken",
-      "Slowly add the warmed broth and ¼ tsp salt and pepper to the dutch oven. Boil for 10 minutes uncovered. Add more salt and pepper if needed",
-      "Heat the oven broiler and ladle the soup into oven safe casserole dishes and cover with the bread slices. Sprinkle the cheese and broil the dishes for a few minutes. Make sure to watch so the cheese doesn't burn",
-      "Serve"
-    ],
-    "protein": "Beef Stock",
-    "favorite": false
-  },
-  
+    "favorite": false,
+    "image": "images/slow-cooker-honey-teriyaki-chicken.jpg"
+  },  
   {
     "title": "Beef and Broccoli",
     "time": ["30", "Min"],
@@ -320,7 +288,8 @@ const recipes = [
       
     ],
     "protein": "Beef",
-    "favorite": false
+    "favorite": false,
+    "image": "images/beef-and-broccoli.jpg"
   },
   {
     "title": "Slow Cooker Beef Stew",
@@ -340,7 +309,8 @@ const recipes = [
       "Serve" 
     ],
     "protein": "Beef",
-    "favorite": false
+    "favorite": false,
+    "image": "images/slow-cooker-beef-stew.jpg"
   },
   {
     "title": "Grandma’s Herb Pretzels",
@@ -358,8 +328,10 @@ const recipes = [
       "Takes about 4-5 stirs"
     ],
     "protein": "No Protein",
-    "favorite": false
+    "favorite": false,
+    "image": "images/grandma-herb-pretzel.jpg"
   }
 ];
+
 
 exports.recipe_data = recipes;
