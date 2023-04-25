@@ -575,7 +575,7 @@ function AddForm() {
               required
               defaultValue={editingRecipe?.time[1] || ""}
             >
-              <MenuItem value={"Mins"}>Min</MenuItem>
+              <MenuItem value={"Min"}>Min</MenuItem>
               <MenuItem value={"Hrs"}>Hrs</MenuItem>
             </Select>
             {formErrors.unit && (

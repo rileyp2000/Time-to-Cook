@@ -205,7 +205,7 @@ const recipes = [
   {
     "_id": new mongo.ObjectId("64220139abee3b0007ba19be"),
     "title": "Brownies",
-    "time": ["45", "Mins"],
+    "time": ["45", "Min"],
     "energy": "Moderate",
     "mealType": "Sweets",
     "utensils": [

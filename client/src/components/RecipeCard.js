@@ -23,7 +23,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 function RecipeCard(props) {
-  console.log("recipe", JSON.stringify(props.rec,null,2));
+  console.log("recipe", JSON.stringify(props.rec, null, 2));
   //used to handle modal being opened
   const [openCard, setOpenCard] = React.useState(false);
   const handleOpenCard = () => setOpenCard(true);
@@ -151,11 +151,7 @@ function RecipeCard(props) {
         <CardActionArea onClick={handleOpenCard} sx={{ width: "100%" }}>
           <CardOverflow>
             <AspectRatio ratio="2">
-              <img
-                src={`http://localhost:5000/${props.rec.image}`}
-                alt=""
-                loading="lazy"
-              />
+              <img src={`/${props.rec.image}`} alt="" loading="lazy" />
             </AspectRatio>
           </CardOverflow>
           <Typography level="h2" sx={{ fontSize: "md", mt: 2 }}>
@@ -268,7 +264,6 @@ function RecipeCard(props) {
                   </Button>
                 </Box>
               </Box>
-
               <Typography
                 component="h2"
                 id="modal-title"
@@ -287,9 +282,16 @@ function RecipeCard(props) {
               <Typography
                 id="modal-desc"
                 textColor="text.primary"
+                style={{ fontSize: `${fontSize}`, marginBottom: "5px" }}
+              >
+                Meal Type: {props.rec.mealType}
+              </Typography>
+              <Typography
+                id="modal-desc"
+                textColor="text.primary"
                 style={{ fontSize: `${fontSize}` }}
               >
-                MealType: {props.rec.mealType}
+                Protein: {props.rec.protein}
               </Typography>
               {/* my stands for margin y this makes space between each seciton
             by wrapping a box around it */}
@@ -447,18 +449,15 @@ RecipeCard.propTypes = {
   rec: PropTypes.shape({
     _id: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
-    time: PropTypes.string.isRequired,
+    time: PropTypes.arrayOf(PropTypes.string).isRequired,
     energy: PropTypes.string.isRequired,
     mealType: PropTypes.string.isRequired,
     utensils: PropTypes.arrayOf(PropTypes.string).isRequired,
     ingredients: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.string))
       .isRequired,
     steps: PropTypes.arrayOf(PropTypes.string).isRequired,
-    image: PropTypes.shape({
-      mime: PropTypes.string.isRequired,
-      data: PropTypes.string.isRequired,
-    }).isRequired,
-    filters: PropTypes.arrayOf(PropTypes.string).isRequired,
+    image: PropTypes.string.isRequired,
+    protein: PropTypes.string.isRequired,
     favorite: PropTypes.bool.isRequired,
   }).isRequired,
 };
