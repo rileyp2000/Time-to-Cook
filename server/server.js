@@ -90,12 +90,12 @@ app.post("/addRecipe", upload.single('image'), (req, res) => {
 //TODO: MAKE THIS MATCH ADD
 app.post('/editRecipe', upload.single('image'), (req, res) => {
   // get the recipe ID from request body
-  const recipeId = req.body._id;
+  
+  let recipe = JSON.parse(req.body.recipe);
+  const recipeId = recipe._id;
   if (!recipeId) {
     return res.status(400).json({error: "No Recipe ID matches"});
   }
-
-  let recipe = JSON.parse(req.body.recipe);
   if(req.file != null){
     // take file, store on local machine
     // get name of file, append path, and save to json object
@@ -103,7 +103,7 @@ app.post('/editRecipe', upload.single('image'), (req, res) => {
     recipe = {...recipe, ...imgName}; 
     //console.log("change" + recipe);
   }
-  
+
   // take whole body to pass to function that has the edit function (in recipes.js) 
   console.log("/editRecipe");
   console.log(req.body);
