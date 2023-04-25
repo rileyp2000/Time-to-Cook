@@ -17,7 +17,7 @@ const UploadImage = ({ onImageUpload, initialImage }) => {
   useEffect(() => {
     setIsNewImage(false);
     setImagePreview(
-      initialImage ? `http://localhost:5000/${initialImage}` : null
+      initialImage ? `/${initialImage}` : null
     );
   }, [initialImage]);
 
@@ -66,7 +66,7 @@ const UploadImage = ({ onImageUpload, initialImage }) => {
             src={
               isNewImage
                 ? imagePreview
-                : `http://localhost:5000/${initialImage}`
+                : `/${initialImage}`
             }
             alt="Image Preview"
             style={{ maxWidth: "80%", height: "auto", marginBottom: "3rem" }}
