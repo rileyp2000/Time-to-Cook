@@ -18,7 +18,7 @@ var storage = multer.diskStorage({
     cb(null, 'images/')
   },
   filename: function (req, file, cb) {
-    cb(null, JSON.parse(req.body.recipe).title + path.extname(file.originalname))
+    cb(null, file.originalname)
   }
 });
 
@@ -64,6 +64,7 @@ app.post("/addRecipe", upload.single('image'), (req, res) => {
   // pass the body into the reqest
   console.log("/addRecipe");
   console.log(req.body.recipe);
+  console.log(req);
   let recipe = JSON.parse(req.body.recipe);
   if(req.file != null){
     // take file, store on local machine
