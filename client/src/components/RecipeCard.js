@@ -157,7 +157,7 @@ function RecipeCard(props) {
             {props.rec.title}
           </Typography>
           <Typography level="body2" sx={{ mt: 0.5, mb: 2 }}>
-            <Typography startDecorator={<TimerIcon />} textColor="neutral.700">
+            <Typography startDecorator={<TimerIcon />}>
               {props.rec.time.join(" ")}
             </Typography>
           </Typography>
@@ -268,7 +268,6 @@ function RecipeCard(props) {
                 component="h2"
                 id="modal-title"
                 level="h1"
-                textColor="inherit"
                 fontWeight="fontWeightBold"
                 mb={1}
                 mt={3}
@@ -281,16 +280,11 @@ function RecipeCard(props) {
               </Typography>
               <Typography
                 id="modal-desc"
-                textColor="text.primary"
                 style={{ fontSize: `${fontSize}`, marginBottom: "5px" }}
               >
                 Meal Type: {props.rec.mealType}
               </Typography>
-              <Typography
-                id="modal-desc"
-                textColor="text.primary"
-                style={{ fontSize: `${fontSize}` }}
-              >
+              <Typography id="modal-desc" style={{ fontSize: `${fontSize}` }}>
                 Protein: {props.rec.protein}
               </Typography>
               {/* my stands for margin y this makes space between each seciton
@@ -300,47 +294,41 @@ function RecipeCard(props) {
                   component="h2"
                   id="modal-title"
                   level="h2"
-                  textColor="inherit"
                   fontWeight="fontWeightRegular"
                   mb={1}
                   style={{ borderBottom: "1px solid grey" }}
                 >
                   Utensils
                 </Typography>
-                <Typography
-                  id="modal-desc"
-                  textColor="text.primary"
-                  style={{ fontSize: `${fontSize}` }}
-                >
+                <Box id="modal-desc" style={{ fontSize: `${fontSize}` }}>
                   <ul style={{ paddingLeft: "1em" }}>
                     {props.rec.utensils.map((utensil, index) => (
                       <li
                         key={index}
-                        style={{ textIndent: "-1em", paddingLeft: "2em" }}
+                        style={{
+                          textIndent: "-1em",
+                          paddingLeft: "2em",
+                          marginBottom: "10px",
+                        }}
                       >
                         {utensil}
                       </li>
                     ))}
                   </ul>
-                </Typography>
+                </Box>
               </Box>
               <Box my={4}>
                 <Typography
                   component="h2"
                   id="modal-title"
                   level="h2"
-                  textColor="inherit"
                   fontWeight="fontWeightRegular"
                   mb={1}
                   style={{ borderBottom: "1px solid grey" }}
                 >
                   Ingredients
                 </Typography>
-                <Typography
-                  id="modal-desc"
-                  textColor="text.primary"
-                  style={{ fontSize: `${fontSize}` }}
-                >
+                <Box id="modal-desc" style={{ fontSize: `${fontSize}` }}>
                   {Object.entries(props.rec.ingredients).map(
                     ([title, ingredients]) => (
                       <div key={title}>
@@ -351,7 +339,11 @@ function RecipeCard(props) {
                           {ingredients.map((ingredient, index) => (
                             <li
                               key={index}
-                              style={{ textIndent: "-1em", paddingLeft: "2em" }}
+                              style={{
+                                textIndent: "-1em",
+                                paddingLeft: "2em",
+                                marginBottom: "10px",
+                              }}
                             >
                               {ingredient}
                             </li>
@@ -360,34 +352,29 @@ function RecipeCard(props) {
                       </div>
                     )
                   )}
-                </Typography>
+                </Box>
               </Box>
               <Box my={4}>
                 <Typography
                   component="h2"
                   id="modal-title"
                   level="h2"
-                  textColor="inherit"
                   fontWeight="fontWeightRegular"
                   mb={2}
                   style={{ borderBottom: "1px solid grey" }}
                 >
                   Steps
                 </Typography>
-                <Typography
-                  id="modal-desc"
-                  textColor="text.primary"
-                  style={{ fontSize: `${fontSize}` }}
-                >
+                <Box id="modal-desc" style={{ fontSize: `${fontSize}` }}>
                   {props.rec.steps.map((step, index) => (
-                    <div key={index} style={{ marginBottom: "8px" }}>
+                    <div key={index} style={{ marginBottom: "10px" }}>
                       <span style={{ marginRight: "8px", fontWeight: "bold" }}>
                         {index + 1}.
                       </span>
                       {step}
                     </div>
                   ))}
-                </Typography>
+                </Box>
               </Box>
             </Sheet>
           </Modal>
