@@ -150,7 +150,11 @@ function RecipeCard(props) {
         <CardActionArea onClick={handleOpenCard} sx={{ width: "100%" }}>
           <CardOverflow>
             <AspectRatio ratio="2">
-              <img src={`/${props.rec.image}`} alt="" loading="lazy" />
+              <img
+                src={`/${props.rec.image}`}
+                alt=""
+                loading="lazy"
+              />
             </AspectRatio>
           </CardOverflow>
           <Typography level="h2" sx={{ fontSize: "md", mt: 2 }}>

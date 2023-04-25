@@ -25,7 +25,7 @@ docker compose down
     to your Wifi at boot time on the Pi.
 3. Insert the SD card into the Pi and turn it on, resetting the ubuntu user's 
     password.
-4. On the Pi, run the `pi-install.sh` script to install MongoDB and Node
+4. On the Pi, run the `pi-install.sh` script to install MongoDB, Node, and nginx.
 5. Run `sudo systemctl status mongod` to ensure that the mongod service is running
 
 ## Instructions to go from development project to deploy-ready on the Pi
@@ -34,6 +34,24 @@ docker compose down
 3. Move the generated `build/` directory into the `server/` directory
 4. Copy over the `server/` directory onto the Pi.
 ### On the Pi
-5. Navigate to the `server/` directory and run `npm install`. Additionally, change references to `.env.docker` in `recipes.js` and `server.js` to be `.env`.
-6. Once complete, run `node server.js` to start the site! If you would like the 
-    service to run in the background, instead run `node server.js &`
+5. Navigate to the `server/` directory and run `npm install`, then `npm install -g pm2`. Additionally, change references to `.env.docker` in `recipes.js` and `server.js` to be `.env`.
+6. This project uses nginx as a reverse proxy. To configure it for the project, edit the config with `sudo vi /etc/nginx/sites-available/default`. The `location /` block should match the following:
+```
+. . .
+    location / {
+        proxy_pass http://localhost:5000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+        client_max_body_size 5M;
+    }
+```
+7. Use `sudo nginx -t` to validate the config, and if successful run `sudo systemctl restart nginx` to apply it.
+8. Once complete, run `pm2 server.js` to start the site! To have it auto launch on startup, run `pm2 startup systemd` and then run the command it gives that looks like the following (**DO NOT ACTUALLY RUN THE BELOW BLOCK, RUN THE BLOCK GIVEN TO YOU BY PM2**):
+```
+sudo env PATH=$PATH:/home/ubuntu/.nvm/versions/node/v20.0.0/bin \\ 
+/home/ubuntu/.nvm/versions/node/v20.0.0/lib/node_modules/pm2/bin/pm2 startup systemd -u ubuntu --hp /home/ubuntu
+
+```
