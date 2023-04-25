@@ -69,7 +69,7 @@ app.post("/addRecipe", upload.single('image'), (req, res) => {
   if(req.file != null){
     // take file, store on local machine
     // get name of file, append path, and save to json object
-    const imgName = {"image": "images/" + recipe.title + path.extname(req.file.originalname)};
+    const imgName = {"image": "images/" + req.file.originalname};
     recipe = {...recipe, ...imgName}; 
     console.log("change" + recipe);
   } else {
