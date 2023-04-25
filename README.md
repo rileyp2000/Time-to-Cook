@@ -45,6 +45,7 @@ docker compose down
         proxy_set_header Connection 'upgrade';
         proxy_set_header Host $host;
         proxy_cache_bypass $http_upgrade;
+        client_max_body_size 5M;
     }
 ```
 7. Use `sudo nginx -t` to validate the config, and if successful run `sudo systemctl restart nginx` to apply it.
