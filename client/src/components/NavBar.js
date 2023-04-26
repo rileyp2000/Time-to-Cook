@@ -88,10 +88,9 @@ function ResponsiveAppBar() {
   const navigate = useNavigate(); // Get the navigate function from the useNavigate hook
 
   const handleSearch = (event) => {
-    if (event.key === "Enter") {
+    if (event.key === "Enter" && event.target.value.trim() !== "") {
       const query = event.target.value;
       event.target.value = "";
-      console.log(query);
       setSearchQuery(query); // Set search query state to the entered query when a search is performed
       navigate(`/searchresults/${query}`); // Navigate to the SearchResults page with the search query as a parameter
     }
@@ -99,7 +98,7 @@ function ResponsiveAppBar() {
 
   return (
     <AppBar
-      position="static"
+      position="fixed"
       color="primary"
       // style={{ backgroundColor: "hsl(294deg 45% 52%)" }}
       sx={{

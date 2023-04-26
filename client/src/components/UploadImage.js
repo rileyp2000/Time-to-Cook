@@ -5,7 +5,6 @@ import PropTypes from "prop-types";
 import { useEffect } from "react";
 
 const UploadImage = ({ onImageUpload, initialImage }) => {
-  console.log("initial image is:", initialImage);
   const [imagePreview, setImagePreview] = useState(
     initialImage
       ? `data:${initialImage.mime};base64,${initialImage.data}`
@@ -16,9 +15,7 @@ const UploadImage = ({ onImageUpload, initialImage }) => {
 
   useEffect(() => {
     setIsNewImage(false);
-    setImagePreview(
-      initialImage ? `/${initialImage}` : null
-    );
+    setImagePreview(initialImage ? `/${initialImage}` : null);
   }, [initialImage]);
 
   const handleFileUpload = (event) => {
@@ -63,13 +60,9 @@ const UploadImage = ({ onImageUpload, initialImage }) => {
       {imagePreview && (
         <div style={{ marginTop: 10, marginBottom: 10 }}>
           <img
-            src={
-              isNewImage
-                ? imagePreview
-                : `/${initialImage}`
-            }
+            src={isNewImage ? imagePreview : `/${initialImage}`}
             alt="Image Preview"
-            style={{ maxWidth: "80%", height: "auto", marginBottom: "3rem" }}
+            style={{ maxWidth: "400px", height: "auto", marginBottom: "3rem" }}
           />
         </div>
       )}
@@ -85,7 +78,7 @@ const UploadImage = ({ onImageUpload, initialImage }) => {
 
 // Define prop validation using PropTypes
 UploadImage.propTypes = {
-  onImageUpload: PropTypes.string.isRequired, // Specify the type and make it required
+  onImageUpload: PropTypes.func.isRequired, // Specify the type and make it required
   initialImage: PropTypes.string, // Add a prop for the initial image
 };
 

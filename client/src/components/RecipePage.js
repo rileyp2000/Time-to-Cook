@@ -7,11 +7,15 @@ import PropTypes from "prop-types";
 
 function RecipePage(props) {
   const [recipes, setRecipes] = useState([]);
-  console.log("we are in recipepage for favorite:", props.favorite);
 
   return (
     <div
-      style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        marginTop: "5rem",
+      }}
     >
       <div>
         <h1
@@ -34,22 +38,14 @@ function RecipePage(props) {
           favorite={props.favorite}
         ></FilterOptions>
       </div>
-      <ListOfRecipeCards
-        recipes={recipes}
-        style={
-          {
-            // boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.75)",
-            // borderRadius: "10px",// or any other value that fits your needs
-          }
-        }
-      ></ListOfRecipeCards>
+      <ListOfRecipeCards recipes={recipes}></ListOfRecipeCards>
     </div>
   );
 }
 
 RecipePage.propTypes = {
-  myrecipe: PropTypes.string.isRequired,
-  favorite: PropTypes.string.isRequired,
+  myrecipe: PropTypes.bool.isRequired,
+  favorite: PropTypes.bool.isRequired,
 };
 
 export default RecipePage;

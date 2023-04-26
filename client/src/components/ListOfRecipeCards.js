@@ -8,7 +8,6 @@ function ListOfRecipeCards(props) {
     <div>
       <div className="cards-container">
         <section>
-          <h1 style={{ borderBottom: "1px solid grey" }}>{props.title}</h1>
           <div className="cards">
             {props.recipes.length > 0 ? (
               props.recipes.map((recipe, index) => (
@@ -27,7 +26,6 @@ function ListOfRecipeCards(props) {
 }
 
 ListOfRecipeCards.propTypes = {
-  title: PropTypes.string.isRequired,
   recipes: PropTypes.arrayOf(
     PropTypes.shape({
       _id: PropTypes.string.isRequired,

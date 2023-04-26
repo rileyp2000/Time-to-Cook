@@ -10,6 +10,7 @@ import UploadImage from "./UploadImage";
 import PropTypes from "prop-types";
 import { useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 import {
   FormControl,
@@ -22,9 +23,10 @@ import {
 } from "@mui/material";
 
 function AddForm() {
+  const navigate = useNavigate();
   const { state } = useLocation();
   const editingRecipe = state?.editingRecipe;
-  console.log(editingRecipe);
+  //console.log(editingRecipe);
 
   const [unit, setUnit] = React.useState(editingRecipe?.time[1] || "");
 
@@ -248,8 +250,6 @@ function AddForm() {
   const [image, setImage] = React.useState({});
   const [newImage, setNewImage] = React.useState(false);
   const handleImageUpload = (image, isNewImage) => {
-    console.log("Image path", image);
-    console.log("new image?:", isNewImage);
     setNewImage(isNewImage);
     setImage(image);
   };
@@ -433,7 +433,6 @@ function AddForm() {
       setopenNotifFail(true);
       return;
     }
-    console.log("here is ingredeints:" + JSON.stringify(ingredients, null, 2));
 
     const recipe = {
       title: title,
@@ -452,12 +451,9 @@ function AddForm() {
       protein: protein,
       favorite: false,
     };
-    console.log("changed recipe:" + JSON.stringify(recipe, null, 2));
-    //console.log(recipe.title);
 
     //handling image for formdata
     const formData = new FormData();
-    console.log("before appending image:", image);
 
     if (!editingRecipe) {
       // Add the file to the FormData object
@@ -476,21 +472,24 @@ function AddForm() {
         .catch((error) => {
           console.log(error);
         });
+
+      //refersh on sucess of add rnew recipe
+      setopenNotifSucess(true);
+      setTimeout(() => {
+        window.location.reload();
+      }, 500); // 0.5 seconds delay
     } else {
-      console.log("we are in the else case");
       //we add the id no matter what
       const editedRecipe = Object.assign({}, recipe, {
         _id: editingRecipe._id,
       });
 
       if (newImage) {
-        console.log("new image case:");
         //append new image, should get updated from handleFileUpload
         //send new image and recipe with no image in it
         formData.append("image", image);
         formData.append("recipe", JSON.stringify(editedRecipe));
       } else {
-        console.log("else new image case");
         let oldImageRecipe = Object.assign({}, editedRecipe, {
           image: editingRecipe.image,
         });
@@ -509,15 +508,17 @@ function AddForm() {
         .catch((error) => {
           console.error(error);
         });
+      //refersh on sucess of add rnew recipe
+      setopenNotifSucess(true);
+      setTimeout(() => {
+        navigate(`/myrecipe`);
+        window.location.reload();
+      }, 400);
     }
-    setopenNotifSucess(true);
-    // setTimeout(() => {
-    //   window.location.reload();
-    // }, 500); // 0.5 seconds delay
   };
 
   return (
-    <div style={{ textAlign: "center", marginTop: "2rem" }}>
+    <div style={{ textAlign: "center", marginTop: "5rem" }}>
       <h1 style={{ color: "grey" }}>
         {editingRecipe ? "Edit Recipe" : "Add Recipe"}
       </h1>
@@ -575,7 +576,7 @@ function AddForm() {
               required
               defaultValue={editingRecipe?.time[1] || ""}
             >
-              <MenuItem value={"Mins"}>Min</MenuItem>
+              <MenuItem value={"Min"}>Min</MenuItem>
               <MenuItem value={"Hrs"}>Hrs</MenuItem>
             </Select>
             {formErrors.unit && (
@@ -947,14 +948,5 @@ function AddForm() {
     </div>
   );
 }
-
-AddForm.propTypes = {
-  recipe: PropTypes.object.isRequired,
-  location: PropTypes.shape({
-    state: PropTypes.shape({
-      editingRecipe: PropTypes.object.isRequired,
-    }).isRequired,
-  }).isRequired,
-};
 
 export default AddForm;

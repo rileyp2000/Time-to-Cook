@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import RadioButtons from "./RadioButtons";
 import CheckBoxes from "./CheckBoxes";
 import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
@@ -57,7 +56,6 @@ function FilterOptions(props) {
     setOpenCard(false);
     buildQuery(proteinQuery, mealQuery, energyQuery, favoriteQuery);
     fetchRecipes(query);
-    console.log("here is the query we are passing", query);
   };
 
   useEffect(() => {
@@ -77,14 +75,12 @@ function FilterOptions(props) {
       const response = await fetch(query);
       const data = await response.json();
       props.setRecipes(data);
-      console.log(data);
     } catch (error) {
       console.error(error);
     }
   };
 
   const changeProtein = (newQuery, newSelectedOptions) => {
-    console.log("we are in protein printing new query:", newQuery);
     setProteinQuery(newQuery);
     setSelectedOptions({ ...selectedOptions, protein: newSelectedOptions });
     buildQuery(newQuery, mealQuery, energyQuery, favoriteQuery);
@@ -194,7 +190,6 @@ function FilterOptions(props) {
               isFavoritePage ? ["Favorite"] : selectedOptions.favorite
             }
           />
-          <p>query string: {query}</p>
         </div>
       </Modal>
     </div>
@@ -203,7 +198,7 @@ function FilterOptions(props) {
 
 FilterOptions.propTypes = {
   setRecipes: PropTypes.func.isRequired,
-  myrecipe: PropTypes.string.isRequired,
+  myrecipe: PropTypes.bool.isRequired,
   favorite: PropTypes.bool.isRequired,
 };
 

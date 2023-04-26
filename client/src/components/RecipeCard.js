@@ -23,7 +23,6 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 function RecipeCard(props) {
-  console.log("recipe", JSON.stringify(props.rec,null,2));
   //used to handle modal being opened
   const [openCard, setOpenCard] = React.useState(false);
   const handleOpenCard = () => setOpenCard(true);
@@ -57,6 +56,10 @@ function RecipeCard(props) {
 
     // Close the delete confirmation modal
     setDeleteModalOpen(false);
+    //refresh after delete
+    setTimeout(() => {
+      window.location.reload();
+    }, 100); // 0.5 seconds delay
   };
 
   const handleDeleteCancel = () => {
@@ -151,18 +154,14 @@ function RecipeCard(props) {
         <CardActionArea onClick={handleOpenCard} sx={{ width: "100%" }}>
           <CardOverflow>
             <AspectRatio ratio="2">
-              <img
-                src={`/${props.rec.image}`}
-                alt=""
-                loading="lazy"
-              />
+              <img src={`/${props.rec.image}`} alt="" loading="lazy" />
             </AspectRatio>
           </CardOverflow>
           <Typography level="h2" sx={{ fontSize: "md", mt: 2 }}>
             {props.rec.title}
           </Typography>
           <Typography level="body2" sx={{ mt: 0.5, mb: 2 }}>
-            <Typography startDecorator={<TimerIcon />} textColor="neutral.700">
+            <Typography startDecorator={<TimerIcon />}>
               {props.rec.time.join(" ")}
             </Typography>
           </Typography>
@@ -269,12 +268,10 @@ function RecipeCard(props) {
                   </Button>
                 </Box>
               </Box>
-
               <Typography
                 component="h2"
                 id="modal-title"
                 level="h1"
-                textColor="inherit"
                 fontWeight="fontWeightBold"
                 mb={1}
                 mt={3}
@@ -287,10 +284,12 @@ function RecipeCard(props) {
               </Typography>
               <Typography
                 id="modal-desc"
-                textColor="text.primary"
-                style={{ fontSize: `${fontSize}` }}
+                style={{ fontSize: `${fontSize}`, marginBottom: "5px" }}
               >
-                MealType: {props.rec.mealType}
+                Meal Type: {props.rec.mealType}
+              </Typography>
+              <Typography id="modal-desc" style={{ fontSize: `${fontSize}` }}>
+                Protein: {props.rec.protein}
               </Typography>
               {/* my stands for margin y this makes space between each seciton
             by wrapping a box around it */}
@@ -299,47 +298,41 @@ function RecipeCard(props) {
                   component="h2"
                   id="modal-title"
                   level="h2"
-                  textColor="inherit"
                   fontWeight="fontWeightRegular"
                   mb={1}
                   style={{ borderBottom: "1px solid grey" }}
                 >
                   Utensils
                 </Typography>
-                <Typography
-                  id="modal-desc"
-                  textColor="text.primary"
-                  style={{ fontSize: `${fontSize}` }}
-                >
+                <Box id="modal-desc" style={{ fontSize: `${fontSize}` }}>
                   <ul style={{ paddingLeft: "1em" }}>
                     {props.rec.utensils.map((utensil, index) => (
                       <li
                         key={index}
-                        style={{ textIndent: "-1em", paddingLeft: "2em" }}
+                        style={{
+                          textIndent: "-1em",
+                          paddingLeft: "2em",
+                          marginBottom: "10px",
+                        }}
                       >
                         {utensil}
                       </li>
                     ))}
                   </ul>
-                </Typography>
+                </Box>
               </Box>
               <Box my={4}>
                 <Typography
                   component="h2"
                   id="modal-title"
                   level="h2"
-                  textColor="inherit"
                   fontWeight="fontWeightRegular"
                   mb={1}
                   style={{ borderBottom: "1px solid grey" }}
                 >
                   Ingredients
                 </Typography>
-                <Typography
-                  id="modal-desc"
-                  textColor="text.primary"
-                  style={{ fontSize: `${fontSize}` }}
-                >
+                <Box id="modal-desc" style={{ fontSize: `${fontSize}` }}>
                   {Object.entries(props.rec.ingredients).map(
                     ([title, ingredients]) => (
                       <div key={title}>
@@ -350,7 +343,11 @@ function RecipeCard(props) {
                           {ingredients.map((ingredient, index) => (
                             <li
                               key={index}
-                              style={{ textIndent: "-1em", paddingLeft: "2em" }}
+                              style={{
+                                textIndent: "-1em",
+                                paddingLeft: "2em",
+                                marginBottom: "10px",
+                              }}
                             >
                               {ingredient}
                             </li>
@@ -359,34 +356,29 @@ function RecipeCard(props) {
                       </div>
                     )
                   )}
-                </Typography>
+                </Box>
               </Box>
               <Box my={4}>
                 <Typography
                   component="h2"
                   id="modal-title"
                   level="h2"
-                  textColor="inherit"
                   fontWeight="fontWeightRegular"
                   mb={2}
                   style={{ borderBottom: "1px solid grey" }}
                 >
                   Steps
                 </Typography>
-                <Typography
-                  id="modal-desc"
-                  textColor="text.primary"
-                  style={{ fontSize: `${fontSize}` }}
-                >
+                <Box id="modal-desc" style={{ fontSize: `${fontSize}` }}>
                   {props.rec.steps.map((step, index) => (
-                    <div key={index} style={{ marginBottom: "8px" }}>
+                    <div key={index} style={{ marginBottom: "10px" }}>
                       <span style={{ marginRight: "8px", fontWeight: "bold" }}>
                         {index + 1}.
                       </span>
                       {step}
                     </div>
                   ))}
-                </Typography>
+                </Box>
               </Box>
             </Sheet>
           </Modal>
@@ -448,18 +440,15 @@ RecipeCard.propTypes = {
   rec: PropTypes.shape({
     _id: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
-    time: PropTypes.string.isRequired,
+    time: PropTypes.arrayOf(PropTypes.string).isRequired,
     energy: PropTypes.string.isRequired,
     mealType: PropTypes.string.isRequired,
     utensils: PropTypes.arrayOf(PropTypes.string).isRequired,
     ingredients: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.string))
       .isRequired,
     steps: PropTypes.arrayOf(PropTypes.string).isRequired,
-    image: PropTypes.shape({
-      mime: PropTypes.string.isRequired,
-      data: PropTypes.string.isRequired,
-    }).isRequired,
-    filters: PropTypes.arrayOf(PropTypes.string).isRequired,
+    image: PropTypes.string.isRequired,
+    protein: PropTypes.string.isRequired,
     favorite: PropTypes.bool.isRequired,
   }).isRequired,
 };
