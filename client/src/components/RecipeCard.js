@@ -56,6 +56,10 @@ function RecipeCard(props) {
 
     // Close the delete confirmation modal
     setDeleteModalOpen(false);
+    //refresh after delete
+    setTimeout(() => {
+      window.location.reload();
+    }, 100); // 0.5 seconds delay
   };
 
   const handleDeleteCancel = () => {
@@ -150,11 +154,7 @@ function RecipeCard(props) {
         <CardActionArea onClick={handleOpenCard} sx={{ width: "100%" }}>
           <CardOverflow>
             <AspectRatio ratio="2">
-              <img
-                src={`/${props.rec.image}`}
-                alt=""
-                loading="lazy"
-              />
+              <img src={`/${props.rec.image}`} alt="" loading="lazy" />
             </AspectRatio>
           </CardOverflow>
           <Typography level="h2" sx={{ fontSize: "md", mt: 2 }}>

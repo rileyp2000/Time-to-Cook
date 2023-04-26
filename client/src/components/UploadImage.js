@@ -15,9 +15,7 @@ const UploadImage = ({ onImageUpload, initialImage }) => {
 
   useEffect(() => {
     setIsNewImage(false);
-    setImagePreview(
-      initialImage ? `/${initialImage}` : null
-    );
+    setImagePreview(initialImage ? `/${initialImage}` : null);
   }, [initialImage]);
 
   const handleFileUpload = (event) => {
@@ -62,13 +60,9 @@ const UploadImage = ({ onImageUpload, initialImage }) => {
       {imagePreview && (
         <div style={{ marginTop: 10, marginBottom: 10 }}>
           <img
-            src={
-              isNewImage
-                ? imagePreview
-                : `/${initialImage}`
-            }
+            src={isNewImage ? imagePreview : `/${initialImage}`}
             alt="Image Preview"
-            style={{ maxWidth: "80%", height: "auto", marginBottom: "3rem" }}
+            style={{ maxWidth: "400px", height: "auto", marginBottom: "3rem" }}
           />
         </div>
       )}

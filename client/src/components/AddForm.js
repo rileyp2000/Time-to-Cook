@@ -10,6 +10,7 @@ import UploadImage from "./UploadImage";
 import PropTypes from "prop-types";
 import { useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 import {
   FormControl,
@@ -22,6 +23,7 @@ import {
 } from "@mui/material";
 
 function AddForm() {
+  const navigate = useNavigate();
   const { state } = useLocation();
   const editingRecipe = state?.editingRecipe;
   //console.log(editingRecipe);
@@ -470,6 +472,12 @@ function AddForm() {
         .catch((error) => {
           console.log(error);
         });
+
+      //refersh on sucess of add rnew recipe
+      setopenNotifSucess(true);
+      setTimeout(() => {
+        window.location.reload();
+      }, 500); // 0.5 seconds delay
     } else {
       //we add the id no matter what
       const editedRecipe = Object.assign({}, recipe, {
@@ -500,11 +508,13 @@ function AddForm() {
         .catch((error) => {
           console.error(error);
         });
+      //refersh on sucess of add rnew recipe
+      setopenNotifSucess(true);
+      setTimeout(() => {
+        navigate(`/myrecipe`);
+        window.location.reload();
+      }, 400);
     }
-    setopenNotifSucess(true);
-    setTimeout(() => {
-      window.location.reload();
-    }, 500); // 0.5 seconds delay
   };
 
   return (

@@ -9,7 +9,7 @@ function Home() {
   const navigate = useNavigate(); // Get the navigate function from the useNavigate hook
 
   const handleSearch = (event) => {
-    if (event.key === "Enter") {
+    if (event.key === "Enter" && event.target.value.trim() !== "") {
       const query = event.target.value;
       event.target.value = "";
       setSearchQuery(query); // Set search query state to the entered query when a search is performed
