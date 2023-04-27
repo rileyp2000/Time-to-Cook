@@ -321,7 +321,7 @@ function AddForm() {
     }
 
     // Define a regular expression to match non-letter characters
-    const nonLetterRegex = /[^A-Za-z]/;
+    const nonLetterRegex = /[^A-Za-z\s]/;
 
     // Check for meal
     if (!meal || nonLetterRegex.test(meal)) {
