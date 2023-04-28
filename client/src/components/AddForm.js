@@ -320,8 +320,11 @@ function AddForm() {
       //isFormValid = true;
     }
 
+    // Define a regular expression to match non-letter characters
+    const nonLetterRegex = /[^A-Za-z\s]/;
+
     // Check for meal
-    if (!meal) {
+    if (!meal || nonLetterRegex.test(meal)) {
       setFormErrors((prevFormErrors) => ({
         ...prevFormErrors,
         meal: true,
@@ -336,7 +339,7 @@ function AddForm() {
     }
 
     // Check for protein
-    if (!protein) {
+    if (!protein || nonLetterRegex.test(protein)) {
       setFormErrors((prevFormErrors) => ({
         ...prevFormErrors,
         protein: true,
